@@ -4,12 +4,33 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Reveal } from "@/components/effects/Reveal";
 import { ContactForm } from "@/components/effects/ContactForm";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { CheckIcon } from "@/components/icons";
+import { ogImageUrl } from "@/lib/seo";
+import { breadcrumbSchema } from "@/lib/json-ld";
+
+const PAGE_TITLE = "Parlons de votre pipeline";
+const PAGE_DESC =
+  "Réservez un appel de 30 minutes. On regarde votre cible et on vous dit honnêtement si l'outbound a du sens pour vous.";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description:
-    "Réservez un appel de 30 minutes. On regarde votre cible et on vous dit honnêtement si l'outbound a du sens pour vous.",
+  description: PAGE_DESC,
+  alternates: { canonical: "/contact" },
+  openGraph: {
+    title: PAGE_TITLE,
+    description: PAGE_DESC,
+    url: "/contact",
+    images: [
+      { url: ogImageUrl(PAGE_TITLE, "Contact · 30 min sans engagement"), width: 1200, height: 630 },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: PAGE_TITLE,
+    description: PAGE_DESC,
+    images: [ogImageUrl(PAGE_TITLE, "Contact · 30 min sans engagement")],
+  },
 };
 
 function BreadcrumbIcon() {
@@ -66,6 +87,12 @@ function TargetIcon() {
 export default function ContactPage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Accueil", path: "/" },
+          { name: "Contact", path: "/contact" },
+        ])}
+      />
       <Header />
 
       <main>

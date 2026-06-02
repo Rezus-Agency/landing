@@ -4,12 +4,32 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Reveal } from "@/components/effects/Reveal";
 import { CursorGlow } from "@/components/effects/CursorGlow";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { ArrowRightIcon, CheckIcon } from "@/components/icons";
+import { ogImageUrl } from "@/lib/seo";
+import { breadcrumbSchema, professionalServiceSchema } from "@/lib/json-ld";
+
+const PAGE_TITLE = "La méthode, sans boîte noire";
+const PAGE_DESC =
+  "Comment on transforme une liste de comptes choisis à la main en rendez-vous qualifiés. Trois phases, aucun raccourci.";
 
 export const metadata: Metadata = {
-  title: "La méthode",
-  description:
-    "Comment on transforme une liste de comptes choisis à la main en rendez-vous qualifiés. Étape par étape, sans boîte noire.",
+  title: PAGE_TITLE,
+  description: PAGE_DESC,
+  alternates: { canonical: "/methode" },
+  openGraph: {
+    title: PAGE_TITLE,
+    description: PAGE_DESC,
+    url: "/methode",
+    type: "article",
+    images: [{ url: ogImageUrl(PAGE_TITLE, "La méthode"), width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: PAGE_TITLE,
+    description: PAGE_DESC,
+    images: [ogImageUrl(PAGE_TITLE, "La méthode")],
+  },
 };
 
 function BreadcrumbIcon() {
@@ -122,6 +142,20 @@ const PHASES = [
 export default function MethodePage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Accueil", path: "/" },
+          { name: "La méthode", path: "/methode" },
+        ])}
+      />
+      <JsonLd
+        data={professionalServiceSchema({
+          url: "/methode",
+          name: "Méthode outbound Rezus Agency",
+          description: PAGE_DESC,
+          serviceType: "Outbound B2B · cold email",
+        })}
+      />
       <Header />
 
       <main>

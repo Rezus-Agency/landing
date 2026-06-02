@@ -8,6 +8,8 @@ import { BreadcrumbIcon } from "@/components/icons";
 export const metadata: Metadata = {
   title: "Mentions légales",
   description: "Mentions légales du site Rezus Agency.",
+  alternates: { canonical: "/mentions-legales" },
+  robots: { index: true, follow: true },
 };
 
 export default function MentionsLegalesPage() {

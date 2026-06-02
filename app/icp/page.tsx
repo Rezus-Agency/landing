@@ -4,12 +4,38 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Reveal } from "@/components/effects/Reveal";
 import { CursorGlow } from "@/components/effects/CursorGlow";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { ArrowRightIcon } from "@/components/icons";
+import { ogImageUrl } from "@/lib/seo";
+import { breadcrumbSchema } from "@/lib/json-ld";
+
+const PAGE_TITLE = "Votre ICP, défini en 5 minutes";
+const PAGE_DESC =
+  "Un outil gratuit pour cadrer votre client idéal, scorer vos comptes cibles, et arrêter de prospecter à l'aveugle.";
 
 export const metadata: Metadata = {
   title: "ICP Tool",
-  description:
-    "Un outil gratuit pour définir votre client idéal et prioriser vos comptes cibles. Disponible dès maintenant.",
+  description: PAGE_DESC,
+  keywords: [
+    "ICP B2B",
+    "définition ICP",
+    "ICP SaaS",
+    "outil ICP gratuit",
+    "profil client idéal B2B",
+  ],
+  alternates: { canonical: "/icp" },
+  openGraph: {
+    title: PAGE_TITLE,
+    description: PAGE_DESC,
+    url: "/icp",
+    images: [{ url: ogImageUrl(PAGE_TITLE, "ICP Tool · Gratuit"), width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: PAGE_TITLE,
+    description: PAGE_DESC,
+    images: [ogImageUrl(PAGE_TITLE, "ICP Tool · Gratuit")],
+  },
 };
 
 function TargetIcon() {
@@ -85,6 +111,12 @@ const FEATURES = [
 export default function ICPLandingPage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Accueil", path: "/" },
+          { name: "ICP Tool", path: "/icp" },
+        ])}
+      />
       <Header />
 
       <main>

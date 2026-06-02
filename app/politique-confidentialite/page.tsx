@@ -8,6 +8,8 @@ import { BreadcrumbIcon } from "@/components/icons";
 export const metadata: Metadata = {
   title: "Politique de confidentialité",
   description: "Comment Rezus Agency collecte et traite vos données personnelles (RGPD).",
+  alternates: { canonical: "/politique-confidentialite" },
+  robots: { index: true, follow: true },
 };
 
 export default function ConfidentialitePage() {

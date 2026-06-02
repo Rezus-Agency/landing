@@ -5,15 +5,18 @@ import { HeroReady } from "@/components/effects/HeroReady";
 import { Reveal } from "@/components/effects/Reveal";
 import { FAQAccordion } from "@/components/effects/FAQAccordion";
 import { CursorGlow } from "@/components/effects/CursorGlow";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { ArrowRightIcon, ArrowUpRightIcon, CheckIcon, MinusIcon } from "@/components/icons";
 import { COMPARISON_AXES } from "@/lib/comparison-axes";
 import { HOMEPAGE_FAQ } from "@/lib/faq-items";
+import { faqPageSchema } from "@/lib/json-ld";
 
 const num = (i: number) => String(i + 1).padStart(2, "0");
 
 export default function HomePage() {
   return (
     <>
+      <JsonLd data={faqPageSchema} />
       <HeroReady />
       <Header />
 
