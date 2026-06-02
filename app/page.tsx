@@ -60,18 +60,22 @@ export default function HomePage() {
               data-anim
               style={{ "--d": "0.42s" } as React.CSSProperties}
             >
-              Pour fondateurs B2B francophones qui veulent un canal d&apos;acquisition qui dure. 100
-              à 200 comptes par campagne, écrits à la main, pilotés au rendez-vous qualifié.
+              Pour agences de dev B2B francophones qui veulent un flux régulier de leads qualifiés.
+              Comptes ciblés sur signaux d&apos;achat, messages personnalisés par segment, ajustés
+              chaque semaine.
             </p>
 
-            <div className="hero__cta" data-anim style={{ "--d": "0.54s" } as React.CSSProperties}>
+            <div
+              className="hero__cta"
+              data-anim
+              style={{ "--d": "0.54s", gap: "var(--s-5)" } as React.CSSProperties}
+            >
               <Link href="/contact" className="btn btn--primary">
                 Réserver un appel
                 <ArrowRightIcon />
               </Link>
-              <Link href="#methode" className="btn btn--ghost">
+              <Link href="#methode" className="btn btn--ghost" style={{ color: "var(--text-3)" }}>
                 Voir la méthode
-                <ArrowRightIcon />
               </Link>
             </div>
           </div>
@@ -82,32 +86,34 @@ export default function HomePage() {
           <div className="wrap">
             <Reveal className="shead" style={{ marginBottom: "var(--s-7)" } as React.CSSProperties}>
               <span className="kicker">
-                <span className="shead__index">01</span>Vous l&apos;avez déjà vécu
+                <span className="shead__index">01</span>Le scénario par défaut
               </span>
-              <h2 className="h2">Une histoire qui s&apos;écrit toujours pareil.</h2>
+              <h2 className="h2">Pourquoi 9 agences sur 10 vous déçoivent.</h2>
             </Reveal>
             <div className="pains">
               <Reveal as="article" className="pain">
-                <span className="pain__num">SEMAINE 1</span>
+                <span className="pain__num">MOIS 1</span>
                 <p>
-                  <b>« 50 rendez-vous qualifiés par mois, garantis. »</b> L&apos;agence est
-                  rassurante. Le contrat de 12 mois est signé.
+                  <b>« 50 rendez-vous qualifiés par mois, garantis. »</b>
+                  &nbsp;L&apos;agence est rassurante. Le contrat de 12 mois est signé.
                 </p>
                 <span className="pain__hint">La promesse tient sur une slide.</span>
               </Reveal>
               <Reveal as="article" className="pain" delay={1}>
-                <span className="pain__num">SEMAINE 6</span>
+                <span className="pain__num">MOIS 2</span>
                 <p>
-                  <b>200 emails envoyés, 2 réponses.</b> Le copy est générique, les comptes ne
-                  collent pas, la délivrabilité baisse.
+                  <b>200 emails envoyés, 2 réponses sérieuses.</b>
+                  &nbsp;Le message est générique, les comptes ne collent pas, la délivrabilité
+                  baisse.
                 </p>
                 <span className="pain__hint">Reply rate moyen en cold email 2026 : 3,4%.</span>
               </Reveal>
               <Reveal as="article" className="pain" delay={2}>
-                <span className="pain__num">SEMAINE 12</span>
+                <span className="pain__num">MOIS 4</span>
                 <p>
-                  <b>Domaine grillé.</b> Vous arrêtez. Budget perdu, marque associée au spam, et six
-                  mois à reconstruire.
+                  <b>Domaine grillé.</b>
+                  &nbsp;Vous arrêtez. Budget perdu, marque associée au spam, et six mois à
+                  reconstruire votre réputation.
                 </p>
                 <span className="pain__hint">Ce n&apos;est pas l&apos;outbound qui est cassé.</span>
               </Reveal>
@@ -128,8 +134,8 @@ export default function HomePage() {
                 Ce qu&apos;on fait à la place.
               </h2>
               <p className="shead__lede">
-                Dix points de friction de l&apos;outbound volumique, et notre alternative. Chaque
-                affirmation est sourcée. Vérifiez par vous-même.
+                Cinq zones où la qualité du travail change ce que vous touchez : pipeline,
+                réputation, deals. Chaque affirmation est sourcée — vérifiez par vous-même.
               </p>
             </Reveal>
 
@@ -197,8 +203,8 @@ export default function HomePage() {
                 <div className="tl-body">
                   <h3 className="tl-title">Cadrage &amp; ciblage</h3>
                   <p className="tl-desc">
-                    On définit l&apos;ICP réel et on construit une liste de comptes à la main,
-                    compte par compte.
+                    On définit l&apos;ICP réel et on cible les comptes sur des signaux
+                    d&apos;intention vérifiables : financement, recrutement tech, projets en cours.
                   </p>
                   <span className="tl-hint">Signaux d&apos;intention &gt; listes achetées</span>
                 </div>
@@ -208,10 +214,10 @@ export default function HomePage() {
                   <span>02</span>
                 </div>
                 <div className="tl-body">
-                  <h3 className="tl-title">Messages écrits, infra propre</h3>
+                  <h3 className="tl-title">Messages personnalisés, infra propre</h3>
                   <p className="tl-desc">
-                    Un angle rédigé par segment, des domaines secondaires dédiés et un warmup
-                    sérieux avant le moindre envoi.
+                    Un angle par segment, construit avec l&apos;IA pour la recherche et validé par
+                    un humain. Domaines secondaires dédiés et warmup avant le moindre envoi.
                   </p>
                   <span className="tl-hint">Votre domaine principal n&apos;est jamais exposé</span>
                 </div>
@@ -221,12 +227,12 @@ export default function HomePage() {
                   <span>03</span>
                 </div>
                 <div className="tl-body">
-                  <h3 className="tl-title">Pilotage au pipeline</h3>
+                  <h3 className="tl-title">Revue hebdomadaire, ajustement continu</h3>
                   <p className="tl-desc">
-                    On optimise sur les rendez-vous qualifiés, pas sur les taux d&apos;ouverture.
-                    Vous suivez tout en temps réel.
+                    Chaque semaine : reporting clair, ce qui marche, ce qu&apos;on ajuste. Sans
+                    engagement. Vous restez informé sur ce qui change et pourquoi.
                   </p>
-                  <span className="tl-hint">Accès complet à toutes les séquences</span>
+                  <span className="tl-hint">Pas de boîte noire, pas de set &amp; forget</span>
                 </div>
               </Reveal>
             </div>
@@ -256,20 +262,22 @@ export default function HomePage() {
                 <ul className="qual-list">
                   <li>
                     <CheckIcon />
-                    Vous vendez un produit tech B2B avec un ticket qui justifie un travail
-                    sur-mesure.
+                    Vous êtes une agence de dev B2B (5 à 50 personnes) qui veut sécuriser un flux
+                    régulier de leads qualifiés.
                   </li>
                   <li>
                     <CheckIcon />
-                    Vous préférez 30 conversations pertinentes à 3 000 emails ignorés.
+                    Vous avez des références solides mais le bouche-à-oreille plafonne ou est
+                    saisonnier.
                   </li>
                   <li>
                     <CheckIcon />
-                    Vous voulez protéger votre marque et votre domaine.
+                    Vous voulez sortir de Malt, Upwork et des marketplaces, et travailler vos
+                    propres comptes cibles.
                   </li>
                   <li>
                     <CheckIcon />
-                    Vous jugez sur le pipeline, pas sur des vanity metrics.
+                    Vous êtes prêt à construire sur 6 mois minimum, pas à signer pour trois emails.
                   </li>
                 </ul>
               </Reveal>
@@ -283,15 +291,16 @@ export default function HomePage() {
                 <ul className="qual-list">
                   <li>
                     <MinusIcon />
+                    Vous démarrez tout juste, sans portfolio crédible ni positionnement clair.
+                  </li>
+                  <li>
+                    <MinusIcon />
+                    Vous cherchez « 50 leads garantis dès le mois un » pour combler un trou de
+                    pipeline immédiat.
+                  </li>
+                  <li>
+                    <MinusIcon />
                     Vous mesurez le succès en emails envoyés ou en taux d&apos;ouverture.
-                  </li>
-                  <li>
-                    <MinusIcon />
-                    Vous voulez « 500 leads garantis » dès le mois un, avec contrat verrouillé.
-                  </li>
-                  <li>
-                    <MinusIcon />
-                    Vous n&apos;avez pas envie de partager le contexte de vos meilleurs clients.
                   </li>
                   <li>
                     <MinusIcon />

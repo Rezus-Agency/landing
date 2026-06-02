@@ -11,7 +11,7 @@ import { breadcrumbSchema, professionalServiceSchema } from "@/lib/json-ld";
 
 const PAGE_TITLE = "La méthode, sans boîte noire";
 const PAGE_DESC =
-  "Comment on transforme une liste de comptes choisis à la main en rendez-vous qualifiés. Trois phases, aucun raccourci.";
+  "Comment on transforme un ciblage chirurgical en rendez-vous qualifiés. Trois phases, aucun raccourci, une revue chaque semaine.";
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -60,8 +60,8 @@ const PHASES = [
         rest: ", construite avec vous à partir de vos meilleurs clients existants.",
       },
       {
-        b: "Liste de comptes bâtie à la main",
-        rest: ", compte par compte, plutôt qu'achetée en masse.",
+        b: "Liste de comptes ciblée sur signaux d'achat",
+        rest: " — financement récent, recrutement tech, projets en cours, plutôt qu'achetée en masse.",
       },
       {
         b: "Qualification sur signaux d'intention",
@@ -85,8 +85,8 @@ const PHASES = [
     lead: "Chaque message est écrit pour une personne. L'infrastructure, elle, protège votre marque et votre délivrabilité.",
     items: [
       {
-        b: "Un angle rédigé à la main",
-        rest: " par segment, ancré sur un signal réel. Jamais un template unique.",
+        b: "Un angle rédigé par segment",
+        rest: ", construit avec l'IA pour la recherche et validé par un humain. Jamais un template unique.",
       },
       {
         b: "Domaines secondaires dédiés",
@@ -118,8 +118,8 @@ const PHASES = [
         rest: ", pas au taux d'ouverture ni aux « impressions ».",
       },
       {
-        b: "Accès complet",
-        rest: " aux séquences, aux listes et aux statistiques en temps réel.",
+        b: "Reporting hebdomadaire",
+        rest: " avec ce qui marche, ce qu'on change, et pourquoi. Pas de boîte noire.",
       },
       {
         b: "Point hebdomadaire",
@@ -176,8 +176,8 @@ export default function MethodePage() {
             </Reveal>
             <Reveal as="div" delay={2}>
               <p className="lede">
-                Comment on transforme une liste de comptes choisis à la main en rendez-vous
-                qualifiés. Trois temps, aucun raccourci, et une visibilité totale à chaque étape.
+                Comment on transforme un ciblage chirurgical en rendez-vous qualifiés. Trois phases,
+                aucun raccourci, et une revue chaque semaine pour ajuster ce qui ne marche pas.
               </p>
             </Reveal>
             <Reveal className="phero__cta" delay={3}>

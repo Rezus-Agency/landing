@@ -7,79 +7,46 @@ export type ComparisonAxis = {
 };
 
 /**
- * Les 10 axes de la comparaison "La plupart" vs "Rezus".
- * Le contraste se joue par la hiérarchie et l'opacité, jamais par la couleur.
- * Chaque axe est sourcé sur une étude vérifiable 2026.
+ * 5 axes outcome-focused. Pas une liste de process, mais les 5 zones où
+ * la qualité du travail change ce que le client touche : pipeline, deals,
+ * réputation, ROI mesuré, contrôle.
+ * Chaque source soutient soit la critique du « la plupart » soit la
+ * démarche Rezus — directement, pas par approximation.
  */
 export const COMPARISON_AXES: ComparisonAxis[] = [
   {
-    axis: "Approche",
-    them: "Envoyer 10 000 emails par mois et espérer que le volume compense l'absence de ciblage.",
-    us: "Cibler 100 à 200 comptes vraiment qualifiés, et traiter chacun comme un compte clé.",
+    axis: "Adéquation des prospects",
+    them: "Listes de 10 000 contacts achetées, 90% hors-cible. Vos commerciaux passent leur temps à les filtrer.",
+    us: "Comptes choisis sur signaux d'intention vérifiables : financement récent, recrutement tech, projets en cours. Seuls les bons comptes entrent en pipeline.",
     src: "Lead411 — B2B Targeting Analysis 2026",
     url: "https://www.lead411.com/blog/why-most-b2b-companies-are-targeting-the-wrong-accounts-in-2026/",
   },
   {
-    axis: "Message",
-    them: "Un seul template, copié-collé, envoyé à toute la liste.",
-    us: "Un angle rédigé à la main par segment, ancré sur un signal réel. +32,7% de réponses.",
+    axis: "Pertinence du message",
+    them: "Un template copié-collé, ou de l'IA brute qui invente. Le prospect reconnaît en trois secondes.",
+    us: "IA pour la recherche et l'extraction de faits. Humain pour l'angle et la validation. +32,7% de réponses avec une personnalisation construite.",
     src: "Backlinko — 12M Email Outreach Study",
     url: "https://backlinko.com/email-outreach-study",
   },
   {
-    axis: "Rédaction",
-    them: "100% automatisé : l'IA génère, personne ne relit. Le contenu IA régresse au mois 3.",
-    us: "L'IA fait le travail invisible (recherche, vérification). Un humain valide chaque message.",
-    src: "LeadRiver — State of B2B Outbound 2026",
-    url: "https://www.leadriver.io/blog/state-of-b2b-outbound-2026",
-  },
-  {
-    axis: "Données",
-    them: "Listes achetées, données périmées, emails devinés au hasard, signaux invisibles.",
-    us: "Comptes choisis sur des déclencheurs d'intention vérifiables : levées, hires, stack moves.",
-    src: "ORRJO — State of B2B Outbound 2026",
-    url: "https://orrjo.com/research/state-of-b2b-outbound-2026",
-  },
-  {
-    axis: "Infrastructure",
-    them: "Tout part du domaine principal. 16,5% des emails légitimes n'atteignent jamais l'inbox.",
-    us: "Domaines secondaires dédiés, warmup progressif, SPF / DKIM / DMARC complets.",
+    axis: "Protection de votre réputation",
+    them: "Tout part de votre domaine principal. 16,5% des emails légitimes n'atteignent jamais l'inbox. Au mois 6, votre domaine est grillé.",
+    us: "Infrastructure dédiée, multi-domaines secondaires. Votre domaine principal n'est jamais exposé. SPF / DKIM / DMARC complets dès le premier envoi.",
     src: "Validity — 2026 Email Deliverability Benchmark",
     url: "https://www.validity.com/resource-center/2026-email-deliverability-benchmark-report/",
   },
   {
-    axis: "Mesure",
-    them: "On vous vend des taux d'ouverture et des « impressions ». 83% des SDRs ratent leur quota.",
-    us: "On pilote au seul indicateur qui compte : le rendez-vous qualifié.",
+    axis: "Ce qu'on mesure",
+    them: "Taux d'ouverture, emails envoyés, « impressions ». 83% des SDRs ratent leur quota parce qu'ils mesurent ce qui ne paye personne.",
+    us: "Un seul indicateur compte : le rendez-vous qualifié transformé en opportunité. Le reste, c'est du bruit.",
     src: "LeadRiver — State of B2B Outbound 2026",
     url: "https://www.leadriver.io/blog/state-of-b2b-outbound-2026",
   },
   {
-    axis: "Promesses",
-    them: "« 500 leads garantis dès le premier mois. » Reply rate moyen 2026 : 3,4%.",
-    us: "Des objectifs réalistes, calibrés sur votre marché, votre ticket et votre cycle.",
-    src: "Instantly — Cold Email Benchmark Report 2026",
-    url: "https://instantly.ai/cold-email-benchmark-report-2026",
-  },
-  {
-    axis: "Relances",
-    them: "Relances forcées, jusqu'à 8 fois la même personne sans nouvel angle.",
-    us: "Deux relances maximum. De la valeur d'abord, un angle de plus si pertinent, jamais après.",
-    src: "Backlinko — 12M Email Outreach Study",
-    url: "https://backlinko.com/email-outreach-study",
-  },
-  {
-    axis: "Approche IA",
-    them: "Full AI SDR autonome. Coût par opportunité qualifiée : 487 $.",
-    us: "Pods hybrides (IA invisible + humain). 1,9x à 2,4x le ROI. 224 $ par opp.",
-    src: "Digital Applied — AI SDR Statistics 2026",
-    url: "https://www.digitalapplied.com/blog/ai-sdr-statistics-2026-outbound-sales-data-points",
-  },
-  {
-    axis: "Engagement",
-    them: "Contrat de 12 mois minimum pour vous retenir. Reply rate en chute libre : 8,5% (2019) → 3,4% (2026).",
-    us: "Sans engagement. On reste parce que ça marche, pas parce qu'un contrat vous retient.",
-    src: "Martal — B2B Cold Email Statistics 2026",
-    url: "https://martal.ca/b2b-cold-email-statistics-lb/",
+    axis: "Comment on pilote",
+    them: "« Let it run. » Contrat 12 mois, vous découvrez la baisse au mois 6, et il est trop tard pour ajuster.",
+    us: "Revue hebdomadaire, ajustement continu de l'angle et du ciblage. Sans engagement. Vous voyez ce qui marche et ce qu'on change, chaque semaine.",
+    src: "ORRJO — State of B2B Outbound 2026",
+    url: "https://orrjo.com/research/state-of-b2b-outbound-2026",
   },
 ];
