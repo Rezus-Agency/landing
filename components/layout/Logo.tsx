@@ -12,14 +12,20 @@ export function Logo({ className, href = "/" }: LogoProps) {
       href={href}
       aria-label="Rezus Agency — Accueil"
       className={cn(
-        "group inline-flex items-center gap-1.5 transition-opacity hover:opacity-80",
+        "group inline-flex items-baseline gap-1 transition-opacity hover:opacity-80",
         className,
       )}
     >
-      <span className="text-foreground text-base font-semibold tracking-tight sm:text-lg">
+      <span className="text-foreground text-base font-semibold tracking-tight sm:text-[17px]">
         Rezus
       </span>
-      <span className="bg-rezus-green inline-block h-1.5 w-1.5 rounded-full" aria-hidden="true" />
+      <span
+        className="bg-rezus-green mx-1 inline-block h-1 w-1 self-center rounded-full"
+        aria-hidden="true"
+      />
+      <span className="text-muted-foreground text-base font-normal tracking-tight sm:text-[17px]">
+        Agency
+      </span>
     </Link>
   );
 }

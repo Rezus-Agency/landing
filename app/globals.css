@@ -11,9 +11,9 @@
   --color-rezus-green-foreground: var(--rezus-green-foreground);
   --color-rezus-red: var(--rezus-red);
   --color-rezus-red-foreground: var(--rezus-red-foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-heading: var(--font-geist-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -89,52 +89,145 @@
 
 .dark {
   /* Rezus Agency palette — premium dark, inspired by Linear/Vercel/Attio */
-  --background: oklch(0.103 0.003 264); /* #0A0A0B — near-black canvas */
+  --background: oklch(0.135 0.005 264); /* slightly elevated near-black with cool tint */
+  --background-deep: oklch(0.105 0.005 264); /* deepest level for footers/edges */
   --foreground: oklch(0.985 0 0); /* #FAFAFA — primary text */
-  --card: oklch(0.146 0.003 264); /* #111113 — surface */
+  --card: oklch(0.175 0.005 264); /* surface — clearly elevated over bg */
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.146 0.003 264);
+  --popover: oklch(0.175 0.005 264);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.985 0 0); /* white for CTA primary */
-  --primary-foreground: oklch(0.103 0.003 264); /* dark text on white CTA */
-  --secondary: oklch(0.205 0.003 264);
+  --primary-foreground: oklch(0.135 0.005 264); /* dark text on white CTA */
+  --secondary: oklch(0.225 0.005 264);
   --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.205 0.003 264);
-  --muted-foreground: oklch(0.69 0.005 264); /* #A1A1AA — secondary text */
-  --accent: oklch(0.205 0.003 264);
+  --muted: oklch(0.225 0.005 264);
+  --muted-foreground: oklch(0.72 0.008 264); /* slightly brighter secondary text */
+  --accent: oklch(0.225 0.005 264);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.628 0.255 27.95); /* #EF4444 — Ancien Monde red */
-  --border: oklch(0.235 0.003 264); /* #1F1F23 */
-  --input: oklch(0.235 0.003 264);
-  --ring: oklch(0.69 0.005 264);
+  --border: oklch(0.265 0.006 264); /* more visible borders for depth */
+  --input: oklch(0.265 0.006 264);
+  --ring: oklch(0.72 0.008 264);
   /* Rezus brand accents */
-  --rezus-green: oklch(0.696 0.17 162.48); /* #22C55E — Rezus vert */
-  --rezus-green-foreground: oklch(0.103 0.003 264);
-  --rezus-red: oklch(0.628 0.255 27.95); /* #EF4444 — Ancien Monde rouge mat */
+  --rezus-green: oklch(0.74 0.17 162.48); /* slightly brighter, more vibrant */
+  --rezus-green-foreground: oklch(0.105 0.005 264);
+  --rezus-red: oklch(0.66 0.245 27.95); /* slightly muted red */
   --rezus-red-foreground: oklch(0.985 0 0);
   --chart-1: oklch(0.696 0.17 162.48);
   --chart-2: oklch(0.628 0.255 27.95);
   --chart-3: oklch(0.69 0.005 264);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.146 0.003 264);
+  --sidebar: oklch(0.175 0.005 264);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.696 0.17 162.48);
-  --sidebar-primary-foreground: oklch(0.103 0.003 264);
-  --sidebar-accent: oklch(0.205 0.003 264);
+  --sidebar-primary: oklch(0.74 0.17 162.48);
+  --sidebar-primary-foreground: oklch(0.105 0.005 264);
+  --sidebar-accent: oklch(0.225 0.005 264);
   --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.235 0.003 264);
-  --sidebar-ring: oklch(0.69 0.005 264);
+  --sidebar-border: oklch(0.265 0.006 264);
+  --sidebar-ring: oklch(0.72 0.008 264);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
   html {
     @apply font-sans;
+  }
+  body {
+    @apply bg-background text-foreground;
+    position: relative;
+    isolation: isolate;
+  }
+  /* Subtle radial spotlight at top, fades down — adds depth without busy texture */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -2;
+    background:
+      radial-gradient(
+        ellipse 80% 50% at 50% -10%,
+        color-mix(in oklch, var(--rezus-green) 8%, transparent),
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 60% 60% at 100% 0%,
+        color-mix(in oklch, var(--foreground) 4%, transparent),
+        transparent 60%
+      );
+  }
+  /* Faint grid pattern overlay — premium tech feel like Linear/Vercel */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background-image:
+      linear-gradient(
+        to right,
+        color-mix(in oklch, var(--border) 35%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in oklch, var(--border) 35%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 100% 80% at 50% 0%, black 30%, transparent 90%);
+    -webkit-mask-image: radial-gradient(ellipse 100% 80% at 50% 0%, black 30%, transparent 90%);
+    opacity: 0.5;
+  }
+}
+
+@layer utilities {
+  /* Premium gradient text utility for accents */
+  .text-gradient-rezus {
+    background: linear-gradient(
+      135deg,
+      var(--foreground) 0%,
+      color-mix(in oklch, var(--foreground) 65%, var(--rezus-green)) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  /* Subtle inner glow for elevated surfaces */
+  .surface-elevated {
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklch, var(--card) 100%, transparent) 0%,
+      color-mix(in oklch, var(--card) 80%, var(--background)) 100%
+    );
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklch, var(--foreground) 8%, transparent),
+      0 1px 2px color-mix(in oklch, black 30%, transparent);
+  }
+  /* Hairline border with gradient — adds richness on cards/CTAs */
+  .border-gradient {
+    position: relative;
+  }
+  .border-gradient::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklch, var(--foreground) 14%, transparent),
+      color-mix(in oklch, var(--foreground) 4%, transparent) 50%,
+      transparent
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
   }
 }
