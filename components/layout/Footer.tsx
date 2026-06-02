@@ -16,21 +16,23 @@ function LinkedInIcon({ className }: { className?: string }) {
   );
 }
 
-const NAV_GROUPS = [
+const COLUMNS = [
   {
-    label: "Site",
+    label: "Produit",
     links: [
       { href: "/methode", label: "Méthode" },
-      { href: "/icp", label: "Outil ICP" },
-      { href: "/contact", label: "Contact" },
+      { href: "/icp", label: "ICP Tool" },
     ],
   },
   {
-    label: "Pour qui",
+    label: "Agence",
     links: [
-      { href: "/cold-email-saas", label: "Cold email SaaS" },
-      { href: "/agence-cold-email-france", label: "Agence cold email France" },
-      { href: "/agence-prospection-paris", label: "Agence prospection Paris" },
+      { href: "/contact", label: "Contact" },
+      {
+        href: "https://www.linkedin.com/company/rezus-agency",
+        label: "LinkedIn",
+        external: true,
+      },
     ],
   },
   {
@@ -44,56 +46,49 @@ const NAV_GROUPS = [
 
 export function Footer() {
   return (
-    <footer className="border-border/60 mt-24 border-t" role="contentinfo">
-      <Container className="py-12 sm:py-16">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
-          {/* Brand block */}
-          <div className="flex flex-col gap-3">
+    <footer className="footer" role="contentinfo">
+      <Container>
+        <div className="footer__top">
+          <div className="footer__brand">
             <Logo />
-            <p className="text-muted-foreground max-w-xs text-sm leading-relaxed">
-              Outbound B2B pensé pour durer. Pour fondateurs tech francophones qui veulent un canal
-              fiable, pas une machine à spam.
+            <p>
+              Agence d&apos;outbound B2B pour les boîtes tech francophones. Du ciblage, pas du
+              volume.
             </p>
-            <div className="mt-2 flex items-center gap-2">
-              <a
-                href="https://www.linkedin.com/company/rezus-agency"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn Rezus Agency"
-                className="text-muted-foreground hover:text-foreground hover:bg-card/60 inline-flex h-8 w-8 items-center justify-center rounded-md transition-colors"
-              >
-                <LinkedInIcon className="h-4 w-4" />
-              </a>
-            </div>
+            <a
+              href="https://www.linkedin.com/company/rezus-agency"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn Rezus Agency"
+              className="text-muted-foreground hover:text-foreground bg-card/40 hover:bg-card inline-flex h-8 w-8 items-center justify-center rounded-md transition-colors"
+            >
+              <LinkedInIcon className="h-4 w-4" />
+            </a>
           </div>
 
-          {/* Nav columns */}
-          {NAV_GROUPS.map((group) => (
-            <div key={group.label} className="flex flex-col gap-3">
-              <h4 className="text-foreground text-sm font-medium">{group.label}</h4>
-              <ul className="flex flex-col gap-2">
-                {group.links.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-                    >
+          <div className="footer__cols">
+            {COLUMNS.map((group) => (
+              <div key={group.label} className="footer__col">
+                <h5>{group.label}</h5>
+                {group.links.map((link) =>
+                  "external" in link && link.external ? (
+                    <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer">
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link key={link.href} href={link.href}>
                       {link.label}
                     </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+                  ),
+                )}
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="border-border/60 mt-12 flex flex-col items-start justify-between gap-3 border-t pt-6 sm:flex-row sm:items-center">
-          <p className="text-muted-foreground font-mono text-xs">
-            © 2026 Rezus Agency · Paris, France
-          </p>
-          <p className="text-muted-foreground/70 font-mono text-xs">
-            Outbound qui n&apos;a rien à voir avec du spam
-          </p>
+        <div className="footer__bottom">
+          <span>© 2026 Rezus Agency · France</span>
+          <a href="/contact">contact@rezus-agency.com</a>
         </div>
       </Container>
     </footer>
