@@ -4,6 +4,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Reveal } from "@/components/effects/Reveal";
 import { ContactForm } from "@/components/effects/ContactForm";
+import { CalendlyInline } from "@/components/effects/CalendlyInline";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { CheckIcon } from "@/components/icons";
 import { ogImageUrl } from "@/lib/seo";
@@ -200,12 +201,8 @@ export default function ContactPage() {
               <h2 className="h2">Réservez 30 minutes.</h2>
               <p className="shead__lede">Pas envie d&apos;écrire ? Le calendrier est ouvert.</p>
             </Reveal>
-            <Reveal className="calendly">
-              <p className="calendly__label">
-                <b>Calendly</b>
-                Intégrez ici votre lien Calendly (widget inline). Remplacez ce bloc par le script
-                d&apos;embed officiel pour afficher le calendrier de réservation.
-              </p>
+            <Reveal style={{ marginTop: "clamp(40px, 5vw, 64px)" } as React.CSSProperties}>
+              <CalendlyInline />
             </Reveal>
           </div>
         </section>
