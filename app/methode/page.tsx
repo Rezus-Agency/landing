@@ -9,7 +9,7 @@ import { ArrowRightIcon, CheckIcon } from "@/components/icons";
 import { ogImageUrl } from "@/lib/seo";
 import { breadcrumbSchema, professionalServiceSchema } from "@/lib/json-ld";
 
-const PAGE_TITLE = "La méthode, sans boîte noire";
+const PAGE_TITLE = "Du compte cible au rendez-vous qualifié";
 const PAGE_DESC =
   "Comment on transforme un ciblage chirurgical en rendez-vous qualifiés. Trois phases, aucun raccourci, une revue chaque semaine.";
 
@@ -103,7 +103,7 @@ const PHASES = [
     ],
     callout: (
       <>
-        Votre <strong>domaine principal et votre réputation</strong> ne sont jamais exposés.
+        Votre <strong>domaine principal et votre réputation </strong> ne sont jamais exposés.
         C&apos;est la différence entre une campagne propre et un envoi de masse.
       </>
     ),
@@ -172,7 +172,7 @@ export default function MethodePage() {
               </Link>
             </Reveal>
             <Reveal as="div" delay={1}>
-              <h1>La méthode, sans boîte noire.</h1>
+              <h1>Du compte cible au rendez-vous qualifié.</h1>
             </Reveal>
             <Reveal as="div" delay={2}>
               <p className="lede">
