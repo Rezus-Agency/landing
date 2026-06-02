@@ -9,9 +9,9 @@ import { ArrowRightIcon } from "@/components/icons";
 import { ogImageUrl } from "@/lib/seo";
 import { breadcrumbSchema } from "@/lib/json-ld";
 
-const PAGE_TITLE = "Votre ICP, défini en 5 minutes";
+const PAGE_TITLE = "Votre ICP, cadré en 15 minutes";
 const PAGE_DESC =
-  "Un outil gratuit pour cadrer votre client idéal, scorer vos comptes cibles, et arrêter de prospecter à l'aveugle.";
+  "Un outil gratuit qui vous force à clarifier qui sont vraiment vos clients idéaux. Et qui transforme cette clarté en comptes cibles prêts à contacter.";
 
 export const metadata: Metadata = {
   title: "ICP Tool",
@@ -93,18 +93,18 @@ function DownloadIcon() {
 const FEATURES = [
   {
     icon: <TargetIcon />,
-    title: "Définissez votre ICP",
-    desc: "Quelques questions guidées, et vous obtenez un profil de client idéal clair : secteur, taille, signaux, déclencheurs.",
+    title: "Cadrez votre ICP",
+    desc: "Une quinzaine de questions guidées. Vous obtenez un profil clair : secteur, taille, signaux d'achat, déclencheurs.",
   },
   {
     icon: <ListCheckIcon />,
     title: "Scorez vos comptes",
-    desc: "Importez une liste de comptes, l'outil les priorise selon leur adéquation avec votre ICP. Le bon ordre, tout de suite.",
+    desc: "Importez votre liste de comptes. L'outil les classe selon leur fit avec votre ICP. Vos commerciaux savent par où commencer.",
   },
   {
     icon: <DownloadIcon />,
     title: "Exportez et agissez",
-    desc: "Récupérez votre ICP et vos comptes priorisés, prêts à alimenter vos campagnes, les nôtres ou les vôtres.",
+    desc: "Téléchargez votre document ICP et la liste priorisée. Prêts à lancer vos campagnes, les nôtres ou les vôtres.",
   },
 ];
 
@@ -131,12 +131,12 @@ export default function ICPLandingPage() {
               Gratuit · Sans carte bancaire
             </Reveal>
             <Reveal as="div" delay={1}>
-              <h1 style={{ marginTop: "var(--s-4)" }}>Votre ICP, défini en 5 minutes.</h1>
+              <h1 style={{ marginTop: "var(--s-4)" }}>Votre ICP, cadré en 15 minutes.</h1>
             </Reveal>
             <Reveal as="div" delay={2}>
               <p className="lede">
-                Un outil gratuit pour cadrer votre client idéal, scorer vos comptes cibles, et
-                arrêter de prospecter à l&apos;aveugle. Disponible dès maintenant.
+                Un outil gratuit qui vous force à clarifier qui sont vraiment vos clients idéaux.
+                Et qui transforme cette clarté en comptes cibles prêts à contacter.
               </p>
             </Reveal>
             <Reveal className="phero__cta" delay={3}>
@@ -158,7 +158,7 @@ export default function ICPLandingPage() {
               <span className="kicker">
                 <span className="shead__index">01</span>Ce que fait l&apos;outil
               </span>
-              <h2 className="h2">Du flou stratégique à une cible actionnable.</h2>
+              <h2 className="h2">De l&apos;intuition à une cible documentée.</h2>
             </Reveal>
 
             <div className="feature-grid">
@@ -175,17 +175,6 @@ export default function ICPLandingPage() {
                 </Reveal>
               ))}
             </div>
-
-            <Reveal className="uimock">
-              <div className="uimock__bar">
-                <i />
-                <i />
-                <i />
-              </div>
-              <div className="uimock__body">
-                <span>[ aperçu de l&apos;interface ICP Tool ]</span>
-              </div>
-            </Reveal>
           </div>
         </section>
 
@@ -198,14 +187,14 @@ export default function ICPLandingPage() {
                   className="kicker kicker--plain"
                   style={{ justifyContent: "center", display: "flex" }}
                 >
-                  Prêt à clarifier votre cible ?
+                  Prochaine étape
                 </span>
                 <h2 className="h2" style={{ marginTop: "var(--s-4)" }}>
                   Votre premier ICP, <span className="serif-accent">maintenant.</span>
                 </h2>
                 <p className="lede">
-                  Créez un compte gratuit et obtenez un document ICP actionnable en moins de 15
-                  minutes.
+                  Créez un compte gratuit. En 15 minutes, vous avez un document ICP que vos
+                  commerciaux peuvent utiliser.
                 </p>
                 <div className="finalcta__cta">
                   <Link href="/icp/tool/signup" className="btn btn--primary">
