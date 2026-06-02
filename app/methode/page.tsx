@@ -57,7 +57,7 @@ const PHASES = [
     items: [
       {
         b: "Définition de l'ICP réel",
-        rest: ", construite avec vous à partir de vos meilleurs clients existants.",
+        rest: ", construite avec vous, ou en autonomie avec notre outil dédié (gratuit).",
       },
       {
         b: "Liste de comptes ciblée sur signaux d'achat",
