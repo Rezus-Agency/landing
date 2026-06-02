@@ -89,28 +89,28 @@
 
 .dark {
   /* Rezus Agency palette — premium dark, inspired by Linear/Vercel/Attio */
-  --background: oklch(0.103 0.003 264);          /* #0A0A0B — near-black canvas */
-  --foreground: oklch(0.985 0 0);                /* #FAFAFA — primary text */
-  --card: oklch(0.146 0.003 264);                /* #111113 — surface */
+  --background: oklch(0.103 0.003 264); /* #0A0A0B — near-black canvas */
+  --foreground: oklch(0.985 0 0); /* #FAFAFA — primary text */
+  --card: oklch(0.146 0.003 264); /* #111113 — surface */
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.146 0.003 264);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);                   /* white for CTA primary */
-  --primary-foreground: oklch(0.103 0.003 264);  /* dark text on white CTA */
+  --primary: oklch(0.985 0 0); /* white for CTA primary */
+  --primary-foreground: oklch(0.103 0.003 264); /* dark text on white CTA */
   --secondary: oklch(0.205 0.003 264);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.205 0.003 264);
-  --muted-foreground: oklch(0.69 0.005 264);     /* #A1A1AA — secondary text */
+  --muted-foreground: oklch(0.69 0.005 264); /* #A1A1AA — secondary text */
   --accent: oklch(0.205 0.003 264);
   --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.628 0.255 27.95);       /* #EF4444 — Ancien Monde red */
-  --border: oklch(0.235 0.003 264);              /* #1F1F23 */
+  --destructive: oklch(0.628 0.255 27.95); /* #EF4444 — Ancien Monde red */
+  --border: oklch(0.235 0.003 264); /* #1F1F23 */
   --input: oklch(0.235 0.003 264);
   --ring: oklch(0.69 0.005 264);
   /* Rezus brand accents */
-  --rezus-green: oklch(0.696 0.17 162.48);       /* #22C55E — Rezus vert */
+  --rezus-green: oklch(0.696 0.17 162.48); /* #22C55E — Rezus vert */
   --rezus-green-foreground: oklch(0.103 0.003 264);
-  --rezus-red: oklch(0.628 0.255 27.95);         /* #EF4444 — Ancien Monde rouge mat */
+  --rezus-red: oklch(0.628 0.255 27.95); /* #EF4444 — Ancien Monde rouge mat */
   --rezus-red-foreground: oklch(0.985 0 0);
   --chart-1: oklch(0.696 0.17 162.48);
   --chart-2: oklch(0.628 0.255 27.95);
