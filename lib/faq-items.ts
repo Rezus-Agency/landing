@@ -30,6 +30,6 @@ export const HOMEPAGE_FAQ: FAQItem[] = [
   },
   {
     q: "Quelle visibilité j'ai sur ce qui est envoyé ?",
-    a: "Totale. Vous avez accès aux séquences, aux listes et aux statistiques en temps réel. Aucune boîte noire : vous voyez exactement ce qui part en votre nom, à qui, et avec quel angle.",
+    a: "Totale. Vous avez accès aux séquences, aux listes et aux statistiques. À chaque revue hebdomadaire, vous voyez ce qui part en votre nom, à qui, et avec quel angle. Rien n'est caché.",
   },
 ];

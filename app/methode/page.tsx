@@ -119,7 +119,7 @@ const PHASES = [
       },
       {
         b: "Revue hebdomadaire",
-        rest: " avec ce qui marche, ce qu'on change, et pourquoi. Pas de boîte noire.",
+        rest: " avec ce qui marche, ce qu'on change, et pourquoi. Tout est visible.",
       },
       {
         b: "Itérations continues",
@@ -132,8 +132,8 @@ const PHASES = [
     ],
     callout: (
       <>
-        Aucune boîte noire. Vous savez <strong>exactement ce qui part en votre nom</strong>, à qui,
-        et avec quel angle.
+        Vous savez <strong>exactement ce qui part en votre nom</strong>, à qui, et avec quel angle.
+        Rien n&apos;est caché.
       </>
     ),
   },

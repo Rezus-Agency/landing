@@ -184,7 +184,7 @@ export default function HomePage() {
               </span>
               <h2 className="h2">Trois temps. Aucun raccourci.</h2>
               <p className="shead__lede">
-                Pas de boîte noire. Voici exactement comment on travaille, étape par étape.
+                Voici exactement comment on travaille, étape par étape. Tout est visible.
               </p>
               <Link
                 href="/methode"
@@ -232,7 +232,7 @@ export default function HomePage() {
                     Chaque semaine : reporting clair, ce qui marche, ce qu&apos;on ajuste. Sans
                     engagement. Vous restez informé sur ce qui change et pourquoi.
                   </p>
-                  <span className="tl-hint">Pas de boîte noire, pas de set &amp; forget</span>
+                  <span className="tl-hint">Tout est visible, jamais de set &amp; forget</span>
                 </div>
               </Reveal>
             </div>
