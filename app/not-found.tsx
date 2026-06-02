@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { Reveal } from "@/components/effects/Reveal";
 import { ArrowRightIcon } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "Page introuvable",
-  description: "Cette page n'existe pas ou a été déplacée. Retour à l'accueil de Rezus Agency.",
+  description:
+    "Cette page n'existe pas ou a été déplacée. Retour à l'accueil de Rezus Agency.",
   robots: { index: false, follow: true },
 };
 
@@ -16,113 +15,57 @@ export default function NotFound() {
     <>
       <Header />
 
-      <main id="main" tabIndex={-1}>
-        <section className="phero" style={{ paddingBottom: "clamp(64px, 8vw, 120px)" }}>
-          <div className="phero__bg" aria-hidden="true">
-            <div className="hero__grid" />
+      <main id="main" tabIndex={-1} className="e404">
+        <div className="e404__bg" aria-hidden="true">
+          <div className="e404__glow" />
+          <div className="e404__grid" />
+        </div>
+
+        <div className="e404__inner">
+          <span className="e404__code">Erreur 404</span>
+
+          <div className="e404__mark is-in" aria-label="404">
+            <span>4</span>
+            <span className="e404__z">0</span>
+            <span>4</span>
           </div>
-          <div className="wrap phero__inner" style={{ maxWidth: "var(--maxw)" }}>
-            <Reveal as="span">
-              <span className="kicker">
-                <span className="shead__index">404</span>
-                Page introuvable
-              </span>
-            </Reveal>
 
-            <Reveal as="div" delay={1}>
-              <h1 style={{ marginTop: "var(--s-5)", maxWidth: "20ch" }}>
-                Cette page n&apos;existe pas.
-              </h1>
-            </Reveal>
+          <h1 className="e404__title">Cette page a filé sans laisser d&apos;adresse.</h1>
 
-            <Reveal as="div" delay={2}>
-              <p className="lede" style={{ maxWidth: "56ch" }}>
-                Lien obsolète, faute de frappe dans l&apos;URL, ou page déplacée. Voici par où
-                continuer.
-              </p>
-            </Reveal>
+          <p className="e404__lede">
+            Le lien est peut-être cassé, ou la page a été déplacée. Rien de grave, voici par
+            où repartir.
+          </p>
 
-            <Reveal
-              as="div"
-              delay={3}
-              className="hero__cta"
-              style={{ gap: "var(--s-5)", marginTop: "var(--s-7)" } as React.CSSProperties}
-            >
-              <Link href="/" className="btn btn--primary">
-                Retour à l&apos;accueil
-                <ArrowRightIcon />
-              </Link>
-              <Link href="/methode" className="btn btn--ghost" style={{ color: "var(--text-3)" }}>
-                Voir la méthode
-              </Link>
-            </Reveal>
-
-            <Reveal as="div" delay={3} style={{ marginTop: "var(--s-8)" }}>
-              <p
-                style={{
-                  color: "var(--text-3)",
-                  fontSize: "13px",
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  fontFamily: "var(--font-mono)",
-                  marginBottom: "var(--s-4)",
-                }}
-              >
-                Pages utiles
-              </p>
-              <ul
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "var(--s-3) var(--s-5)",
-                  listStyle: "none",
-                  padding: 0,
-                  margin: 0,
-                }}
-              >
-                <li>
-                  <Link
-                    href="/methode"
-                    style={{
-                      color: "var(--text-2)",
-                      borderBottom: "1px solid var(--border-strong)",
-                      paddingBottom: "2px",
-                    }}
-                  >
-                    La méthode
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/icp"
-                    style={{
-                      color: "var(--text-2)",
-                      borderBottom: "1px solid var(--border-strong)",
-                      paddingBottom: "2px",
-                    }}
-                  >
-                    Outil ICP
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/contact"
-                    style={{
-                      color: "var(--text-2)",
-                      borderBottom: "1px solid var(--border-strong)",
-                      paddingBottom: "2px",
-                    }}
-                  >
-                    Contact
-                  </Link>
-                </li>
-              </ul>
-            </Reveal>
+          <div className="e404__cta">
+            <Link href="/" className="btn btn--primary">
+              Retour à l&apos;accueil
+              <ArrowRightIcon />
+            </Link>
+            <Link href="/contact" className="btn btn--secondary">
+              Nous contacter
+            </Link>
           </div>
-        </section>
+
+          <nav className="e404__links" aria-label="Liens utiles">
+            <Link href="/methode">Méthode</Link>
+            <Link href="/#comparison">La comparaison</Link>
+            <Link href="/icp">ICP Tool</Link>
+            <Link href="/#faq">FAQ</Link>
+          </nav>
+        </div>
       </main>
 
-      <Footer />
+      <footer className="e404__footer" role="contentinfo">
+        <div className="wrap e404__footerInner">
+          <span>© {new Date().getFullYear()} Rezus Agency · France</span>
+          <span>
+            <Link href="/mentions-legales">Mentions légales</Link>
+            {" · "}
+            <Link href="/politique-confidentialite">Confidentialité</Link>
+          </span>
+        </div>
+      </footer>
     </>
   );
 }

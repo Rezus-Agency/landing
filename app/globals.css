@@ -2463,3 +2463,228 @@ main:focus {
   font-family: var(--font-mono);
   letter-spacing: 0.01em;
 }
+
+/* ============================================================
+   404 PAGE
+   Editorial layout: kicker, massive serif "404" mark with
+   pulsing amber dot in the "0", radial glow + dotted grid bg.
+   ============================================================ */
+.e404 {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: clamp(56px, 9vw, 120px) var(--gutter);
+  position: relative;
+  isolation: isolate;
+  min-height: calc(100svh - 80px);
+}
+.e404__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.e404__grid {
+  position: absolute;
+  inset: -2px;
+  background-image: radial-gradient(circle at center, oklch(1 0 0 / 0.06) 1px, transparent 1.5px);
+  background-size: 34px 34px;
+  -webkit-mask-image: radial-gradient(70% 55% at 50% 42%, #000 18%, transparent 72%);
+  mask-image: radial-gradient(70% 55% at 50% 42%, #000 18%, transparent 72%);
+  opacity: 0.5;
+}
+.e404__glow {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: min(620px, 80vw);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    color-mix(in oklch, var(--accent) 15%, transparent),
+    transparent 62%
+  );
+  will-change: transform, opacity;
+  animation: e404Glow 7s ease-in-out infinite;
+}
+.e404__inner {
+  max-width: 600px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.e404__code {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  white-space: nowrap;
+}
+.e404__code::before,
+.e404__code::after {
+  content: "";
+  width: 24px;
+  height: 1px;
+  background: color-mix(in oklch, var(--accent) 60%, transparent);
+}
+.e404__mark {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(120px, 23vw, 248px);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin: clamp(16px, 3vw, 30px) 0 clamp(8px, 2vw, 18px);
+  padding: 0 0.04em;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.04em;
+}
+.e404__mark > span {
+  display: inline-block;
+}
+.e404__mark.is-in > span {
+  animation: e404Glyph 0.75s var(--ease) backwards;
+}
+.e404__mark.is-in > span:nth-child(1) {
+  animation-delay: 0.06s;
+}
+.e404__mark.is-in > span:nth-child(2) {
+  animation-delay: 0.18s;
+}
+.e404__mark.is-in > span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.e404__z {
+  position: relative;
+  color: transparent;
+  -webkit-text-stroke: 2px color-mix(in oklch, var(--text) 50%, transparent);
+}
+.e404__z::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0.18em;
+  height: 0.18em;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 28px 5px color-mix(in oklch, var(--accent) 45%, transparent);
+  will-change: transform;
+  transform-origin: center;
+  animation: e404Dot 3.8s ease-in-out infinite;
+}
+.e404__mark.is-in .e404__z::after {
+  animation:
+    e404DotIn 0.9s var(--ease) 0.5s backwards,
+    e404Dot 3.8s ease-in-out 1.4s infinite;
+}
+.e404__title {
+  font-size: clamp(26px, 3.4vw, 40px);
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  margin-top: var(--s-2);
+  text-wrap: balance;
+}
+.e404__lede {
+  color: var(--text-2);
+  font-size: clamp(16px, 1.7vw, 18px);
+  line-height: 1.55;
+  margin-top: var(--s-4);
+  max-width: 44ch;
+}
+.e404__cta {
+  margin-top: var(--s-7);
+  display: flex;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.e404__links {
+  margin-top: var(--s-8);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: var(--s-2) var(--s-6);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.e404__links a {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-2);
+  transition: color 0.2s;
+}
+.e404__links a:hover,
+.e404__links a:focus-visible {
+  color: var(--accent);
+}
+.e404__footer {
+  padding: var(--s-5) 0 var(--s-6);
+}
+.e404__footerInner {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s-4);
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-2);
+}
+.e404__footerInner a {
+  color: var(--text-2);
+  transition: color 0.2s;
+}
+.e404__footerInner a:hover {
+  color: var(--text);
+}
+@keyframes e404Glyph {
+  from {
+    opacity: 0;
+    transform: translateY(26px) rotate(-3deg);
+  }
+}
+@keyframes e404DotIn {
+  from {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+}
+@keyframes e404Dot {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.18);
+  }
+}
+@keyframes e404Glow {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate(-50%, -52%) scale(1.07);
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .e404__glow,
+  .e404__mark.is-in > span,
+  .e404__z::after,
+  .e404__mark.is-in .e404__z::after {
+    animation: none !important;
+  }
+}
