@@ -60,9 +60,8 @@ export default function HomePage() {
               data-anim
               style={{ "--d": "0.42s" } as React.CSSProperties}
             >
-              Pour les fondateurs de boîtes tech B2B qui veulent des rendez-vous qualifiés, pas 10
-              000 emails envoyés dans le vide. Du ciblage chirurgical, écrit à la main, mesuré au
-              pipeline.
+              Pour fondateurs B2B francophones qui veulent un canal d&apos;acquisition qui dure. 100
+              à 200 comptes par campagne, écrits à la main, pilotés au rendez-vous qualifié.
             </p>
 
             <div className="hero__cta" data-anim style={{ "--d": "0.54s" } as React.CSSProperties}>
@@ -70,8 +69,9 @@ export default function HomePage() {
                 Réserver un appel
                 <ArrowRightIcon />
               </Link>
-              <Link href="#methode" className="btn btn--secondary">
+              <Link href="#methode" className="btn btn--ghost">
                 Voir la méthode
+                <ArrowRightIcon />
               </Link>
             </div>
           </div>
@@ -84,31 +84,32 @@ export default function HomePage() {
               <span className="kicker">
                 <span className="shead__index">01</span>Vous l&apos;avez déjà vécu
               </span>
+              <h2 className="h2">Une histoire qui s&apos;écrit toujours pareil.</h2>
             </Reveal>
             <div className="pains">
               <Reveal as="article" className="pain">
-                <span className="pain__num">01</span>
+                <span className="pain__num">SEMAINE 1</span>
                 <p>
-                  Vous avez déjà payé une agence outbound.{" "}
-                  <b>Beaucoup d&apos;emails envoyés. Zéro rendez-vous sérieux.</b>
+                  <b>« 50 rendez-vous qualifiés par mois, garantis. »</b> L&apos;agence est
+                  rassurante. Le contrat de 12 mois est signé.
                 </p>
-                <span className="pain__hint">Le volume ne remplace pas la pertinence.</span>
+                <span className="pain__hint">La promesse tient sur une slide.</span>
               </Reveal>
               <Reveal as="article" className="pain" delay={1}>
-                <span className="pain__num">02</span>
+                <span className="pain__num">SEMAINE 6</span>
                 <p>
-                  Vos prospects reçoivent <b>40 messages copiés-collés par semaine.</b> Le vôtre
-                  fini en spam comme les autres.
+                  <b>200 emails envoyés, 2 réponses.</b> Le copy est générique, les comptes ne
+                  collent pas, la délivrabilité baisse.
                 </p>
-                <span className="pain__hint">Se fondre dans la masse, c&apos;est disparaître.</span>
+                <span className="pain__hint">Reply rate moyen en cold email 2026 : 3,4%.</span>
               </Reveal>
               <Reveal as="article" className="pain" delay={2}>
-                <span className="pain__num">03</span>
+                <span className="pain__num">SEMAINE 12</span>
                 <p>
-                  Vous savez reconnaître un travail bâclé.{" "}
-                  <b>Et la plupart des agences en font un.</b>
+                  <b>Domaine grillé.</b> Vous arrêtez. Budget perdu, marque associée au spam, et six
+                  mois à reconstruire.
                 </p>
-                <span className="pain__hint">Vous méritez le niveau de vos propres outils.</span>
+                <span className="pain__hint">Ce n&apos;est pas l&apos;outbound qui est cassé.</span>
               </Reveal>
             </div>
           </div>
@@ -282,19 +283,19 @@ export default function HomePage() {
                 <ul className="qual-list">
                   <li>
                     <MinusIcon />
-                    Vous cherchez le plus gros volume au prix le plus bas.
+                    Vous mesurez le succès en emails envoyés ou en taux d&apos;ouverture.
                   </li>
                   <li>
                     <MinusIcon />
-                    Vous voulez « 500 leads garantis » dès le mois un.
+                    Vous voulez « 500 leads garantis » dès le mois un, avec contrat verrouillé.
                   </li>
                   <li>
                     <MinusIcon />
-                    Votre cible n&apos;est pas claire et vous ne voulez pas la travailler.
+                    Vous n&apos;avez pas envie de partager le contexte de vos meilleurs clients.
                   </li>
                   <li>
                     <MinusIcon />
-                    Vous voyez l&apos;outbound comme un robinet à spammer.
+                    L&apos;outbound est pour vous un robinet à scaler, pas une démarche commerciale.
                   </li>
                 </ul>
               </Reveal>
@@ -346,7 +347,7 @@ export default function HomePage() {
                   </Link>
                 </div>
                 <p className="finalcta__fine">
-                  Aucun engagement · Réponse sous 24 h · Calendly sur la page contact
+                  30 min · Aucun engagement · On vous dit non si on n&apos;est pas les bons
                 </p>
               </CursorGlow>
             </Reveal>
