@@ -96,15 +96,15 @@ export default function ConfidentialitePage() {
                 <p>Selon le traitement, nous nous appuyons sur :</p>
                 <ul>
                   <li>
-                    Votre <strong>consentement</strong> (cookies non essentiels) — art. 6.1.a du
+                    Votre <strong>consentement</strong> (cookies non essentiels), art. 6.1.a du
                     RGPD.
                   </li>
                   <li>
-                    L&apos;<strong>intérêt légitime</strong> (prospection B2B, sécurité du site) —
+                    L&apos;<strong>intérêt légitime</strong> (prospection B2B, sécurité du site),
                     art. 6.1.f du RGPD.
                   </li>
                   <li>
-                    L&apos;exécution de <strong>mesures précontractuelles</strong> à votre demande —
+                    L&apos;exécution de <strong>mesures précontractuelles</strong> à votre demande,
                     art. 6.1.b du RGPD.
                   </li>
                 </ul>
@@ -134,14 +134,14 @@ export default function ConfidentialitePage() {
                 </p>
                 <ul>
                   <li>
-                    <strong>Vercel Inc.</strong> — hébergement du site (États-Unis, transferts
+                    <strong>Vercel Inc.</strong> : hébergement du site (États-Unis, transferts
                     encadrés par les clauses contractuelles types).
                   </li>
                   <li>
-                    <strong>Calendly</strong> — prise de rendez-vous.
+                    <strong>Calendly</strong> : prise de rendez-vous.
                   </li>
                   <li>
-                    <strong>Outil d&apos;emailing</strong> —{" "}
+                    <strong>Outil d&apos;emailing</strong> :{" "}
                     <span className="tofill">prestataire à compléter</span>.
                   </li>
                 </ul>

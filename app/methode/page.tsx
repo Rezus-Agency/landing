@@ -61,7 +61,7 @@ const PHASES = [
       },
       {
         b: "Liste de comptes ciblée sur signaux d'achat",
-        rest: " — financement récent, recrutement tech, projets en cours, plutôt qu'achetée en masse.",
+        rest: " (financement récent, recrutement tech, projets en cours), plutôt qu'achetée en masse.",
       },
       {
         b: "Qualification sur signaux d'intention",
@@ -111,19 +111,19 @@ const PHASES = [
   {
     num: "PHASE 03",
     title: "Pilotage & transparence",
-    lead: "On optimise sur le seul indicateur qui compte : le rendez-vous qualifié. Et vous voyez tout, en direct.",
+    lead: "On optimise sur le seul indicateur qui compte : le rendez-vous qualifié. Une revue par semaine pour ajuster ce qui ne marche pas.",
     items: [
       {
         b: "Pilotage au rendez-vous qualifié",
         rest: ", pas au taux d'ouverture ni aux « impressions ».",
       },
       {
-        b: "Reporting hebdomadaire",
+        b: "Revue hebdomadaire",
         rest: " avec ce qui marche, ce qu'on change, et pourquoi. Pas de boîte noire.",
       },
       {
-        b: "Point hebdomadaire",
-        rest: " et itérations sur les angles qui convertissent réellement.",
+        b: "Itérations continues",
+        rest: " sur l'angle et le ciblage, pas sur des vanity metrics.",
       },
       {
         b: "Sans engagement",

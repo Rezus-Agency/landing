@@ -60,9 +60,9 @@ export default function HomePage() {
               data-anim
               style={{ "--d": "0.42s" } as React.CSSProperties}
             >
-              Pour agences de dev B2B francophones qui veulent un flux régulier de leads qualifiés.
-              Comptes ciblés sur signaux d&apos;achat, messages personnalisés par segment, ajustés
-              chaque semaine.
+              Pour agences B2B francophones qui veulent un flux régulier de leads qualifiés. Comptes
+              ciblés sur signaux d&apos;achat, messages personnalisés par segment, ajustés chaque
+              semaine.
             </p>
 
             <div
@@ -135,7 +135,7 @@ export default function HomePage() {
               </h2>
               <p className="shead__lede">
                 Cinq zones où la qualité du travail change ce que vous touchez : pipeline,
-                réputation, deals. Chaque affirmation est sourcée — vérifiez par vous-même.
+                réputation, deals. Chaque affirmation est sourcée. Vérifiez par vous-même.
               </p>
             </Reveal>
 
@@ -262,8 +262,8 @@ export default function HomePage() {
                 <ul className="qual-list">
                   <li>
                     <CheckIcon />
-                    Vous êtes une agence de dev B2B (5 à 50 personnes) qui veut sécuriser un flux
-                    régulier de leads qualifiés.
+                    Vous êtes une agence B2B (5 à 50 personnes) qui veut sécuriser un flux régulier
+                    de leads qualifiés.
                   </li>
                   <li>
                     <CheckIcon />
