@@ -39,7 +39,7 @@ export default function ConfidentialitePage() {
               </p>
             </Reveal>
             <Reveal as="p" delay={2} className="legal__updated">
-              Dernière mise à jour : <span className="tofill">JJ/MM/2026</span>
+              Dernière mise à jour : 01/06/2026
             </Reveal>
           </div>
         </section>

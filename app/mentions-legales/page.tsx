@@ -33,7 +33,7 @@ export default function MentionsLegalesPage() {
               <h1 style={{ marginTop: "var(--s-5)" }}>Mentions légales</h1>
             </Reveal>
             <Reveal as="p" delay={2} className="legal__updated">
-              Dernière mise à jour : <span className="tofill">JJ/MM/2026</span>
+              Dernière mise à jour : 01/06/2026
             </Reveal>
           </div>
         </section>
@@ -112,7 +112,7 @@ export default function MentionsLegalesPage() {
                   </dd>
                 </dl>
                 <p>
-                  Vercel Inc. est certifié <strong>Data Privacy Framework (DPF)</strong> pour les
+                  Vercel Inc. est certifié <strong>Data Privacy Framework (DPF) </strong> pour les
                   transferts de données entre l&apos;Union européenne et les États-Unis,
                   conformément à la décision d&apos;adéquation de la Commission européenne du 10
                   juillet 2023.
