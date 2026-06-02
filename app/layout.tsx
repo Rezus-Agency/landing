@@ -45,6 +45,8 @@ export default function RootLayout({
       lang="fr"
       data-theme="dark"
       data-headline="grotesque"
+      data-hero="centered"
+      data-compare="editorial"
       className={`${hankenGrotesk.variable} ${jetbrainsMono.variable} ${newsreader.variable}`}
     >
       <body className="bg-background text-foreground flex min-h-full flex-col">

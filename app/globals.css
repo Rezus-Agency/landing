@@ -2322,3 +2322,42 @@ body.app .grain {
 .app :focus-visible {
   outline-offset: 2px;
 }
+
+/* ============================================================
+   HERO VARIANTS — centered (default) / left / split
+   ============================================================ */
+[data-hero="centered"] .hero__inner {
+  text-align: center;
+  max-width: 1000px;
+  margin-inline: auto;
+}
+[data-hero="centered"] .hero h1 {
+  margin-inline: auto;
+}
+[data-hero="centered"] .hero .lede {
+  margin-inline: auto;
+}
+[data-hero="centered"] .hero__cta {
+  justify-content: center;
+}
+[data-hero="centered"] .hero__tag {
+  margin-inline: auto;
+}
+
+[data-hero="left"] .hero__inner {
+  text-align: left;
+}
+
+[data-hero="split"] .hero__inner {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: var(--s-9);
+  align-items: end;
+  text-align: left;
+}
+@media (max-width: 900px) {
+  [data-hero="split"] .hero__inner {
+    grid-template-columns: 1fr;
+    gap: var(--s-7);
+  }
+}
