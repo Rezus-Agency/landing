@@ -49,15 +49,17 @@ export default function ConfidentialitePage() {
             <div className="legal__body">
               <Reveal className="legal-block" id="responsable">
                 <h2>1. Responsable du traitement</h2>
-                <p>
-                  Le responsable du traitement des données personnelles est :
-                </p>
+                <p>Le responsable du traitement des données personnelles est :</p>
                 <dl>
                   <dt>Responsable</dt>
-                  <dd>Rezus Agency</dd>
+                  <dd>Rezus Agency, Osaühing (OÜ) de droit estonien</dd>
                   <dt>Siège social</dt>
                   <dd>
-                    <span className="tofill">adresse complète à compléter</span>
+                    <span className="tofill">adresse complète en Estonie</span>
+                  </dd>
+                  <dt>Code d&apos;immatriculation</dt>
+                  <dd>
+                    Äriregister <span className="tofill">XXXXXXXX</span>
                   </dd>
                   <dt>Email</dt>
                   <dd>
@@ -65,13 +67,19 @@ export default function ConfidentialitePage() {
                   </dd>
                   <dt>Téléphone</dt>
                   <dd>
-                    <span className="tofill">+33 X XX XX XX XX</span>
+                    <span className="tofill">+372 XXXX XXXX</span>
                   </dd>
                 </dl>
                 <p>
-                  Rezus Agency n&apos;a pas désigné de Délégué à la protection des données (DPO).
-                  Pour toute question relative à vos données, vous pouvez écrire à{" "}
+                  Rezus Agency n&apos;a pas désigné de Délégué à la protection des données
+                  (DPO). Pour toute question relative à vos données, vous pouvez écrire à{" "}
                   <a href="mailto:hello@rezus.agency">hello@rezus.agency</a>.
+                </p>
+                <p>
+                  Le traitement des données est régi par le Règlement (UE) 2016/679 (RGPD),
+                  directement applicable dans tous les États membres de l&apos;Union européenne,
+                  ainsi que par la loi estonienne sur la protection des données personnelles
+                  (Isikuandmete kaitse seadus).
                 </p>
               </Reveal>
 
@@ -351,7 +359,31 @@ export default function ConfidentialitePage() {
                 </p>
                 <p>
                   Si vous estimez que vos droits ne sont pas respectés, vous pouvez introduire
-                  une réclamation auprès de la <strong>CNIL</strong> :
+                  une réclamation auprès de l&apos;autorité de contrôle compétente. Rezus Agency
+                  étant une société de droit estonien, l&apos;autorité de contrôle principale
+                  est :
+                </p>
+                <dl>
+                  <dt>Andmekaitse Inspektsioon (AKI)</dt>
+                  <dd>Tatari 39, 10134 Tallinn, Estonie</dd>
+                  <dt>Téléphone</dt>
+                  <dd>+372 627 4135</dd>
+                  <dt>Email</dt>
+                  <dd>
+                    <a href="mailto:info@aki.ee">info@aki.ee</a>
+                  </dd>
+                  <dt>Site</dt>
+                  <dd>
+                    <a href="https://www.aki.ee" target="_blank" rel="noopener noreferrer">
+                      aki.ee
+                    </a>
+                  </dd>
+                </dl>
+                <p>
+                  Conformément à l&apos;article 77 du RGPD, vous avez également le droit de
+                  saisir l&apos;autorité de contrôle de votre pays de résidence. Pour les
+                  utilisateurs résidant en France, il s&apos;agit de la{" "}
+                  <strong>CNIL</strong> :
                 </p>
                 <dl>
                   <dt>Commission Nationale de l&apos;Informatique et des Libertés</dt>

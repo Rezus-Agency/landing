@@ -48,40 +48,35 @@ export default function MentionsLegalesPage() {
                 </p>
                 <dl>
                   <dt>Raison sociale</dt>
-                  <dd>
-                    Rezus Agency
-                  </dd>
+                  <dd>Rezus Agency</dd>
                   <dt>Forme juridique</dt>
                   <dd>
-                    <span className="tofill">à compléter (SARL / SAS / EURL / EI)</span>
+                    Osaühing (OÜ), société à responsabilité limitée de droit estonien
                   </dd>
                   <dt>Capital social</dt>
                   <dd>
-                    <span className="tofill">XX EUR</span>
+                    <span className="tofill">X XXX EUR</span>
                   </dd>
-                  <dt>SIREN</dt>
+                  <dt>Code d&apos;immatriculation (Äriregister)</dt>
                   <dd>
-                    <span className="tofill">XXX XXX XXX</span>
+                    <span className="tofill">XXXXXXXX</span>
                   </dd>
-                  <dt>SIRET</dt>
+                  <dt>Registre du commerce</dt>
                   <dd>
-                    <span className="tofill">XXX XXX XXX XXXXX</span>
-                  </dd>
-                  <dt>RCS</dt>
-                  <dd>
-                    <span className="tofill">RCS [ville] sous le n° XXX XXX XXX</span>
+                    Registre du commerce d&apos;Estonie (Äriregister), Tallinn
                   </dd>
                   <dt>N° TVA intracommunautaire</dt>
                   <dd>
-                    <span className="tofill">FR XX XXX XXX XXX</span>
+                    <span className="tofill">EE XXXXXXXXX</span>{" "}
+                    <em>(si assujetti à la TVA estonienne)</em>
                   </dd>
                   <dt>Siège social</dt>
                   <dd>
-                    <span className="tofill">Adresse complète à compléter</span>
+                    <span className="tofill">Adresse complète en Estonie</span>
                   </dd>
                   <dt>Téléphone</dt>
                   <dd>
-                    <span className="tofill">+33 X XX XX XX XX</span>
+                    <span className="tofill">+372 XXXX XXXX</span>
                   </dd>
                   <dt>Email</dt>
                   <dd>
@@ -172,10 +167,15 @@ export default function MentionsLegalesPage() {
               <Reveal className="legal-block" id="droit">
                 <h2>8. Droit applicable et juridiction</h2>
                 <p>
-                  Les présentes mentions légales sont régies par le droit français. En cas de
-                  litige, et à défaut de résolution amiable, les tribunaux compétents du ressort
-                  de <span className="tofill">[ville du siège social]</span> seront seuls
-                  compétents.
+                  Les présentes mentions légales sont régies par le droit estonien et, pour ce
+                  qui concerne la protection des données personnelles, par le règlement (UE)
+                  2016/679 (RGPD) directement applicable dans toute l&apos;Union européenne.
+                </p>
+                <p>
+                  En cas de litige, et à défaut de résolution amiable, les tribunaux compétents
+                  de Tallinn (Estonie) seront seuls compétents, sous réserve des règles
+                  impératives de protection des consommateurs applicables aux personnes
+                  résidant dans l&apos;Union européenne.
                 </p>
               </Reveal>
             </div>
