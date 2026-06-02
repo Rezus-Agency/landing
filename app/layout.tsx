@@ -3,6 +3,8 @@ import { Hanken_Grotesk, JetBrains_Mono, Newsreader } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Plausible } from "@/components/seo/Plausible";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { organizationSchema, websiteSchema } from "@/lib/json-ld";
 import { SITE, GSC_VERIFICATION, ogImageUrl } from "@/lib/seo";
 import "./globals.css";
@@ -126,6 +128,8 @@ export default function RootLayout({
         <TooltipProvider delayDuration={150}>{children}</TooltipProvider>
         <div className="grain" aria-hidden="true" />
         <Plausible />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
