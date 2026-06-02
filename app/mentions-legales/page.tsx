@@ -17,7 +17,7 @@ export default function MentionsLegalesPage() {
     <>
       <Header />
 
-      <main>
+      <main id="main" tabIndex={-1}>
         <section className="phero" style={{ paddingBottom: "clamp(24px, 3vw, 40px)" }}>
           <div className="phero__bg" aria-hidden="true">
             <div className="hero__grid" />

@@ -96,7 +96,7 @@ export default function ContactPage() {
       />
       <Header />
 
-      <main>
+      <main id="main" tabIndex={-1}>
         {/* HERO */}
         <section className="phero" style={{ paddingBottom: "clamp(40px, 5vw, 64px)" }}>
           <div className="phero__bg" aria-hidden="true">
@@ -128,25 +128,25 @@ export default function ContactPage() {
           <div className="wrap contact-grid">
             {/* À quoi s'attendre */}
             <Reveal>
-              <span className="kicker">
+              <h2 className="kicker" style={{ margin: 0 }}>
                 <span className="shead__index">01</span>À quoi s&apos;attendre
-              </span>
+              </h2>
               <div className="expect" style={{ marginTop: "var(--s-6)" }}>
                 <div className="expect__item">
-                  <span className="expect__ic">
+                  <span className="expect__ic" aria-hidden="true">
                     <ClockIcon />
                   </span>
                   <div>
-                    <h4>30 minutes, pas plus</h4>
+                    <h3>30 minutes, pas plus</h3>
                     <p>On respecte votre temps. Pas de slides, pas de discovery déguisée.</p>
                   </div>
                 </div>
                 <div className="expect__item">
-                  <span className="expect__ic">
+                  <span className="expect__ic" aria-hidden="true">
                     <TargetIcon />
                   </span>
                   <div>
-                    <h4>On regarde votre marché</h4>
+                    <h3>On regarde votre marché</h3>
                     <p>
                       Vos comptes cibles, votre cycle de vente, votre positionnement. Du concret,
                       pas du générique.
@@ -154,11 +154,11 @@ export default function ContactPage() {
                   </div>
                 </div>
                 <div className="expect__item">
-                  <span className="expect__ic">
+                  <span className="expect__ic" aria-hidden="true">
                     <CheckIcon />
                   </span>
                   <div>
-                    <h4>Oui, non, ou pas encore</h4>
+                    <h3>Oui, non, ou pas encore</h3>
                     <p>
                       Si l&apos;outbound n&apos;a pas de sens pour vous, on vous le dit. Si
                       c&apos;est trop tôt, aussi.
@@ -169,7 +169,7 @@ export default function ContactPage() {
               <p
                 style={{
                   marginTop: "var(--s-7)",
-                  color: "var(--text-3)",
+                  color: "var(--text-2)",
                   fontSize: "14.5px",
                 }}
               >
@@ -177,7 +177,7 @@ export default function ContactPage() {
                 <a
                   href="mailto:hello@rezus.agency"
                   style={{
-                    color: "var(--text-2)",
+                    color: "var(--text)",
                     borderBottom: "1px solid var(--border-strong)",
                   }}
                 >

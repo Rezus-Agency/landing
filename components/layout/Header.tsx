@@ -50,13 +50,14 @@ export function Header() {
       <Container as="div" className="nav__inner">
         <Logo />
 
-        <nav className="nav__links" aria-label="Navigation principale">
+        <nav id="primary-nav" className="nav__links" aria-label="Navigation principale">
           {NAV_LINKS.map((link) => {
             const isCurrent = pathname === link.href || pathname?.startsWith(link.href + "/");
             return (
               <Link
                 key={link.href}
                 href={link.href}
+                aria-current={isCurrent ? "page" : undefined}
                 className={cn("nav__link", isCurrent && "is-current")}
               >
                 {link.label}
@@ -76,12 +77,13 @@ export function Header() {
             type="button"
             aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={mobileOpen}
+            aria-controls="primary-nav"
             onClick={() => setMobileOpen((s) => !s)}
             className="nav__toggle"
           >
-            <span />
-            <span />
-            <span />
+            <span aria-hidden="true" />
+            <span aria-hidden="true" />
+            <span aria-hidden="true" />
           </button>
         </div>
       </Container>

@@ -16,20 +16,24 @@ export function FAQAccordion({ items }: FAQAccordionProps) {
     <div className="faq">
       {items.map((item, i) => {
         const isOpen = openIndex === i;
+        const qId = `faq-q-${i}`;
+        const aId = `faq-a-${i}`;
         return (
           <div key={i} className={cn("faq-item", isOpen && "is-open")}>
             <button
               type="button"
+              id={qId}
               className="faq-q"
               aria-expanded={isOpen}
+              aria-controls={aId}
               onClick={() => setOpenIndex(isOpen ? null : i)}
             >
               {item.q}
-              <span className="faq-q__icon">
+              <span className="faq-q__icon" aria-hidden="true">
                 <PlusIcon />
               </span>
             </button>
-            <div className="faq-a">
+            <div id={aId} role="region" aria-labelledby={qId} className="faq-a">
               <div className="faq-a__inner">
                 <p>{item.a}</p>
               </div>

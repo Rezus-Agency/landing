@@ -125,6 +125,9 @@ export default function RootLayout({
         <JsonLd data={websiteSchema} />
       </head>
       <body className="bg-background text-foreground flex min-h-full flex-col">
+        <a href="#main" className="skip-link">
+          Aller au contenu principal
+        </a>
         <TooltipProvider delayDuration={150}>{children}</TooltipProvider>
         <div className="grain" aria-hidden="true" />
         <Plausible />

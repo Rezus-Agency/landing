@@ -69,7 +69,7 @@ export function Footer() {
           <div className="footer__cols">
             {COLUMNS.map((group) => (
               <div key={group.label} className="footer__col">
-                <h5>{group.label}</h5>
+                <h2>{group.label}</h2>
                 {group.links.map((link) =>
                   "external" in link && link.external ? (
                     <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer">
@@ -88,7 +88,7 @@ export function Footer() {
 
         <div className="footer__bottom">
           <span>© {new Date().getFullYear()} Rezus Agency · France</span>
-          <a href="/contact">contact@rezus-agency.com</a>
+          <a href="mailto:hello@rezus.agency">hello@rezus.agency</a>
         </div>
       </Container>
     </footer>

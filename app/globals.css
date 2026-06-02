@@ -307,7 +307,7 @@ button {
   font-size: 12px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--text-3);
+  color: var(--text-2);
   display: inline-flex;
   align-items: center;
   gap: var(--s-3);
@@ -422,7 +422,7 @@ h3 {
 .cmp-srow__num,
 .cmp-card__num,
 .pain__num,
-.footer__col h5,
+.footer__col h2,
 .footer__bottom span {
   font-variant-numeric: tabular-nums;
 }
@@ -1545,9 +1545,12 @@ h3 {
   gap: var(--s-4);
 }
 .footer__brand p {
-  color: var(--text-3);
+  color: var(--text-2);
   font-size: 14.5px;
   line-height: 1.5;
+}
+.footer .logo__word {
+  color: var(--text-2);
 }
 .footer__cols {
   display: flex;
@@ -1559,13 +1562,14 @@ h3 {
   flex-direction: column;
   gap: var(--s-3);
 }
-.footer__col h5 {
+.footer__col h2 {
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--text-faint);
+  color: var(--text-2);
   margin-bottom: var(--s-2);
+  font-weight: 500;
 }
 .footer__col a {
   font-size: 14.5px;
@@ -1587,10 +1591,10 @@ h3 {
 .footer__bottom span {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--text-faint);
+  color: var(--text-2);
 }
 .footer__bottom a {
-  color: var(--text-3);
+  color: var(--text-2);
   transition: color 0.2s;
 }
 .footer__bottom a:hover {
@@ -1922,7 +1926,7 @@ h3 {
   gap: 6px;
 }
 .field label .opt {
-  color: var(--text-faint);
+  color: var(--text-2);
   font-weight: 400;
 }
 .field input,
@@ -1965,7 +1969,7 @@ h3 {
 .form__fine {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--text-3);
+  color: var(--text-2);
   text-align: center;
 }
 .form__ok {
@@ -2278,7 +2282,7 @@ h3 {
 .legal-block dt {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-3);
+  color: var(--text-2);
   font-family: var(--font-mono);
   letter-spacing: 0.02em;
 }
@@ -2412,4 +2416,50 @@ body.app .grain {
   .hero-stat__sep {
     display: none;
   }
+}
+
+/* ============================================================
+   A11Y — Skip to main content link
+   Visible only on keyboard focus, fixed top-left.
+   Required for WCAG 2.4.1 Bypass Blocks.
+   ============================================================ */
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  padding: 12px 20px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  border-radius: 0 0 8px 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transform: translateY(-110%);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--accent, oklch(0.8 0.115 72));
+  outline-offset: 2px;
+  box-shadow: 0 8px 24px oklch(0 0 0 / 0.4);
+}
+
+/* A11y — make sure focused <main> doesn't show a default outline */
+main:focus {
+  outline: none;
+}
+
+/* A11y — visible inline error message under form fields */
+.field__err {
+  margin-top: 6px;
+  font-size: 13px;
+  color: oklch(0.78 0.13 25);
+  font-family: var(--font-mono);
+  letter-spacing: 0.01em;
 }

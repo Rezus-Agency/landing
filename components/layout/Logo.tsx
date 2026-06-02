@@ -9,7 +9,7 @@ interface LogoProps {
 
 export function Logo({ className, href = "/", size = "md" }: LogoProps) {
   return (
-    <Link href={href} aria-label="Rezus Agency — Accueil" className={cn("logo group", className)}>
+    <Link href={href} className={cn("logo group", className)}>
       <span className="logo__mark">Rezus</span>
       <span className="logo__word">Agency</span>
     </Link>

@@ -20,7 +20,7 @@ export default function HomePage() {
       <HeroReady />
       <Header />
 
-      <main id="top">
+      <main id="main" tabIndex={-1}>
         {/* ===================== HERO ===================== */}
         <section className="hero" id="hero">
           <div className="hero__bg" aria-hidden="true">

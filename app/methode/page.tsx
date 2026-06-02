@@ -158,7 +158,7 @@ export default function MethodePage() {
       />
       <Header />
 
-      <main>
+      <main id="main" tabIndex={-1}>
         {/* PAGE HERO */}
         <section className="phero">
           <div className="phero__bg" aria-hidden="true">

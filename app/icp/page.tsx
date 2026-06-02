@@ -119,7 +119,7 @@ export default function ICPLandingPage() {
       />
       <Header />
 
-      <main>
+      <main id="main" tabIndex={-1}>
         {/* HERO */}
         <section className="phero">
           <div className="phero__bg" aria-hidden="true">
