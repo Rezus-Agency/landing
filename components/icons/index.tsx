@@ -52,3 +52,11 @@ export function PlusIcon({ className }: IconProps) {
     </svg>
   );
 }
+
+export function BreadcrumbIcon({ className }: IconProps) {
+  return (
+    <svg className={className} {...baseProps}>
+      <path d="M19 12H5M11 6l-6 6 6 6" />
+    </svg>
+  );
+}
