@@ -44,28 +44,44 @@ export default function MentionsLegalesPage() {
               <Reveal className="legal-block" id="editeur">
                 <h2>1. Éditeur du site</h2>
                 <p>
-                  Le site <strong>rezus.agency</strong> est édité par :
+                  Le site <strong>rezus-agency.com</strong> est édité par :
                 </p>
                 <dl>
                   <dt>Raison sociale</dt>
                   <dd>
-                    Rezus Agency <span className="tofill">(forme juridique à compléter)</span>
+                    Rezus Agency
+                  </dd>
+                  <dt>Forme juridique</dt>
+                  <dd>
+                    <span className="tofill">à compléter (SARL / SAS / EURL / EI)</span>
                   </dd>
                   <dt>Capital social</dt>
                   <dd>
-                    <span className="tofill">à compléter</span>
+                    <span className="tofill">XX EUR</span>
                   </dd>
-                  <dt>SIREN / SIRET</dt>
+                  <dt>SIREN</dt>
                   <dd>
-                    <span className="tofill">à compléter</span>
+                    <span className="tofill">XXX XXX XXX</span>
                   </dd>
-                  <dt>N° TVA</dt>
+                  <dt>SIRET</dt>
                   <dd>
-                    <span className="tofill">à compléter</span>
+                    <span className="tofill">XXX XXX XXX XXXXX</span>
+                  </dd>
+                  <dt>RCS</dt>
+                  <dd>
+                    <span className="tofill">RCS [ville] sous le n° XXX XXX XXX</span>
+                  </dd>
+                  <dt>N° TVA intracommunautaire</dt>
+                  <dd>
+                    <span className="tofill">FR XX XXX XXX XXX</span>
                   </dd>
                   <dt>Siège social</dt>
                   <dd>
-                    <span className="tofill">adresse à compléter</span>
+                    <span className="tofill">Adresse complète à compléter</span>
+                  </dd>
+                  <dt>Téléphone</dt>
+                  <dd>
+                    <span className="tofill">+33 X XX XX XX XX</span>
                   </dd>
                   <dt>Email</dt>
                   <dd>
@@ -78,7 +94,7 @@ export default function MentionsLegalesPage() {
                 <h2>2. Direction de la publication</h2>
                 <p>
                   Le directeur de la publication est{" "}
-                  <span className="tofill">Nom du dirigeant à compléter</span>, en qualité de
+                  <span className="tofill">Prénom Nom du dirigeant</span>, en qualité de
                   représentant légal de Rezus Agency.
                 </p>
               </Reveal>
@@ -91,6 +107,8 @@ export default function MentionsLegalesPage() {
                   <dd>Vercel Inc.</dd>
                   <dt>Adresse</dt>
                   <dd>440 N Barranca Ave #4133, Covina, CA 91723, États-Unis</dd>
+                  <dt>Téléphone</dt>
+                  <dd>+1 559 288 7060</dd>
                   <dt>Site</dt>
                   <dd>
                     <a href="https://vercel.com" target="_blank" rel="noopener noreferrer">
@@ -98,16 +116,23 @@ export default function MentionsLegalesPage() {
                     </a>
                   </dd>
                 </dl>
+                <p>
+                  Vercel Inc. est certifié <strong>Data Privacy Framework (DPF)</strong> pour les
+                  transferts de données entre l&apos;Union européenne et les États-Unis,
+                  conformément à la décision d&apos;adéquation de la Commission européenne du 10
+                  juillet 2023.
+                </p>
               </Reveal>
 
               <Reveal className="legal-block" id="propriete">
                 <h2>4. Propriété intellectuelle</h2>
                 <p>
                   L&apos;ensemble des contenus présents sur ce site (textes, identité visuelle,
-                  logo, mise en page, code) est la propriété exclusive de Rezus Agency, sauf mention
-                  contraire. Toute reproduction, représentation ou diffusion, totale ou partielle,
-                  sans autorisation écrite préalable, est interdite et constituerait une contrefaçon
-                  sanctionnée par le Code de la propriété intellectuelle.
+                  logo, mise en page, code, illustrations) est la propriété exclusive de Rezus
+                  Agency, sauf mention contraire. Toute reproduction, représentation ou
+                  diffusion, totale ou partielle, sans autorisation écrite préalable, est
+                  interdite et constituerait une contrefaçon sanctionnée par les articles L.335-2
+                  et suivants du Code de la propriété intellectuelle.
                 </p>
               </Reveal>
 
@@ -116,8 +141,8 @@ export default function MentionsLegalesPage() {
                 <p>
                   Rezus Agency s&apos;efforce d&apos;assurer l&apos;exactitude des informations
                   diffusées sur ce site, mais ne saurait être tenue responsable des omissions,
-                  inexactitudes ou carences de mise à jour, qu&apos;elles soient de son fait ou du
-                  fait de tiers partenaires.
+                  inexactitudes ou carences de mise à jour, qu&apos;elles soient de son fait ou
+                  du fait de tiers partenaires.
                 </p>
                 <p>
                   Les études et sources citées dans la section comparaison sont fournies à titre
@@ -129,24 +154,27 @@ export default function MentionsLegalesPage() {
                 <h2>6. Liens hypertextes</h2>
                 <p>
                   Ce site peut contenir des liens vers des sites tiers. Rezus Agency n&apos;exerce
-                  aucun contrôle sur ces ressources externes et décline toute responsabilité quant à
-                  leur contenu ou leur disponibilité.
+                  aucun contrôle sur ces ressources externes et décline toute responsabilité
+                  quant à leur contenu ou leur disponibilité.
                 </p>
               </Reveal>
 
               <Reveal className="legal-block" id="donnees">
-                <h2>7. Données personnelles</h2>
+                <h2>7. Données personnelles &amp; cookies</h2>
                 <p>
                   Le traitement de vos données personnelles est décrit en détail dans notre{" "}
-                  <Link href="/politique-confidentialite">politique de confidentialité</Link>.
+                  <Link href="/politique-confidentialite">politique de confidentialité</Link>,
+                  qui précise notamment les finalités, les bases légales, les durées de
+                  conservation, vos droits et les destinataires des données.
                 </p>
               </Reveal>
 
               <Reveal className="legal-block" id="droit">
-                <h2>8. Droit applicable</h2>
+                <h2>8. Droit applicable et juridiction</h2>
                 <p>
                   Les présentes mentions légales sont régies par le droit français. En cas de
-                  litige, et à défaut de résolution amiable, les tribunaux français seront seuls
+                  litige, et à défaut de résolution amiable, les tribunaux compétents du ressort
+                  de <span className="tofill">[ville du siège social]</span> seront seuls
                   compétents.
                 </p>
               </Reveal>
