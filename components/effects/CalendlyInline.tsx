@@ -2,7 +2,8 @@
 
 import Script from "next/script";
 
-const CALENDLY_URL = "https://calendly.com/contact-renemarceau/rdv";
+const CALENDLY_URL =
+  "https://calendly.com/contact-renemarceau/rdv?hide_event_type_details=1&hide_gdpr_banner=1";
 
 interface CalendlyInlineProps {
   /** Classe additionnelle posée à côté de .calendly-inline-widget (requise par widget.js). */
