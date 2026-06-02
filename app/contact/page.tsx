@@ -9,9 +9,9 @@ import { CheckIcon } from "@/components/icons";
 import { ogImageUrl } from "@/lib/seo";
 import { breadcrumbSchema } from "@/lib/json-ld";
 
-const PAGE_TITLE = "Parlons de votre pipeline";
+const PAGE_TITLE = "Voyons si on est les bons";
 const PAGE_DESC =
-  "Réservez un appel de 30 minutes. On regarde votre cible et on vous dit honnêtement si l'outbound a du sens pour vous.";
+  "Un appel de 30 minutes, sans engagement. On regarde votre marché et vos comptes cibles, et on vous dit si l'outbound a du sens pour vous. Pas de pitch.";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -110,13 +110,13 @@ export default function ContactPage() {
             </Reveal>
             <Reveal as="div" delay={1}>
               <h1 style={{ marginTop: "var(--s-5)", maxWidth: "20ch" }}>
-                Parlons de votre pipeline.
+                Voyons si on est les bons.
               </h1>
             </Reveal>
             <Reveal as="div" delay={2}>
               <p className="lede" style={{ maxWidth: "56ch" }}>
-                Un appel de 30 minutes, sans engagement. On regarde votre cible et on vous dit
-                honnêtement si l&apos;outbound a du sens pour vous.
+                Un appel de 30 minutes, sans engagement. On regarde votre marché et vos comptes
+                cibles, et on vous dit si l&apos;outbound a du sens pour vous. Pas de pitch.
               </p>
             </Reveal>
           </div>
@@ -137,9 +137,7 @@ export default function ContactPage() {
                   </span>
                   <div>
                     <h4>30 minutes, pas plus</h4>
-                    <p>
-                      On respecte votre temps. Pas de présentation de 40 slides, droit au sujet.
-                    </p>
+                    <p>On respecte votre temps. Pas de slides, pas de discovery déguisée.</p>
                   </div>
                 </div>
                 <div className="expect__item">
@@ -147,10 +145,10 @@ export default function ContactPage() {
                     <TargetIcon />
                   </span>
                   <div>
-                    <h4>On regarde votre cible</h4>
+                    <h4>On regarde votre marché</h4>
                     <p>
-                      Marché, comptes idéaux, angle d&apos;entrée. Du concret, calibré sur votre
-                      situation.
+                      Vos comptes cibles, votre cycle de vente, votre positionnement. Du concret,
+                      pas du générique.
                     </p>
                   </div>
                 </div>
@@ -159,10 +157,10 @@ export default function ContactPage() {
                     <CheckIcon />
                   </span>
                   <div>
-                    <h4>Une réponse honnête</h4>
+                    <h4>Oui, non, ou pas encore</h4>
                     <p>
-                      Si l&apos;outbound n&apos;a pas de sens pour vous maintenant, on vous le dira.
-                      On ne force rien.
+                      Si l&apos;outbound n&apos;a pas de sens pour vous, on vous le dit. Si
+                      c&apos;est trop tôt, aussi.
                     </p>
                   </div>
                 </div>
@@ -199,10 +197,8 @@ export default function ContactPage() {
           <div className="wrap">
             <Reveal className="shead shead--center">
               <span className="kicker kicker--plain">Ou réservez directement</span>
-              <h2 className="h2">Choisissez un créneau.</h2>
-              <p className="shead__lede">
-                Pas envie de remplir un formulaire ? Réservez en deux clics.
-              </p>
+              <h2 className="h2">Réservez 30 minutes.</h2>
+              <p className="shead__lede">Pas envie d&apos;écrire ? Le calendrier est ouvert.</p>
             </Reveal>
             <Reveal className="calendly">
               <p className="calendly__label">

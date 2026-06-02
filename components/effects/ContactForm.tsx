@@ -37,8 +37,8 @@ export function ContactForm() {
   if (submitted) {
     return (
       <div className="form__ok show" role="status" aria-live="polite">
-        <h3>Demande envoyée.</h3>
-        <p>Merci. On revient vers vous sous 24 h ouvrées avec des créneaux.</p>
+        <h3>Message envoyé.</h3>
+        <p>On revient vers vous sous 24 h ouvrées avec des créneaux.</p>
       </div>
     );
   }
@@ -69,25 +69,25 @@ export function ContactForm() {
       </div>
       <div className="field">
         <label htmlFor="cf-company">
-          Entreprise / site <span className="opt">(optionnel)</span>
+          Entreprise <span className="opt">(optionnel)</span>
         </label>
         <input type="text" id="cf-company" name="company" placeholder="entreprise.com" />
       </div>
       <div className="field">
-        <label htmlFor="cf-msg">Votre contexte</label>
+        <label htmlFor="cf-msg">Votre situation</label>
         <textarea
           id="cf-msg"
           name="message"
-          placeholder="Ce que vous vendez, à qui, et ce que vous attendez de l'outbound."
+          placeholder="Ce que vous vendez, à qui aujourd'hui, et ce que vous attendez d'un outbound qui marche."
           required
           style={errors.message ? { borderColor: "oklch(0.7 0.13 25)" } : undefined}
         />
       </div>
       <button className="btn btn--primary" type="submit">
-        Envoyer la demande
+        Envoyer le message
         <ArrowRightIcon />
       </button>
-      <p className="form__fine">Réponse sous 24 h ouvrées · Aucune donnée revendue</p>
+      <p className="form__fine">Réponse sous 24 h ouvrées.</p>
     </form>
   );
 }
