@@ -255,21 +255,19 @@ export default function ICPLandingPage() {
                 même session.
               </p>
             </Reveal>
-            <div className="timeline">
+            <div className="approach-grid">
               {DIFFERENTIATORS.map((d, i) => (
                 <Reveal
                   key={d.num}
                   as="article"
-                  className="tl-step"
+                  className="approach-item"
                   delay={i === 0 ? undefined : (Math.min(i, 2) as 1 | 2)}
                 >
-                  <div className="tl-node">
-                    <span>{d.num}</span>
-                  </div>
-                  <div className="tl-body">
-                    <h3 className="tl-title">{d.title}</h3>
-                    <p className="tl-desc">{d.desc}</p>
-                    <span className="tl-hint">{d.hint}</span>
+                  <span className="approach-item__num">{d.num}</span>
+                  <div>
+                    <h3 className="approach-item__title">{d.title}</h3>
+                    <p className="approach-item__desc">{d.desc}</p>
+                    <span className="approach-item__hint">{d.hint}</span>
                   </div>
                 </Reveal>
               ))}
