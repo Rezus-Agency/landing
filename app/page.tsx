@@ -78,6 +78,34 @@ export default function HomePage() {
                 Voir la méthode
               </Link>
             </div>
+
+            <div className="hero-stats" data-anim style={{ "--d": "0.7s" } as React.CSSProperties}>
+              <span className="hero-stat">
+                <span className="hero-stat__n">200</span>
+                <span>comptes max / campagne</span>
+              </span>
+              <span className="hero-stat__sep" aria-hidden="true">
+                ·
+              </span>
+              <span className="hero-stat">
+                <span className="hero-stat__n">0</span>
+                <span>templates copiés-collés</span>
+              </span>
+              <span className="hero-stat__sep" aria-hidden="true">
+                ·
+              </span>
+              <span className="hero-stat">
+                <span className="hero-stat__n">3+</span>
+                <span>domaines secondaires</span>
+              </span>
+              <span className="hero-stat__sep" aria-hidden="true">
+                ·
+              </span>
+              <span className="hero-stat">
+                <span className="hero-stat__n">2</span>
+                <span>relances maximum</span>
+              </span>
+            </div>
           </div>
         </section>
 

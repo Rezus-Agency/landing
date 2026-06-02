@@ -26,10 +26,7 @@ export function CalendlyInline({ className, height = 700 }: CalendlyInlineProps)
         data-url={CALENDLY_URL}
         style={{ minWidth: "320px", height: `${height}px` }}
       />
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="lazyOnload"
-      />
+      <Script src="https://assets.calendly.com/assets/external/widget.js" strategy="lazyOnload" />
     </>
   );
 }

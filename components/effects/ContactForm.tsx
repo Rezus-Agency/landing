@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import { ArrowRightIcon } from "@/components/icons";
+import { track } from "@/lib/analytics";
 
 type FieldErrors = {
   name?: boolean;
@@ -31,6 +32,9 @@ export function ContactForm() {
     if (Object.values(newErrors).some(Boolean)) return;
 
     // TODO: wire to Resend/Plunk in Phase 8 SEO + integrations
+    track("Contact form submitted", {
+      hasCompany: Boolean(fd.get("company")?.toString().trim()),
+    });
     setSubmitted(true);
   };
 

@@ -135,8 +135,8 @@ export default function ICPLandingPage() {
             </Reveal>
             <Reveal as="div" delay={2}>
               <p className="lede">
-                Un outil gratuit qui vous force à clarifier qui sont vraiment vos clients idéaux.
-                Et qui transforme cette clarté en comptes cibles prêts à contacter.
+                Un outil gratuit qui vous force à clarifier qui sont vraiment vos clients idéaux. Et
+                qui transforme cette clarté en comptes cibles prêts à contacter.
               </p>
             </Reveal>
             <Reveal className="phero__cta" delay={3}>

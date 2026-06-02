@@ -50,9 +50,7 @@ export default function MentionsLegalesPage() {
                   <dt>Raison sociale</dt>
                   <dd>Rezus Agency</dd>
                   <dt>Forme juridique</dt>
-                  <dd>
-                    Osaühing (OÜ), société à responsabilité limitée de droit estonien
-                  </dd>
+                  <dd>Osaühing (OÜ), société à responsabilité limitée de droit estonien</dd>
                   <dt>Capital social</dt>
                   <dd>
                     <span className="tofill">X XXX EUR</span>
@@ -62,9 +60,7 @@ export default function MentionsLegalesPage() {
                     <span className="tofill">XXXXXXXX</span>
                   </dd>
                   <dt>Registre du commerce</dt>
-                  <dd>
-                    Registre du commerce d&apos;Estonie (Äriregister), Tallinn
-                  </dd>
+                  <dd>Registre du commerce d&apos;Estonie (Äriregister), Tallinn</dd>
                   <dt>N° TVA intracommunautaire</dt>
                   <dd>
                     <span className="tofill">EE XXXXXXXXX</span>{" "}
@@ -124,10 +120,10 @@ export default function MentionsLegalesPage() {
                 <p>
                   L&apos;ensemble des contenus présents sur ce site (textes, identité visuelle,
                   logo, mise en page, code, illustrations) est la propriété exclusive de Rezus
-                  Agency, sauf mention contraire. Toute reproduction, représentation ou
-                  diffusion, totale ou partielle, sans autorisation écrite préalable, est
-                  interdite et constituerait une contrefaçon sanctionnée par les articles L.335-2
-                  et suivants du Code de la propriété intellectuelle.
+                  Agency, sauf mention contraire. Toute reproduction, représentation ou diffusion,
+                  totale ou partielle, sans autorisation écrite préalable, est interdite et
+                  constituerait une contrefaçon sanctionnée par les articles L.335-2 et suivants du
+                  Code de la propriété intellectuelle.
                 </p>
               </Reveal>
 
@@ -136,8 +132,8 @@ export default function MentionsLegalesPage() {
                 <p>
                   Rezus Agency s&apos;efforce d&apos;assurer l&apos;exactitude des informations
                   diffusées sur ce site, mais ne saurait être tenue responsable des omissions,
-                  inexactitudes ou carences de mise à jour, qu&apos;elles soient de son fait ou
-                  du fait de tiers partenaires.
+                  inexactitudes ou carences de mise à jour, qu&apos;elles soient de son fait ou du
+                  fait de tiers partenaires.
                 </p>
                 <p>
                   Les études et sources citées dans la section comparaison sont fournies à titre
@@ -149,8 +145,8 @@ export default function MentionsLegalesPage() {
                 <h2>6. Liens hypertextes</h2>
                 <p>
                   Ce site peut contenir des liens vers des sites tiers. Rezus Agency n&apos;exerce
-                  aucun contrôle sur ces ressources externes et décline toute responsabilité
-                  quant à leur contenu ou leur disponibilité.
+                  aucun contrôle sur ces ressources externes et décline toute responsabilité quant à
+                  leur contenu ou leur disponibilité.
                 </p>
               </Reveal>
 
@@ -158,24 +154,24 @@ export default function MentionsLegalesPage() {
                 <h2>7. Données personnelles &amp; cookies</h2>
                 <p>
                   Le traitement de vos données personnelles est décrit en détail dans notre{" "}
-                  <Link href="/politique-confidentialite">politique de confidentialité</Link>,
-                  qui précise notamment les finalités, les bases légales, les durées de
-                  conservation, vos droits et les destinataires des données.
+                  <Link href="/politique-confidentialite">politique de confidentialité</Link>, qui
+                  précise notamment les finalités, les bases légales, les durées de conservation,
+                  vos droits et les destinataires des données.
                 </p>
               </Reveal>
 
               <Reveal className="legal-block" id="droit">
                 <h2>8. Droit applicable et juridiction</h2>
                 <p>
-                  Les présentes mentions légales sont régies par le droit estonien et, pour ce
-                  qui concerne la protection des données personnelles, par le règlement (UE)
-                  2016/679 (RGPD) directement applicable dans toute l&apos;Union européenne.
+                  Les présentes mentions légales sont régies par le droit estonien et, pour ce qui
+                  concerne la protection des données personnelles, par le règlement (UE) 2016/679
+                  (RGPD) directement applicable dans toute l&apos;Union européenne.
                 </p>
                 <p>
-                  En cas de litige, et à défaut de résolution amiable, les tribunaux compétents
-                  de Tallinn (Estonie) seront seuls compétents, sous réserve des règles
-                  impératives de protection des consommateurs applicables aux personnes
-                  résidant dans l&apos;Union européenne.
+                  En cas de litige, et à défaut de résolution amiable, les tribunaux compétents de
+                  Tallinn (Estonie) seront seuls compétents, sous réserve des règles impératives de
+                  protection des consommateurs applicables aux personnes résidant dans l&apos;Union
+                  européenne.
                 </p>
               </Reveal>
             </div>

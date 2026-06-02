@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { Hanken_Grotesk, JetBrains_Mono, Newsreader } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { Plausible } from "@/components/seo/Plausible";
 import { organizationSchema, websiteSchema } from "@/lib/json-ld";
-import { SITE, ogImageUrl } from "@/lib/seo";
+import { SITE, GSC_VERIFICATION, ogImageUrl } from "@/lib/seo";
 import "./globals.css";
 
 const hankenGrotesk = Hanken_Grotesk({
@@ -98,6 +99,9 @@ export const metadata: Metadata = {
     },
   },
   category: "business",
+  verification: {
+    google: GSC_VERIFICATION,
+  },
 };
 
 export default function RootLayout({
@@ -121,6 +125,7 @@ export default function RootLayout({
       <body className="bg-background text-foreground flex min-h-full flex-col">
         <TooltipProvider delayDuration={150}>{children}</TooltipProvider>
         <div className="grain" aria-hidden="true" />
+        <Plausible />
       </body>
     </html>
   );

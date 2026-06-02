@@ -2361,3 +2361,55 @@ body.app .grain {
     gap: var(--s-7);
   }
 }
+
+/* ============================================================
+   HERO STATS STRIP — trust signals under hero CTAs
+   Discrete horizontal row, mono font, amber numbers.
+   ============================================================ */
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--s-3) var(--s-5);
+  margin-top: var(--s-7);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+  text-transform: uppercase;
+}
+.hero-stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.hero-stat__n {
+  color: var(--text);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  font-size: 14.5px;
+  letter-spacing: 0;
+}
+.hero-stat__sep {
+  color: var(--text-faint);
+  user-select: none;
+}
+[data-hero="centered"] .hero-stats {
+  justify-content: center;
+}
+[data-hero="left"] .hero-stats {
+  justify-content: flex-start;
+}
+@media (max-width: 720px) {
+  .hero-stats {
+    gap: var(--s-2) var(--s-3);
+    font-size: 10.5px;
+  }
+  .hero-stat__n {
+    font-size: 13px;
+  }
+  .hero-stat__sep {
+    display: none;
+  }
+}

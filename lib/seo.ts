@@ -17,6 +17,12 @@ export const SITE = {
   founderName: "René Marceau",
 } as const;
 
+/** Plausible Analytics — domaine à tracker (production). */
+export const PLAUSIBLE_DOMAIN = "rezus-agency.com";
+
+/** Google Search Console verification token. À remplacer après création de la propriété GSC. */
+export const GSC_VERIFICATION = "TOFILL_GOOGLE_SEARCH_CONSOLE_TOKEN";
+
 export const ROUTES = [
   { path: "/", priority: 1.0, changefreq: "weekly" as const },
   { path: "/methode", priority: 0.9, changefreq: "monthly" as const },
