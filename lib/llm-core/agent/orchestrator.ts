@@ -104,6 +104,10 @@ export async function* runTurn(
   for (let iteration = 0; iteration < 5; iteration++) {
     const client = getClient();
 
+    // Répare les éventuels tool_use orphelins avant chaque call API.
+    // L'état state.messages reste tel quel ; on envoie une version réparée.
+    const safeMessages = repairMessages(state.messages);
+
     const stream = await client.messages.stream({
       model,
       max_tokens: maxTokens,
@@ -118,7 +122,7 @@ export async function* runTurn(
         : SYSTEM_PROMPT_FR,
       tools: ALL_TOOLS,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      messages: state.messages as any,
+      messages: safeMessages as any,
     });
 
     // Accumule les blocs pour reconstituer la réponse assistant
@@ -175,125 +179,167 @@ export async function* runTurn(
       return;
     }
 
-    // Exécute chaque tool call et collecte les tool_result
+    // Exécute chaque tool call et collecte les tool_result.
+    // CRITIQUE : chaque tool_use DOIT avoir son tool_result correspondant
+    // dans le prochain message user, sinon Anthropic renvoie HTTP 400 et la
+    // session devient inutilisable. On wrap chaque tool en try/catch et on
+    // pousse TOUJOURS un tool_result, même en cas d'erreur.
     const toolResults: Anthropic.ToolResultBlockParam[] = [];
 
     for (const tu of toolUses) {
       state.toolCalls.push({ name: tu.name, input: tu.input });
 
-      if (tu.name === "search_web") {
-        const input = tu.input as {
-          query: string;
-          language: "fr" | "en";
-          depth: "fast" | "deep";
-          reason: string;
-        };
-        yield {
-          type: "search_start",
-          query: input.query,
-          language: input.language,
-          reason: input.reason,
-        };
+      try {
+        if (tu.name === "search_web") {
+          const input = tu.input as {
+            query: string;
+            language: "fr" | "en";
+            depth: "fast" | "deep";
+            reason: string;
+          };
+          yield {
+            type: "search_start",
+            query: input.query,
+            language: input.language,
+            reason: input.reason,
+          };
 
-        const result = await searchWeb({
-          query: input.query,
-          language: input.language,
-          depth: input.depth,
-          reason: input.reason,
-        });
+          const result = await searchWeb({
+            query: input.query,
+            language: input.language,
+            depth: input.depth,
+            reason: input.reason,
+          });
 
-        state.searchCount += 1;
-        state.totalUsd += result.costUsd;
-        state.toolCalls[state.toolCalls.length - 1].result = result;
+          state.searchCount += 1;
+          state.totalUsd += result.costUsd;
+          state.toolCalls[state.toolCalls.length - 1].result = result;
 
-        yield { type: "search_result", result };
+          yield { type: "search_result", result };
 
-        const compact = {
-          query: result.query,
-          provider: result.provider,
-          error: result.error,
-          results: result.results.map((s) => ({
-            title: s.title,
-            url: s.url,
-            site: s.site,
-            snippet: s.snippet?.slice(0, 250),
-          })),
-        };
+          const compact = {
+            query: result.query,
+            provider: result.provider,
+            error: result.error,
+            results: result.results.map((s) => ({
+              title: s.title,
+              url: s.url,
+              site: s.site,
+              snippet: s.snippet?.slice(0, 250),
+            })),
+          };
 
-        toolResults.push({
-          type: "tool_result",
-          tool_use_id: tu.id,
-          content: JSON.stringify(compact),
-          is_error: !!result.error,
-        });
-      } else if (tu.name.startsWith("update_panel_")) {
-        const section = tu.name.replace("update_panel_", "");
-        if (!PANEL_SECTIONS.has(section)) {
           toolResults.push({
             type: "tool_result",
             tool_use_id: tu.id,
-            content: `Unknown section: ${section}`,
+            content: JSON.stringify(compact),
+            is_error: !!result.error,
+          });
+        } else if (tu.name.startsWith("update_panel_")) {
+          const section = tu.name.replace("update_panel_", "");
+          if (!PANEL_SECTIONS.has(section)) {
+            toolResults.push({
+              type: "tool_result",
+              tool_use_id: tu.id,
+              content: `Unknown section: ${section}`,
+              is_error: true,
+            });
+            continue;
+          }
+          // Defensive parsing — Claude peut omettre des champs ou renvoyer
+          // des types inattendus si le tool a un peu hallu sur le schema.
+          const rawInput = (tu.input || {}) as Record<string, unknown>;
+          const bullets: string[] = Array.isArray(rawInput.bullets)
+            ? (rawInput.bullets as unknown[]).filter((b): b is string => typeof b === "string")
+            : [];
+          const incomingSources: string[] = Array.isArray(rawInput.sources)
+            ? (rawInput.sources as unknown[]).filter((s): s is string => typeof s === "string")
+            : [];
+          const confidence: PanelPatch["confidence"] =
+            rawInput.confidence === "verified" ||
+            rawInput.confidence === "inferred" ||
+            rawInput.confidence === "hypothesis"
+              ? rawInput.confidence
+              : "hypothesis";
+
+          if (bullets.length === 0) {
+            toolResults.push({
+              type: "tool_result",
+              tool_use_id: tu.id,
+              content: `Panel update rejected: no valid bullets provided.`,
+              is_error: true,
+            });
+            continue;
+          }
+
+          const sectionKey = section as PanelPatch["section"];
+
+          // Append au panel state (ne remplace pas)
+          const existing = state.panel[sectionKey];
+          const existingBullets = existing?.bullets ?? [];
+          const existingSources = existing?.sources ?? [];
+          const merged: Omit<PanelPatch, "section"> = {
+            bullets: [...existingBullets, ...bullets],
+            confidence:
+              confidence === "verified" || existing?.confidence === "verified"
+                ? "verified"
+                : confidence === "inferred" || existing?.confidence === "inferred"
+                  ? "inferred"
+                  : "hypothesis",
+            sources: Array.from(new Set([...existingSources, ...incomingSources])),
+          };
+          state.panel[sectionKey] = merged;
+
+          yield {
+            type: "panel_patch",
+            patch: {
+              section: sectionKey,
+              bullets,
+              confidence,
+              sources: incomingSources,
+            },
+          };
+
+          toolResults.push({
+            type: "tool_result",
+            tool_use_id: tu.id,
+            content: `Panel section "${section}" updated with ${bullets.length} bullet(s). Confidence: ${confidence}.`,
+          });
+        } else if (tu.name === "finalize_icp") {
+          const input = (tu.input || {}) as { segment_summary?: string };
+          state.finalized = true;
+          yield {
+            type: "finalize_signal",
+            segment_summary: input.segment_summary || "Segment cible finalisé.",
+          };
+          toolResults.push({
+            type: "tool_result",
+            tool_use_id: tu.id,
+            content: `Finalize triggered. The user-facing app will now generate the final ICP document.`,
+          });
+        } else {
+          // Tool inconnu
+          toolResults.push({
+            type: "tool_result",
+            tool_use_id: tu.id,
+            content: `Unknown tool: ${tu.name}`,
             is_error: true,
           });
-          continue;
         }
-        const input = tu.input as {
-          bullets: string[];
-          confidence: PanelPatch["confidence"];
-          sources: string[];
-        };
-        const sectionKey = section as PanelPatch["section"];
-
-        // Append au panel state (ne remplace pas)
-        const existing = state.panel[sectionKey];
-        const merged: Omit<PanelPatch, "section"> = existing
-          ? {
-              bullets: [...existing.bullets, ...input.bullets],
-              confidence:
-                input.confidence === "verified" || existing.confidence === "verified"
-                  ? "verified"
-                  : input.confidence === "inferred" || existing.confidence === "inferred"
-                    ? "inferred"
-                    : "hypothesis",
-              sources: Array.from(new Set([...existing.sources, ...input.sources])),
-            }
-          : {
-              bullets: input.bullets,
-              confidence: input.confidence,
-              sources: input.sources,
-            };
-        state.panel[sectionKey] = merged;
-
+      } catch (err) {
+        // Sécurité : si un tool throw, on doit toujours pousser un tool_result
+        // pour ne pas corrompre la conversation. L'erreur est aussi remontée
+        // au niveau yield pour visibilité.
+        const message = (err as Error).message || String(err);
         yield {
-          type: "panel_patch",
-          patch: {
-            section: sectionKey,
-            bullets: input.bullets,
-            confidence: input.confidence,
-            sources: input.sources,
-          },
+          type: "error",
+          code: "tool_execution_error",
+          message: `${tu.name}: ${message}`,
         };
-
         toolResults.push({
           type: "tool_result",
           tool_use_id: tu.id,
-          content: `Panel section "${section}" updated with ${input.bullets.length} bullet(s). Confidence: ${input.confidence}.`,
-        });
-      } else if (tu.name === "finalize_icp") {
-        const input = tu.input as { segment_summary: string };
-        state.finalized = true;
-        yield { type: "finalize_signal", segment_summary: input.segment_summary };
-        toolResults.push({
-          type: "tool_result",
-          tool_use_id: tu.id,
-          content: `Finalize triggered. The user-facing app will now generate the final ICP document.`,
-        });
-      } else {
-        // Tool inconnu
-        toolResults.push({
-          type: "tool_result",
-          tool_use_id: tu.id,
-          content: `Unknown tool: ${tu.name}`,
+          content: `Tool execution failed: ${message}. Continue without this tool's result.`,
           is_error: true,
         });
       }
@@ -334,3 +380,103 @@ export function freshSession(scenario?: string): SessionState {
     finalized: false,
   };
 }
+
+/**
+ * Message d'intro fixe envoyé d'office au démarrage de chaque session.
+ * Ce N'EST PAS un appel LLM (gratuit, déterministe, instantané).
+ * Il est inscrit dans state.messages comme un "assistant" turn pour que
+ * le LLM ait le contexte de ce qui a déjà été dit au user.
+ */
+export const INTRO_MESSAGE = `Salut. On va définir ton ICP ensemble. Voilà la règle du jeu :
+
+1. **Je vais challenger ta cible**, pas la valider. Si tu me dis "je cible les CTO B2B" je vais te répondre "comme la moitié du marché, qu'est-ce qui te différencie ?"
+2. **Je vais faire des recherches en direct** pour étayer mes claims. Tu verras les sources s'afficher au fur et à mesure.
+3. **Je vais te proposer mes hypothèses** avant de te poser des questions. Si tu ne sais pas, dis-le, je creuserai à ta place.
+4. **L'objectif** : sortir un ICP non-évident, défendable et exécutable en 10 à 15 tours, pas plus.
+
+Pour démarrer : **qu'est-ce que tu vends, et à qui tu penses le vendre aujourd'hui ?**`;
+
+/**
+ * Initialise une session en injectant le message d'intro dans state.messages.
+ * À appeler une fois par session, avant le premier runTurn.
+ */
+export function seedIntro(state: SessionState): { intro: string } {
+  if (state.messages.length === 0) {
+    state.messages.push({
+      role: "assistant",
+      content: [{ type: "text", text: INTRO_MESSAGE }],
+    });
+  }
+  return { intro: INTRO_MESSAGE };
+}
+
+/**
+ * Répare le tableau de messages avant un call API.
+ *
+ * Anthropic exige que chaque `tool_use` block dans un message assistant ait
+ * son `tool_result` correspondant dans le message user suivant. Si un tool
+ * a crashé en cours de tour, la conversation peut se retrouver avec des
+ * tool_use orphelins, ce qui renvoie HTTP 400 indéfiniment.
+ *
+ * Cette fonction parcourt les messages et ajoute des synthetic tool_results
+ * pour tout tool_use orphelin.
+ */
+function repairMessages(
+  messages: Array<{ role: "user" | "assistant"; content: unknown }>,
+): Array<{ role: "user" | "assistant"; content: unknown }> {
+  const repaired: Array<{ role: "user" | "assistant"; content: unknown }> = [];
+
+  for (let i = 0; i < messages.length; i++) {
+    const m = messages[i];
+    repaired.push(m);
+    if (m.role !== "assistant" || !Array.isArray(m.content)) continue;
+
+    const toolUseIds: string[] = [];
+    for (const block of m.content as Array<{ type?: string; id?: string }>) {
+      if (block.type === "tool_use" && typeof block.id === "string") {
+        toolUseIds.push(block.id);
+      }
+    }
+    if (toolUseIds.length === 0) continue;
+
+    const next = messages[i + 1];
+    const nextBlocks =
+      next && next.role === "user" && Array.isArray(next.content)
+        ? (next.content as Array<{ type?: string; tool_use_id?: string }>)
+        : [];
+    const resolvedIds = new Set(
+      nextBlocks
+        .filter((b) => b.type === "tool_result" && typeof b.tool_use_id === "string")
+        .map((b) => b.tool_use_id as string),
+    );
+
+    const orphans = toolUseIds.filter((id) => !resolvedIds.has(id));
+    if (orphans.length === 0) continue;
+
+    const syntheticResults = orphans.map((id) => ({
+      type: "tool_result" as const,
+      tool_use_id: id,
+      content: "Tool result lost (session recovered). Continue without this output.",
+      is_error: true,
+    }));
+
+    if (next && next.role === "user" && Array.isArray(next.content)) {
+      // Préfixe les synthetic results aux blocs existants
+      repaired.push({
+        role: "user",
+        content: [...syntheticResults, ...(next.content as unknown[])],
+      });
+      i += 1; // on a consommé next
+    } else {
+      // Pas de next user, on insère un user message avec les synthetic results
+      repaired.push({
+        role: "user",
+        content: syntheticResults,
+      });
+    }
+  }
+
+  return repaired;
+}
+
+export { repairMessages };

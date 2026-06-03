@@ -23,7 +23,7 @@ import { config as loadEnv } from "dotenv";
 import { Box, Text, render, useApp, useInput } from "ink";
 import TextInput from "ink-text-input";
 import React, { useEffect, useState } from "react";
-import { freshSession, runTurn } from "../../lib/llm-core/agent/orchestrator";
+import { freshSession, runTurn, seedIntro } from "../../lib/llm-core/agent/orchestrator";
 import { saveSnapshot } from "../../lib/llm-core/agent/snapshot";
 import type {
   AgentEvent,
@@ -53,9 +53,15 @@ type DisplayItem =
 
 // --------- Hook : utilise l'orchestrator + collecte les events ---------
 function useChat(state: SessionState) {
-  const [items, setItems] = useState<DisplayItem[]>([
-    { kind: "info", text: "ICP Discovery REPL. Tape /help pour les commandes, /quit pour sortir." },
-  ]);
+  const [items, setItems] = useState<DisplayItem[]>(() => {
+    const initial: DisplayItem[] = [
+      { kind: "info", text: "ICP Discovery REPL. Tape /help pour les commandes, /quit pour sortir." },
+    ];
+    // Le message d'intro est envoyé d'office (déterministe, gratuit, instantané).
+    const { intro } = seedIntro(state);
+    initial.push({ kind: "bot", text: intro });
+    return initial;
+  });
   const [busy, setBusy] = useState(false);
   // Force re-render quand totalUsd change (state mutated in-place)
   const [, setTick] = useState(0);
