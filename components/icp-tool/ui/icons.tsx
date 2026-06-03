@@ -283,6 +283,15 @@ export function TargetIcon(props: IconProps) {
   );
 }
 
+export function ClockIcon(props: IconProps) {
+  return (
+    <svg {...baseProps} strokeWidth={1.8} {...props}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </svg>
+  );
+}
+
 export function BrainIcon(props: IconProps) {
   return (
     <svg {...baseProps} strokeWidth={1.7} {...props}>

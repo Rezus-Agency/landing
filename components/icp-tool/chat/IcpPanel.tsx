@@ -1,7 +1,7 @@
 "use client";
 
 import type { ICPSection } from "@/lib/icp-tool/types";
-import { SparkIcon } from "@/components/icp-tool/ui/icons";
+import { CheckIcon, SparkIcon } from "@/components/icp-tool/ui/icons";
 
 export const PANEL_SECTIONS: { key: string; name: string }[] = [
   { key: "synthese", name: "Synthèse" },
@@ -30,7 +30,9 @@ export function IcpPanel({ panel, isFinal, onGenerate }: Props) {
         <span className="eyebrow">ICP en construction</span>
         <h3>
           <span>Le profil se dessine</span>
-          <span className="icp-panel__progress">{progress}/{PANEL_SECTIONS.length}</span>
+          <span className="icp-panel__progress">
+            {progress}/{PANEL_SECTIONS.length}
+          </span>
         </h3>
       </div>
       <div className="icp-panel__body">
@@ -38,17 +40,16 @@ export function IcpPanel({ panel, isFinal, onGenerate }: Props) {
           const v = panel[sec.key];
           const status = v?.status;
           return (
-            <div
-              key={sec.key}
-              className={`psec ${status === "done" ? "done" : status === "draft" ? "draft" : "empty"}`}
-            >
+            <div key={sec.key} className={`psec ${status || ""}`}>
               <div className="psec__head">
-                <span className="psec__title">{sec.name}</span>
-                <span className="psec__status">
-                  {status === "done" ? "Done" : status === "draft" ? "Draft" : "À venir"}
+                <span className="psec__pill" aria-hidden="true">
+                  <CheckIcon />
                 </span>
+                <span className="psec__name">{sec.name}</span>
               </div>
-              <p className="psec__text">{v?.text || "À découvrir avec l'outil."}</p>
+              <div className={`psec__body ${v ? "" : "empty-body"}`}>
+                {v?.text || "En attente des éléments de la conversation…"}
+              </div>
             </div>
           );
         })}

@@ -1084,71 +1084,54 @@ body.app {
 }
 
 /* ============================================================
-   MODE CHOICE (/icp/tool/new)
+   MODE CHOICE (/icp/tool/new) — port fidèle du design v2
    ============================================================ */
 .mode-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr 1fr;
   gap: 18px;
-  margin-top: 28px;
-}
-@media (max-width: 760px) {
-  .mode-grid {
-    grid-template-columns: 1fr;
-  }
+  margin-top: 8px;
 }
 .mode-card {
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
-  padding: 28px;
+  padding: 30px;
   background: var(--surface);
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 13px;
   cursor: pointer;
+  text-align: left;
   position: relative;
+  overflow: hidden;
   transition:
     border-color 0.2s var(--ease),
-    transform 0.2s var(--ease);
-  text-decoration: none;
+    transform 0.2s var(--ease),
+    box-shadow 0.2s var(--ease);
   color: inherit;
+  font: inherit;
+  width: 100%;
 }
 .mode-card:hover {
   border-color: var(--accent);
   transform: translateY(-3px);
-}
-.mode-card--recommended {
-  border-color: color-mix(in oklch, var(--accent) 40%, var(--border-strong));
-  background: color-mix(in oklch, var(--accent) 4%, var(--surface));
+  box-shadow: 0 22px 50px -28px rgba(0, 0, 0, 0.75);
 }
 .mode-card__ic {
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   border-radius: 12px;
   display: grid;
   place-items: center;
-  background: color-mix(in oklch, var(--accent) 18%, var(--surface-2));
+  background: color-mix(in oklch, var(--accent) 14%, var(--surface-2));
   color: var(--accent);
 }
 .mode-card__ic svg {
-  width: 22px;
-  height: 22px;
+  width: 23px;
+  height: 23px;
 }
-.mode-card__tag {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accent);
-  padding: 3px 9px;
-  border-radius: 100px;
-  border: 1px solid color-mix(in oklch, var(--accent) 35%, transparent);
-}
-.mode-card h2 {
-  font-size: 22px;
+.mode-card h3 {
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: -0.02em;
 }
@@ -1156,30 +1139,53 @@ body.app {
   color: var(--text-2);
   font-size: 14.5px;
   line-height: 1.55;
+  flex: 1;
 }
 .mode-card__time {
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  color: var(--text-3);
-  margin-top: auto;
-  padding-top: 8px;
-}
-.mode-card__cta {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-3);
+}
+.mode-card__time svg {
+  width: 14px;
+  height: 14px;
+}
+.mode-card__go {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   font-size: 14px;
   font-weight: 600;
-  color: var(--text);
-  margin-top: 4px;
+  color: var(--accent);
 }
-.mode-card__cta svg {
-  width: 15px;
-  height: 15px;
-  transition: transform 0.2s;
+.mode-card__go svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.25s var(--ease);
 }
-.mode-card:hover .mode-card__cta svg {
-  transform: translateX(3px);
+.mode-card:hover .mode-card__go svg {
+  transform: translateX(4px);
+}
+.mode-card__rec {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid color-mix(in oklch, var(--accent) 35%, transparent);
+  border-radius: 100px;
+  padding: 3px 9px;
+}
+@media (max-width: 720px) {
+  .mode-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ============================================================
@@ -1800,53 +1806,83 @@ body.app {
   flex-direction: column;
   gap: 12px;
 }
+/* psec — port fidèle du design source v2 (pill check + name + body) */
 .psec {
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px 14px;
-  background: var(--surface);
-  transition:
-    border-color 0.3s,
-    background 0.3s;
+  border-radius: var(--r-md);
+  padding: 13px 13px;
+  transition: background 0.3s;
 }
-.psec.done {
-  border-color: color-mix(in oklch, var(--accent) 30%, var(--border-strong));
-  background: color-mix(in oklch, var(--accent) 4%, var(--surface));
+.psec + .psec {
+  border-top: 1px solid var(--border);
+  border-radius: 0;
 }
 .psec__head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 6px;
+  gap: 9px;
 }
-.psec__title {
-  font-size: 12px;
-  font-weight: 650;
-  letter-spacing: 0.01em;
+.psec__pill {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  flex: none;
+  border: 1.5px dashed var(--border-strong);
+  display: grid;
+  place-items: center;
+  transition: all 0.3s var(--ease);
+}
+.psec__pill svg {
+  width: 10px;
+  height: 10px;
+  color: var(--accent-ink);
+  opacity: 0;
+  transform: scale(0.5);
+  transition:
+    opacity 0.3s,
+    transform 0.3s;
+}
+.psec.draft .psec__pill {
+  border-style: solid;
+  border-color: color-mix(in oklch, var(--accent) 50%, transparent);
+  background: color-mix(in oklch, var(--accent) 14%, transparent);
+}
+.psec.done .psec__pill {
+  border-style: solid;
+  border-color: var(--accent);
+  background: var(--accent);
+}
+.psec.done .psec__pill svg {
+  opacity: 1;
+  transform: none;
+}
+.psec__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-3);
+  transition: color 0.3s;
+}
+.psec.draft .psec__name,
+.psec.done .psec__name {
   color: var(--text);
 }
-.psec__status {
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-faint);
-}
-.psec.draft .psec__status {
-  color: var(--text-3);
-}
-.psec.done .psec__status {
-  color: var(--accent);
-}
-.psec__text {
+.psec__body {
   font-size: 12.5px;
-  color: var(--text-2);
   line-height: 1.5;
+  color: var(--text-2);
+  margin-top: 8px;
+  padding-left: 25px;
 }
-.psec.empty .psec__text {
+.psec__body.empty-body {
   color: var(--text-faint);
   font-style: italic;
+}
+.psec.fillin {
+  animation: fillin 0.5s var(--ease);
+}
+@keyframes fillin {
+  from {
+    background: color-mix(in oklch, var(--accent) 18%, transparent);
+  }
 }
 .icp-panel__foot {
   padding: 16px 20px;

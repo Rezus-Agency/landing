@@ -5,22 +5,22 @@ import { useRouter } from "next/navigation";
 import { useToolStore } from "@/lib/icp-tool/store";
 import {
   ArrowRightIcon,
-  BrainIcon,
+  ClockIcon,
+  EditIcon,
   SparkIcon,
-  TargetIcon,
 } from "@/components/icp-tool/ui/icons";
 
 export default function NewSessionChoicePage() {
   const router = useRouter();
   const clearSession = useToolStore((s) => s.clearSession);
-  const clearSpec = useToolStore((s) => s.clearSpec);
+  const setSpec = useToolStore((s) => s.setSpec);
 
   const goChat = () => {
     clearSession();
     router.push("/icp/tool/session/new");
   };
-  const goWizard = () => {
-    clearSpec();
+  const goSpec = () => {
+    setSpec({ step: 0, data: {} });
     router.push("/icp/tool/new/spec");
   };
 
@@ -31,69 +31,53 @@ export default function NewSessionChoicePage() {
         <ArrowRightIcon /> <span>Nouvelle session</span>
       </div>
 
-      <div className="page-head" style={{ marginBottom: 6 }}>
+      <div className="page-head">
         <div>
           <span className="kicker">Nouvelle session</span>
-          <h1>Par où voulez-vous démarrer ?</h1>
-          <p className="page-head__sub" style={{ maxWidth: "60ch" }}>
-            Vous pouvez parler à l&apos;outil comme à un consultant, ou remplir un formulaire
-            guidé.
+          <h1>Comment voulez-vous procéder ?</h1>
+          <p className="page-head__sub">
+            Deux chemins, la même récompense : une analyse ICP complète et actionnable.
           </p>
         </div>
       </div>
 
       <div className="mode-grid">
-        <button type="button" className="mode-card mode-card--recommended" onClick={goChat}>
-          <span className="mode-card__tag">Recommandé</span>
+        <button type="button" className="mode-card" onClick={goChat}>
+          <span className="mode-card__rec">Recommandé</span>
           <span className="mode-card__ic">
-            <BrainIcon />
+            <SparkIcon />
           </span>
-          <h2>Mode chatbot</h2>
+          <h3>Découvrir avec l&apos;IA</h3>
           <p>
-            Une vraie conversation où l&apos;outil challenge votre intuition, recherche en
-            direct, et construit l&apos;ICP avec vous. C&apos;est là que les ICP non-évidents
-            sortent.
+            Une conversation qui challenge votre intuition, recherche le marché en temps réel et
+            fait émerger un ICP non-évident. Idéal si votre cible n&apos;est pas encore
+            parfaitement nette.
           </p>
-          <span className="mode-card__time">15 à 30 min · session interactive</span>
-          <span className="mode-card__cta">
-            Démarrer la session <ArrowRightIcon />
+          <span className="mode-card__time">
+            <ClockIcon /> ~15 min · conversationnel
+          </span>
+          <span className="mode-card__go">
+            Démarrer la discovery <ArrowRightIcon />
           </span>
         </button>
 
-        <button type="button" className="mode-card" onClick={goWizard}>
+        <button type="button" className="mode-card" onClick={goSpec}>
           <span className="mode-card__ic">
-            <TargetIcon />
+            <EditIcon />
           </span>
-          <h2>Mode wizard</h2>
+          <h3>J&apos;ai déjà mon ICP</h3>
           <p>
-            Un formulaire guidé en 5 étapes pour cadrer votre cible plus rapidement. Moins de
-            challenge, plus de structure. À privilégier si vous avez déjà une intuition forte à
-            documenter.
+            Un formulaire guidé en 5 étapes pour saisir directement ce que vous savez. Rapide et
+            précis si votre cible est déjà claire, l&apos;analyse complète est générée à la fin.
           </p>
-          <span className="mode-card__time">5 à 10 min · formulaire structuré</span>
-          <span className="mode-card__cta">
-            Ouvrir le wizard <ArrowRightIcon />
+          <span className="mode-card__time">
+            <EditIcon /> ~5 min · formulaire guidé
+          </span>
+          <span className="mode-card__go">
+            Remplir le formulaire <ArrowRightIcon />
           </span>
         </button>
       </div>
-
-      <p
-        style={{
-          marginTop: 32,
-          color: "var(--text-faint)",
-          fontFamily: "var(--font-mono)",
-          fontSize: 11.5,
-          letterSpacing: "0.06em",
-          textAlign: "center",
-        }}
-      >
-        <SparkIcon
-          width={12}
-          height={12}
-          style={{ verticalAlign: "middle", marginRight: 6 }}
-        />
-        ICP discovery. Pas ICP validation.
-      </p>
     </div>
   );
 }

@@ -88,8 +88,8 @@ export function ResearchCard({ label, steps, sources, onDone }: Props) {
           <CheckIcon />
         </div>
         <div className="research__label">
-          {done ? "Recherche terminée" : "Recherche en cours"}
-          <span className="sub">{label}</span>
+          {label}
+          <span className="sub">recherche web en temps réel</span>
         </div>
       </div>
       <div className="research__steps">
@@ -110,7 +110,7 @@ export function ResearchCard({ label, steps, sources, onDone }: Props) {
       </div>
       {shownSources > 0 && (
         <div className="research__sources">
-          <span className="lbl">Sources consultées</span>
+          <span className="lbl">{sources.length} sources analysées</span>
           {sources.slice(0, shownSources).map((s, i) => (
             <a
               key={i}
