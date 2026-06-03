@@ -190,3 +190,117 @@ export function HomeIcon(props: IconProps) {
     </svg>
   );
 }
+
+export function SendIcon(props: IconProps) {
+  return (
+    <svg {...baseProps} strokeWidth={2} {...props}>
+      <path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z" />
+    </svg>
+  );
+}
+
+export function MicIcon(props: IconProps) {
+  return (
+    <svg {...baseProps} strokeWidth={1.8} {...props}>
+      <rect x="9" y="3" width="6" height="11" rx="3" />
+      <path d="M5 11a7 7 0 0 0 14 0M12 18v3" />
+    </svg>
+  );
+}
+
+export function StopRecIcon(props: IconProps) {
+  return (
+    <svg {...baseProps} fill="currentColor" stroke="none" {...props}>
+      <rect x="7" y="7" width="10" height="10" rx="2.5" />
+    </svg>
+  );
+}
+
+export function PauseIcon(props: IconProps) {
+  return (
+    <svg {...baseProps} strokeWidth={1.8} {...props}>
+      <path d="M10 4H7v16h3zM17 4h-3v16h3z" />
+    </svg>
+  );
+}
+
+export function PanelIcon(props: IconProps) {
+  return (
+    <svg {...baseProps} strokeWidth={1.8} {...props}>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <path d="M14 4v16" />
+    </svg>
+  );
+}
+
+export function HistoryIcon(props: IconProps) {
+  return (
+    <svg {...baseProps} strokeWidth={1.8} {...props}>
+      <path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 8v4l3 2" />
+    </svg>
+  );
+}
+
+export function SplitIcon(props: IconProps) {
+  return (
+    <svg {...baseProps} strokeWidth={1.8} {...props}>
+      <path d="M12 3v18M5 8 9 12l-4 4M19 8l-4 4 4 4" />
+    </svg>
+  );
+}
+
+export function PlugIcon(props: IconProps) {
+  return (
+    <svg {...baseProps} strokeWidth={1.8} {...props}>
+      <path d="M9 2v6M15 2v6M7 8h10v3a5 5 0 0 1-10 0zM12 16v6" />
+    </svg>
+  );
+}
+
+export function MagnetIcon(props: IconProps) {
+  return (
+    <svg {...baseProps} strokeWidth={1.8} {...props}>
+      <path d="M5 4v8a7 7 0 0 0 14 0V4M5 9h4M15 9h4" />
+    </svg>
+  );
+}
+
+export function BooksIcon(props: IconProps) {
+  return (
+    <svg {...baseProps} strokeWidth={1.8} {...props}>
+      <path d="M4 5v15M4 5a2 2 0 0 1 2-2h4v17H6a2 2 0 0 0-2 2M20 5v15M20 5a2 2 0 0 0-2-2h-4v17h4a2 2 0 0 1 2 2" />
+    </svg>
+  );
+}
+
+export function TargetIcon(props: IconProps) {
+  return (
+    <svg {...baseProps} strokeWidth={1.8} {...props}>
+      <circle cx="12" cy="12" r="8" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="12" cy="12" r="0.6" fill="currentColor" />
+    </svg>
+  );
+}
+
+export function BrainIcon(props: IconProps) {
+  return (
+    <svg {...baseProps} strokeWidth={1.7} {...props}>
+      <path d="M9 4a2.5 2.5 0 0 0-2.5 2.5A2.5 2.5 0 0 0 4 9a2.5 2.5 0 0 0 1 2 2.5 2.5 0 0 0 1 4.5 2.5 2.5 0 0 0 5 .5V4.5A2.5 2.5 0 0 0 9 4zM15 4a2.5 2.5 0 0 1 2.5 2.5A2.5 2.5 0 0 1 20 9a2.5 2.5 0 0 1-1 2 2.5 2.5 0 0 1-1 4.5 2.5 2.5 0 0 1-5 .5" />
+    </svg>
+  );
+}
+
+/** Map iconName (utilisé dans COMING_SOON) → composant icône. */
+export const ICON_MAP: Record<string, React.ComponentType<IconProps>> = {
+  history: HistoryIcon,
+  split: SplitIcon,
+  plug: PlugIcon,
+  magnet: MagnetIcon,
+  mic: MicIcon,
+  books: BooksIcon,
+  spark: SparkIcon,
+  target: TargetIcon,
+  brain: BrainIcon,
+  grid: GridIcon,
+};

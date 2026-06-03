@@ -9,7 +9,7 @@
  */
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useToolStore } from "@/lib/icp-tool/store";
 import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
@@ -17,11 +17,19 @@ import { Scrim } from "./Scrim";
 import { ToastHost } from "@/components/icp-tool/ui/ToastProvider";
 import { ConfirmHost } from "@/components/icp-tool/ui/ConfirmModal";
 
+/** Routes qui prennent tout l'écran (pas de sidebar). */
+function isFullApp(pathname: string | null): boolean {
+  if (!pathname) return false;
+  return pathname.startsWith("/icp/tool/session/");
+}
+
 export function ToolShell({ children }: { children: React.ReactNode }) {
   const isAuthed = useToolStore((s) => !!s.auth);
   const [hydrated, setHydrated] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
+  const fullApp = isFullApp(pathname);
 
   useEffect(() => {
     document.documentElement.classList.add("app");
@@ -44,6 +52,18 @@ export function ToolShell({ children }: { children: React.ReactNode }) {
   if (!hydrated || !isAuthed) {
     return (
       <>
+        <ToastHost />
+        <ConfirmHost />
+      </>
+    );
+  }
+
+  if (fullApp) {
+    return (
+      <>
+        <main id="main" tabIndex={-1} style={{ height: "100vh", display: "contents" }}>
+          {children}
+        </main>
         <ToastHost />
         <ConfirmHost />
       </>

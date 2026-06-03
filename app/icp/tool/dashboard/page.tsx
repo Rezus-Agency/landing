@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useToolStore } from "@/lib/icp-tool/store";
 import { IcpCard } from "@/components/icp-tool/ui/IcpCard";
+import { ComingSoonGrid } from "@/components/icp-tool/ui/ComingSoonGrid";
 import { SparkIcon } from "@/components/icp-tool/ui/icons";
 
 export default function DashboardPage() {
@@ -61,6 +62,8 @@ export default function DashboardPage() {
           </Link>
         </div>
       )}
+
+      <ComingSoonGrid />
     </div>
   );
 }
