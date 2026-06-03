@@ -13,7 +13,7 @@
     "icp:search": "tsx scripts/icp-cli/test-search.ts",
     "icp:turn": "tsx scripts/icp-cli/test-turn.ts",
     "icp:multi": "tsx scripts/icp-cli/test-multi.ts",
-    "icp:chat": "tsx scripts/icp-cli/index.tsx"
+    "icp:chat": "node --import tsx scripts/icp-cli/index.tsx"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.100.1",
