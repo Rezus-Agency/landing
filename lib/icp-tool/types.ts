@@ -63,7 +63,8 @@ export type SessionDraft = {
 
 export type SpecDraft = {
   step: number;
-  data: Record<string, string | string[]>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: Record<string, any>;
 };
 
 export type SalesNavFilter = {
