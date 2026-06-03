@@ -198,12 +198,12 @@ export default function ICPLandingPage() {
               </p>
             </Reveal>
             <Reveal className="phero__cta" delay={3} style={{ gap: "var(--s-5)" }}>
-              <Link href="/icp/tool/signup" className="btn btn--primary">
+              <Link href="/signup" className="btn btn--primary">
                 Commencer une session
                 <ArrowRightIcon />
               </Link>
               <Link
-                href="/icp/tool/login"
+                href="/login"
                 className="btn btn--ghost"
                 style={{ color: "var(--text-3)" }}
               >
@@ -336,11 +336,11 @@ export default function ICPLandingPage() {
                   défendre, exécuter, et partager.
                 </p>
                 <div className="finalcta__cta">
-                  <Link href="/icp/tool/signup" className="btn btn--primary">
+                  <Link href="/signup" className="btn btn--primary">
                     Commencer une session
                     <ArrowRightIcon />
                   </Link>
-                  <Link href="/icp/tool/login" className="btn btn--secondary">
+                  <Link href="/login" className="btn btn--secondary">
                     Se connecter
                   </Link>
                 </div>
