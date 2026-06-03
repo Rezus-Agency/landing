@@ -13,6 +13,7 @@
     "icp:search": "tsx scripts/icp-cli/test-search.ts",
     "icp:turn": "tsx scripts/icp-cli/test-turn.ts",
     "icp:multi": "tsx scripts/icp-cli/test-multi.ts",
+    "icp:e2e": "tsx scripts/icp-cli/test-e2e.ts",
     "icp:chat": "node --import tsx scripts/icp-cli/index.tsx"
   },
   "dependencies": {
