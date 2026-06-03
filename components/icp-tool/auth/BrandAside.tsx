@@ -26,15 +26,15 @@ export function BrandAside() {
       <div className="auth__steps">
         <div className="auth__step">
           <span>01</span>
-          <span>Vous décrivez votre cible</span>
+          Vous décrivez votre cible
         </div>
         <div className="auth__step">
           <span>02</span>
-          <span>L&apos;outil challenge et recherche</span>
+          L&apos;outil challenge et recherche
         </div>
         <div className="auth__step">
           <span>03</span>
-          <span>Vous repartez avec un ICP exécutable</span>
+          Vous repartez avec un ICP exécutable
         </div>
       </div>
     </aside>
