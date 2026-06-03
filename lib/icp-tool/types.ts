@@ -59,6 +59,16 @@ export type SessionDraft = {
   pendingQuick: string[] | null;
   iterateId: string | null;
   startedAt: number;
+  /**
+   * Conversation au format Anthropic (source de vérité pour le LLM).
+   * Le `log` est la version dérivée pour l'UI.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  messages?: Array<{ role: "user" | "assistant"; content: any }>;
+  /** Coût session en USD, mis à jour à chaque tour. */
+  totalUsd?: number;
+  /** Nombre de recherches effectuées. */
+  searchCount?: number;
 };
 
 export type SpecDraft = {
