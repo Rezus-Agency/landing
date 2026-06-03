@@ -283,6 +283,82 @@ export function TargetIcon(props: IconProps) {
   );
 }
 
+export function Doc2Icon(props: IconProps) {
+  return (
+    <svg {...baseProps} strokeWidth={1.8} {...props}>
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+      <path d="M14 3v5h5M9 13h6M9 17h4" />
+    </svg>
+  );
+}
+
+export function ChartIcon(props: IconProps) {
+  return (
+    <svg {...baseProps} strokeWidth={1.8} {...props}>
+      <path d="M4 4v16h16M8 16v-4M12 16V8M16 16v-6" />
+    </svg>
+  );
+}
+
+export function Warn2Icon(props: IconProps) {
+  return (
+    <svg {...baseProps} strokeWidth={1.8} {...props}>
+      <path d="M10.3 3.7 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.7a2 2 0 0 0-3.4 0zM12 9v4M12 17h.01" />
+    </svg>
+  );
+}
+
+export function BoltIcon(props: IconProps) {
+  return (
+    <svg {...baseProps} strokeWidth={1.7} {...props}>
+      <path d="M13 2 4 14h7l-1 8 9-12h-7z" />
+    </svg>
+  );
+}
+
+export function FlagIcon(props: IconProps) {
+  return (
+    <svg {...baseProps} strokeWidth={1.8} {...props}>
+      <path d="M5 21V4M5 4h11l-1.5 4L16 12H5" />
+    </svg>
+  );
+}
+
+export function BuildingIcon(props: IconProps) {
+  return (
+    <svg {...baseProps} strokeWidth={1.7} {...props}>
+      <path d="M4 21V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v16M15 9h4a1 1 0 0 1 1 1v11M8 8h3M8 12h3M8 16h3" />
+    </svg>
+  );
+}
+
+export function PinIcon(props: IconProps) {
+  return (
+    <svg {...baseProps} strokeWidth={1.7} {...props}>
+      <path d="M12 21s7-5.7 7-11a7 7 0 0 0-14 0c0 5.3 7 11 7 11z" />
+      <circle cx="12" cy="10" r="2.5" />
+    </svg>
+  );
+}
+
+export function UsersIcon(props: IconProps) {
+  return (
+    <svg {...baseProps} strokeWidth={1.7} {...props}>
+      <circle cx="9" cy="8" r="3.2" />
+      <path d="M3 20c0-3.3 2.7-5 6-5s6 1.7 6 5M16 5.2a3.2 3.2 0 0 1 0 6M21 20c0-2.5-1.3-4-3.5-4.6" />
+    </svg>
+  );
+}
+
+export function PdfIcon(props: IconProps) {
+  return (
+    <svg {...baseProps} strokeWidth={1.8} {...props}>
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+      <path d="M14 3v5h5" />
+    </svg>
+  );
+}
+
 export function ClockIcon(props: IconProps) {
   return (
     <svg {...baseProps} strokeWidth={1.8} {...props}>

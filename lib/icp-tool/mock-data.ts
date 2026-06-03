@@ -244,6 +244,176 @@ export const SEED_ICPS: ICP[] = [
 ];
 
 /**
+ * Document HR Tech complet (port du window.ICP2.doc).
+ * Utilisé comme template : getDoc(id) merge l'ICP store avec ce contenu de démo.
+ * Quand on connectera Supabase + LLM, chaque ICP aura son propre contenu.
+ */
+export const HRTECH_DOC: ICP = {
+  id: "icp_hrtech_founders",
+  segment: "Founders & CTO · SaaS B2B HR Tech early-stage",
+  status: "final",
+  version: 1,
+  createdAt: "2026-06-01",
+  synthese:
+    "Votre client le plus convertible n'est pas « les boîtes tech B2B » en général, mais le fondateur ou CTO d'un éditeur SaaS HR Tech français de 20 à 100 personnes, entre la Seed et la Série A, basé à Paris ou Lyon. Ce décideur est technique, pressé, et structurellement allergique au discours commercial : il vit dans Slack, Linear et Notion, et juge un outil en trois minutes à la qualité de sa documentation, pas à son pitch. Il a déjà un produit qui tourne et une petite équipe, donc sa douleur n'est plus « construire » mais « tenir le rythme sans casser la qualité ni cramer ses devs ». L'angle gagnant n'est pas de lui vendre une features de plus, mais de lui prouver, chiffres et preuve technique à l'appui, que vous lui faites regagner du temps d'ingénierie, la seule ressource qu'il sait être son vrai goulot. Tout message qui sonne « marketing » vous disqualifie ; tout message qui sonne « pair technique qui a résolu le même problème » vous ouvre la porte.",
+  identite: {
+    role: "Fondateur technique ou CTO (parfois VP Engineering sur les structures > 60)",
+    seniority: "Dirigeant, décideur final ET utilisateur de l'outil, cycle de décision court",
+    team: "Équipe tech de 4 à 25 personnes, souvent 1 à 3 squads produit",
+    geo: "Paris en priorité, puis Lyon ; quelques pôles à Nantes, Bordeaux, Lille",
+    industry: "Éditeurs SaaS B2B verticalisés HR Tech (paie, ATS, people analytics, onboarding)",
+    size: "20 à 100 salariés, post-Seed à Série A (1 à 12 M€ levés)",
+    tenure: "Fondateur depuis 2 à 6 ans, ou CTO recruté il y a 12-30 mois pour structurer la tech",
+  },
+  psychologie: {
+    prose: [
+      "Ce décideur ne se vit pas comme un acheteur, mais comme un constructeur. Sa première réaction face à un nouvel outil est presque toujours « est-ce qu'on ne pourrait pas le faire nous-mêmes en un week-end ? », le réflexe NIH (not-invented-here) est sa pente naturelle, renforcée par une vraie compétence technique qui rend ce raisonnement crédible à ses propres yeux. Vendre contre ce biais ne marche pas ; il faut le retourner. Ce qui le réveille la nuit, ce n'est pas le manque de fonctionnalités, c'est la dette technique qui s'accumule, le burn-out d'un dev senior irremplaçable, et la peur que la vélocité de l'équipe s'effondre juste au moment où la Série A exige de doubler de taille. Le temps d'ingénierie est sa devise mentale : tout se ramène à « combien de jours-dev ça nous coûte, combien ça nous fait gagner ».",
+      "Sur le plan de l'information, il ne lit pas la presse business et ignore LinkedIn de façon quasi militante. Il se forme sur Hacker News, le tech-Twitter/X, quelques Substack d'ingénierie (Pragmatic Engineer en tête), des threads Reddit, et la parole de pairs fondateurs rencontrés en conférence ou en communauté (BAM, Station F, slacks de CTO). Une recommandation d'un autre CTO qu'il respecte vaut mille impressions publicitaires. Les figures d'autorité qui le font bouger sont d'autres builders crédibles, pas des analystes, pas des influenceurs growth, surtout pas des « experts » auto-proclamés.",
+      "Côté langage, le piège est fatal et invisible pour un non-technique. Les mots qui sonnent juste sont concrets et mesurés : « temps de build », « DX », « time-to-merge », « on-call », « post-mortem », « on a réduit de 40 % ». Les mots qui sonnent faux le font fuir instantanément : « solution », « disruptif », « synergies », « accompagnement », « expérience collaborateur », et tout superlatif marketing. Un seul de ces termes dans votre première phrase et vous êtes classé « commercial », c'est-à-dire ignoré. À l'inverse, une démo qui montre le produit en 30 secondes, une doc claire, et une preuve chiffrée valent plus que n'importe quel argumentaire.",
+    ],
+    vocab_yes: [
+      "temps de build",
+      "DX / developer experience",
+      "jours-dev économisés",
+      "time-to-merge",
+      "self-serve",
+      "post-mortem",
+    ],
+    vocab_no: [
+      "solution",
+      "disruptif",
+      "synergies",
+      "accompagnement",
+      "expérience collaborateur",
+      "ROI exceptionnel",
+    ],
+    autorites:
+      "Autres CTO/fondateurs techniques respectés, Pragmatic Engineer, communautés de builders (Station F, BAM, slacks de CTO), jamais des analystes ou des influenceurs growth.",
+  },
+  marche: {
+    tam: "≈ 1 400 éditeurs SaaS HR Tech actifs en France",
+    sam: "≈ 420 entre 20 et 100 salariés, post-Seed à Série A",
+    som: "≈ 130 atteignables en 12 mois avec un outbound ciblé",
+    concurrence:
+      "Quelques acteurs horizontaux (outils dev génériques) qui ne parlent pas au contexte HR Tech ; aucun positionnement vertical crédible sur ce segment précis",
+    maturite:
+      "Marché en remplacement : ces équipes ont déjà des outils, la bataille est le switch, pas l'évangélisation",
+    cycle: "3 à 6 semaines",
+    budget: "12 000 à 35 000 € / an",
+    saisonnalite: "Décisions concentrées juste après une levée (T1 et T3) ; creux en août et fin décembre",
+    tendances:
+      "La pression post-levée pour « faire plus avec la même équipe » pousse ce segment à acheter du temps d'ingénierie plutôt qu'à recruter, une fenêtre favorable de 18-24 mois.",
+    sources: [
+      { title: "Panorama HR Tech France 2025", site: "lab-rh.com", url: "#" },
+      { title: "Baromètre financement tech FR", site: "maddyness.com", url: "#" },
+      { title: "State of Engineering Productivity", site: "pragmaticengineer.com", url: "#" },
+    ],
+  },
+  challenges: [
+    {
+      t: "Le réflexe « build it ourselves »",
+      d: "C'est l'objection n°1 et elle est sincère : ils en sont techniquement capables. Tant que vous n'avez pas chiffré le coût caché du maintien interne (jours-dev récurrents, on-call, bus factor), vous perdez. Préparez la démonstration du vrai coût total, pas une liste de features.",
+    },
+    {
+      t: "Zéro tolérance au discours commercial",
+      d: "Une approche perçue comme « sales » grille le contact de façon quasi irréversible. Le premier message doit venir d'un registre pair-à-pair technique, idéalement avec une preuve (benchmark, repo, doc) plutôt qu'une demande de call.",
+    },
+    {
+      t: "Fenêtre d'achat étroite",
+      d: "Hors de la période post-levée, le sujet n'est pas prioritaire. Mal timé, même le bon message tombe à plat. Le ciblage doit s'appuyer sur des signaux de levée récents, sinon le cycle s'allonge indéfiniment.",
+    },
+    {
+      t: "Décideur = utilisateur exigeant",
+      d: "Il jugera votre produit lui-même, en quelques minutes, sur la DX et la doc. Un onboarding self-serve impeccable n'est pas un bonus, c'est le prérequis pour que la vente existe.",
+    },
+  ],
+  avantages: [
+    {
+      t: "Le vertical HR Tech est un angle libre",
+      d: "Les outils dev génériques parlent à tout le monde et donc à personne. Un positionnement qui connaît les contraintes spécifiques de la HR Tech (conformité, données sensibles, paie) crée une résonance immédiate que personne n'occupe.",
+    },
+    {
+      t: "La preuve technique comme arme commerciale",
+      d: "Ce segment, allergique au sales, est au contraire avide de contenu technique sérieux. Un benchmark public, un teardown, un outil gratuit bien fait font plus que dix SDR, et personne dans le secteur ne le fait correctement.",
+    },
+    {
+      t: "Le timing post-levée est exploitable",
+      d: "Brancher le ciblage sur les annonces de levée (Seed/Série A) capte le décideur exactement quand sa douleur « scaler sans casser » devient aiguë et budgétée.",
+    },
+  ],
+  salesnav: {
+    jobTitles: ["Founder", "Co-Founder", "CTO", "Chief Technology Officer", "VP Engineering"],
+    headcount: ["11-50", "51-200"],
+    industry: ["Computer Software", "Human Resources", "Information Technology & Services"],
+    geography: ["Paris, France", "Lyon, France"],
+    keywords: ["HR tech", "people", "payroll", "ATS", "Series A", "seed"],
+  },
+  clay: {
+    company_size_min: 20,
+    company_size_max: 100,
+    industries: ["saas", "hr_tech"],
+    country: "FR",
+    cities: ["Paris", "Lyon"],
+    funding_stage: ["seed", "series_a"],
+    funding_recency_months: 9,
+    decision_maker_titles: ["Founder", "CTO", "VP Engineering"],
+    tech_stack_any: ["slack", "notion", "linear"],
+    exclude_keywords: ["agency", "consulting", "b2c"],
+  },
+  qualification: [
+    { label: "Éditeur SaaS B2B en HR Tech", checked: true },
+    { label: "20 à 100 salariés", checked: true },
+    { label: "Levée Seed ou Série A < 9 mois", checked: true },
+    { label: "Décideur = fondateur technique ou CTO", checked: true },
+    { label: "Équipe d'ingénierie ≥ 4 personnes", checked: true },
+    { label: "Stack moderne (Slack / Linear / Notion)", checked: false },
+    { label: "Signal de tension d'effectif tech (offres dev ouvertes)", checked: false },
+  ],
+  hooks: [
+    {
+      t: "Le coût caché du « on le fait nous-mêmes »",
+      d: "Chiffrer les jours-dev récurrents que coûte le maintien interne, parle directement au réflexe NIH au lieu de le combattre.",
+    },
+    {
+      t: "La preuve avant le pitch",
+      d: "Ouvrir avec un benchmark ou un teardown technique, pas une demande de call, entre par le registre « pair technique ».",
+    },
+    {
+      t: "Le timing post-levée",
+      d: "« Vous venez de lever, l'équipe va doubler, comment vous tenez la vélocité ? », touche la douleur exactement quand elle est budgétée.",
+    },
+    {
+      t: "La DX comme terrain commun",
+      d: "Parler time-to-merge et on-call plutôt que features, montre que vous venez du même monde.",
+    },
+    {
+      t: "Le pair fondateur",
+      d: "« [CTO d'une autre HR Tech] a réduit de 40 % son temps de build avec ça », la recommandation de pair vaut mille impressions.",
+    },
+  ],
+};
+
+/**
+ * Merge un ICP du store avec le template HRTECH_DOC pour avoir un document
+ * complet à afficher. Stratégie de démo : tous les ICPs partagent le contenu
+ * du HRTECH_DOC, seuls id/segment/synthese/status/version/createdAt viennent
+ * de l'ICP réel.
+ */
+export function getDoc(icp: ICP | null | undefined): ICP {
+  const base: ICP = JSON.parse(JSON.stringify(HRTECH_DOC));
+  if (!icp) return base;
+  return {
+    ...base,
+    id: icp.id,
+    segment: icp.segment || base.segment,
+    synthese: icp.synthese || base.synthese,
+    status: icp.status || base.status,
+    version: icp.version || base.version,
+    createdAt: icp.createdAt || base.createdAt,
+  };
+}
+
+/**
  * 6 features Tier 2 affichées sur le dashboard avec bouton "Notifier" individuel.
  */
 export const COMING_SOON: ComingSoonFeature[] = [

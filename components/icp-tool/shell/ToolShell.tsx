@@ -20,7 +20,9 @@ import { ConfirmHost } from "@/components/icp-tool/ui/ConfirmModal";
 /** Routes qui prennent tout l'écran (pas de sidebar). */
 function isFullApp(pathname: string | null): boolean {
   if (!pathname) return false;
-  return pathname.startsWith("/icp/tool/session/");
+  return (
+    pathname.startsWith("/icp/tool/session/") || pathname.startsWith("/icp/tool/result/")
+  );
 }
 
 export function ToolShell({ children }: { children: React.ReactNode }) {
