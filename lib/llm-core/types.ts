@@ -57,7 +57,13 @@ export type AgentEvent =
   | { type: "search_start"; query: string; language: "fr" | "en"; reason: string }
   | { type: "search_result"; result: SearchResult }
   | { type: "panel_patch"; patch: PanelPatch }
-  | { type: "finalize_signal"; segment_summary: string }
+  | {
+      type: "finalize_signal";
+      segment_summary: string;
+      synthese: string;
+      /** Document final structuré complet (toutes les sections rich). */
+      doc: Record<string, unknown>;
+    }
   | { type: "cost"; turnUsd: number; sessionUsd: number; tokens: TokenUsage }
   | { type: "error"; code: string; message: string }
   | { type: "turn_done"; stopReason: string };

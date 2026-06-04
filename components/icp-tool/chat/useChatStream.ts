@@ -7,6 +7,7 @@
 
 import { useCallback, useRef, useState } from "react";
 import { useToolStore } from "@/lib/icp-tool/store";
+import { toast } from "@/components/icp-tool/ui/ToastProvider";
 import type { ChatEvent, ICPSection, SessionDraft } from "@/lib/icp-tool/types";
 
 type LlmPanelPatch = {
@@ -72,29 +73,37 @@ export function useChatStream() {
       };
       setSession(live);
 
-      // 2. Crée une bulle bot vide qui se remplira au fur et à mesure
-      const pushBotBubble = () => {
-        live = {
-          ...live,
-          log: [...live.log, { from: "bot", text: "" }],
-        };
+      // 2. Une seule bulle bot par "séquence de texte" : créée à la 1ère delta,
+      //    fermée dès qu'un search_start arrive. Évite les avatars empilés vides.
+      let botBubbleOpen = false;
+      const ensureBotBubble = () => {
+        if (botBubbleOpen) return;
+        live = { ...live, log: [...live.log, { from: "bot", text: "" }] };
         setSession(live);
+        botBubbleOpen = true;
+      };
+      const closeBotBubble = () => {
+        botBubbleOpen = false;
       };
 
       const appendBotText = (delta: string) => {
+        ensureBotBubble();
         const log = [...live.log];
         const last = log[log.length - 1];
         if (last && "from" in last && last.from === "bot") {
           log[log.length - 1] = { ...last, text: last.text + delta };
+          live = { ...live, log };
+          setSession(live);
         }
-        live = { ...live, log };
-        setSession(live);
       };
 
-      pushBotBubble();
-
-      // 3. Setup pending research card refs
-      const pendingResearch: Map<string, { label: string; query: string; reason: string }> = new Map();
+      // 3. Recherche groupée : tant qu'aucun texte n'est venu interrompre,
+      //    les search_start successifs sont fusionnés dans la même carte.
+      let openResearchIdx: number | null = null;
+      const dedupSources = (acc: Array<{ title: string; site: string; url: string }>, add: Array<{ title: string; site: string; url: string }>) => {
+        const seen = new Set(acc.map((s) => s.url || s.title));
+        return [...acc, ...add.filter((s) => !seen.has(s.url || s.title))];
+      };
 
       const abortController = new AbortController();
       abortRef.current = abortController;
@@ -165,46 +174,68 @@ export function useChatStream() {
         switch (type) {
           case "text": {
             const d = data as { delta: string };
-            if (d.delta) appendBotText(d.delta);
+            if (d.delta) {
+              // Une fois qu'on revoit du texte, la carte de recherche est close.
+              openResearchIdx = null;
+              appendBotText(d.delta);
+            }
             break;
           }
           case "search_start": {
             const d = data as { query: string; reason: string; language: string };
-            const label = `Recherche : ${d.query}`;
-            pendingResearch.set(d.query, { label, query: d.query, reason: d.reason });
-            // Append research event in log (sources empty for now, will be filled)
-            const newLog: ChatEvent[] = [
-              ...live.log,
-              { research: { label, steps: [d.reason], sources: [] } },
-            ];
-            live = { ...live, log: newLog };
-            setSession(live);
-            // Push une nouvelle bulle bot pour la suite
-            pushBotBubble();
+            // Toute bulle bot en cours est fermée (texte continuera dans une nouvelle bulle après recherche).
+            closeBotBubble();
+            const stepText = d.query;
+            if (openResearchIdx !== null) {
+              // Append step à la carte ouverte
+              const log = [...live.log];
+              const ev = log[openResearchIdx];
+              if (ev && "research" in ev) {
+                log[openResearchIdx] = {
+                  research: {
+                    label: ev.research.label,
+                    steps: [...ev.research.steps, stepText],
+                    sources: ev.research.sources,
+                  },
+                };
+                live = { ...live, log };
+                setSession(live);
+              }
+            } else {
+              const label = "Vérification des sources";
+              const newLog: ChatEvent[] = [
+                ...live.log,
+                { research: { label, steps: [stepText], sources: [] } },
+              ];
+              openResearchIdx = newLog.length - 1;
+              live = { ...live, log: newLog };
+              setSession(live);
+            }
             break;
           }
           case "search_result": {
             const r = data as { result: LlmSearchResult };
-            // Trouve le research event correspondant dans log et update ses sources
-            const log = [...live.log];
-            for (let i = log.length - 1; i >= 0; i--) {
-              const ev = log[i];
-              if ("research" in ev && ev.research.label === `Recherche : ${r.result.query}`) {
-                log[i] = {
+            const newSources = r.result.results
+              .filter((s) => s.url && !s.url.startsWith("#"))
+              .map((s) => ({ title: s.title, site: s.site, url: s.url }));
+            // 1. Append à la carte de recherche en cours (si une est ouverte)
+            if (openResearchIdx !== null) {
+              const log = [...live.log];
+              const ev = log[openResearchIdx];
+              if (ev && "research" in ev) {
+                log[openResearchIdx] = {
                   research: {
                     label: ev.research.label,
-                    steps: r.result.error ? [r.result.error] : ev.research.steps,
-                    sources: r.result.results.map((s) => ({
-                      title: s.title,
-                      site: s.site,
-                      url: s.url,
-                    })),
+                    steps: ev.research.steps,
+                    sources: dedupSources(ev.research.sources, newSources),
                   },
                 };
-                break;
+                live = { ...live, log };
               }
             }
-            live = { ...live, log, searchCount: (live.searchCount || 0) + 1 };
+            // 2. Append à la collection globale de session (servira au doc final).
+            const cumulative = dedupSources(live.allSources || [], newSources);
+            live = { ...live, allSources: cumulative, searchCount: (live.searchCount || 0) + 1 };
             setSession(live);
             break;
           }
@@ -218,7 +249,19 @@ export function useChatStream() {
             break;
           }
           case "finalize_signal": {
-            live = { ...live, final: true, pendingQuick: ["Générer l'analyse"] };
+            const d = data as {
+              segment_summary?: string;
+              synthese?: string;
+              doc?: Record<string, unknown>;
+            };
+            live = {
+              ...live,
+              final: true,
+              pendingQuick: ["Générer l'analyse"],
+              finalSegmentSummary: d.segment_summary || live.finalSegmentSummary,
+              finalSynthese: d.synthese || live.finalSynthese,
+              finalDoc: d.doc || live.finalDoc,
+            };
             setSession(live);
             break;
           }
@@ -249,9 +292,27 @@ export function useChatStream() {
           }
           case "error": {
             const e = data as { code: string; message: string };
-            const log: ChatEvent[] = [...live.log, { from: "bot", text: `\n\n⚠ ${e.code} : ${e.message}` }];
-            live = { ...live, log };
-            setSession(live);
+            // Erreurs "soft" (le tour s'est partiellement déroulé) : toast subtil,
+            // on garde la réponse texte intacte côté chat. Erreurs hard : on l'ajoute en bulle.
+            const softCodes = new Set([
+              "max_tool_iterations",
+              "tool_execution_error",
+            ]);
+            if (softCodes.has(e.code)) {
+              toast(
+                e.code === "max_tool_iterations"
+                  ? "Le bot a enchaîné trop de recherches, sa réponse est partielle. Relance-le si besoin."
+                  : `Outil interrompu : ${e.message}`,
+                "info",
+              );
+            } else {
+              const log: ChatEvent[] = [
+                ...live.log,
+                { from: "bot", text: `\n\n⚠ ${e.code} : ${e.message}` },
+              ];
+              live = { ...live, log };
+              setSession(live);
+            }
             break;
           }
           case "done": {

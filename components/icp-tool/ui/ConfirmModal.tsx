@@ -10,7 +10,6 @@
  */
 
 import { useEffect, useState } from "react";
-import { InfoIcon, XIcon } from "./icons";
 
 type Options = {
   title: string;
@@ -76,10 +75,12 @@ export function ConfirmHost() {
         if (e.target === e.currentTarget) close(false);
       }}
     >
-      <div className="modal" role="dialog" aria-modal="true" aria-labelledby="cf-title">
-        <div className={`modal__icon ${opts.danger ? "modal__icon--danger" : ""}`}>
-          {opts.danger ? <XIcon /> : <InfoIcon />}
-        </div>
+      <div
+        className={`modal ${opts.danger ? "modal--danger" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="cf-title"
+      >
         <h3 id="cf-title">{opts.title}</h3>
         {opts.body && <p>{opts.body}</p>}
         <div className="modal__actions">

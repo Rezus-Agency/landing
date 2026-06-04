@@ -22,6 +22,9 @@ export type Source = {
   url: string;
 };
 
+/** Niveau de confiance d'un bloc, repris des update_panel_* (badge au rendu). */
+export type Confidence = "verified" | "inferred" | "hypothesis";
+
 export type ICPSectionStatus = "draft" | "done";
 
 export type ICPSection = {
@@ -69,6 +72,15 @@ export type SessionDraft = {
   totalUsd?: number;
   /** Nombre de recherches effectuées. */
   searchCount?: number;
+  /** Phrase de cible passée par le LLM via finalize_icp.segment_summary. */
+  finalSegmentSummary?: string;
+  /** Synthèse prose produite par le LLM via finalize_icp.synthese. Paragraphe unique. */
+  finalSynthese?: string;
+  /** Document final structuré complet (identite, psychologie, marche, challenges, avantages, salesnav, clay, qualification, hooks). */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  finalDoc?: Record<string, any>;
+  /** Sources web uniques collectées au cours de la session (dedupées par URL). */
+  allSources?: Source[];
 };
 
 export type SpecDraft = {
@@ -106,13 +118,38 @@ export type Identity = {
   industry: string;
   size: string;
   tenure: string;
+  /** Ce sur quoi le décideur est mesuré (utile messaging + qualif). */
+  kpis?: string;
+  /** Rôle dans l'achat : economic buyer / champion / utilisateur. */
+  buying_role?: string;
 };
 
+/** Une douleur priorisée du décideur (brief messaging). */
+export type Pain = {
+  pain: string;
+  driver: string;
+  intensite: "haute" | "moyenne";
+};
+
+/**
+ * Psychologie du décideur. Champs historiques (prose/vocab/autorites) =
+ * VOLET PROFIL (profond, client). Champs additifs (douleurs/status_quo/
+ * preuves/resistances/registre/biais) = VOLET BRIEF (messaging, Rezus).
+ * Tout est optionnel pour rester compatible avec les ICP déjà stockés.
+ */
 export type Psychology = {
   prose: string[];
   vocab_yes: string[];
   vocab_no: string[];
   autorites: string;
+  // Volet profil
+  biais?: string;
+  // Volet brief messaging
+  douleurs?: Pain[];
+  status_quo?: string;
+  preuves?: string[];
+  resistances?: string[];
+  registre?: string;
 };
 
 export type MarketAnalysis = {
@@ -126,16 +163,76 @@ export type MarketAnalysis = {
   saisonnalite: string;
   tendances: string;
   sources: Source[];
+  /** Valeur annuelle moyenne d'un contrat (économie du deal). */
+  acv?: string;
+  /** Une ligne : ce que cette analyse implique pour la prospection. */
+  outbound_note?: string;
+  /** Niveau de confiance global du bloc marché (badge au rendu). */
+  conf?: Confidence;
 };
 
 export type Challenge = {
   t: string;
   d: string;
+  conf?: Confidence;
 };
 
 export type Hook = {
   t: string;
   d: string;
+};
+
+/** Angle de message (ex-hook), rebranché sur la psychologie. Pas de copy écrit. */
+export type Angle = {
+  angle: string;
+  /** Le ressort psychologique actionné (réf une douleur). */
+  ressort: string;
+  /** La preuve mobilisée. */
+  preuve: string;
+  /** Ce qu'il ne faut surtout pas dire (réf vocab_no). */
+  eviter: string;
+};
+
+/** Signal d'achat : quand contacter un compte. */
+export type Trigger = {
+  event: string;
+  source: string;
+  window: string;
+  priority: "haute" | "moyenne";
+};
+
+/** Variable d'enrichissement à pull par prospect. */
+export type EnrichmentVar = {
+  variable: string;
+  usage: string;
+  source: string;
+};
+
+/** Exclusion dure au niveau compte. */
+export type AntiFit = {
+  signal: string;
+  reason: string;
+};
+
+/** Filtre bloquant de qualification (hard disqualifier). */
+export type BlockCriterion = {
+  signal: string;
+  condition: string;
+  dataPoint: string;
+};
+
+/** Critère de scoring pondéré pour prioriser un compte. */
+export type ScoreCriterion = {
+  label: string;
+  condition: string;
+  weight: number;
+};
+
+/** Scorecard de qualification opérationnelle (remplace la checklist binaire). */
+export type Scorecard = {
+  bloquants: BlockCriterion[];
+  scoring: ScoreCriterion[];
+  threshold?: number;
 };
 
 export type QualificationCriterion = {
@@ -150,6 +247,15 @@ export type ICP = {
   version: number;
   createdAt: string;
   synthese: string;
+  /**
+   * Sections du panel discovery, telles que renseignées par le LLM
+   * pendant la session (bullets + status). C'est la source de vérité
+   * pour le rendu du document tant que la synthèse Opus 4.8 (Phase 3)
+   * n'est pas branchée.
+   */
+  panel?: Record<string, ICPSection>;
+  /** Sources web uniques collectées pendant la session (toutes recherches confondues). */
+  sources?: Source[];
   identite?: Identity;
   psychologie?: Psychology;
   marche?: MarketAnalysis;
@@ -159,6 +265,28 @@ export type ICP = {
   clay?: ClayFilter;
   qualification?: QualificationCriterion[];
   hooks?: Hook[];
+  /** Le résultat non-évident acté : cible de départ -> cible affinée + pourquoi. */
+  reframe?: Reframe;
+  /** Angles de message dérivés de la psychologie (ex-hooks enrichis). */
+  angles?: Angle[];
+  /** Signaux d'achat : quand contacter. */
+  triggers?: Trigger[];
+  /** Variables à enrichir par prospect. */
+  enrichment?: EnrichmentVar[];
+  /** Exclusions dures au niveau compte. */
+  antifit?: AntiFit[];
+  /** Scorecard de qualification (remplace `qualification` binaire). */
+  scorecard?: Scorecard;
+};
+
+/** Le reframe avant -> après : la trace du résultat non-évident de la session. */
+export type Reframe = {
+  /** Cible générique d'arrivée du fondateur (tours 1-3). */
+  from: string;
+  /** Cible affinée actée. */
+  to: string;
+  /** Pourquoi la cible affinée est plus défendable (1-2 phrases). */
+  why: string;
 };
 
 export type ShareEntry = {

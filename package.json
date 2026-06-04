@@ -14,11 +14,14 @@
     "icp:turn": "tsx scripts/icp-cli/test-turn.ts",
     "icp:multi": "tsx scripts/icp-cli/test-multi.ts",
     "icp:e2e": "tsx scripts/icp-cli/test-e2e.ts",
+    "icp:finalize": "tsx scripts/icp-cli/test-finalize.ts",
+    "icp:pdf": "tsx scripts/icp-cli/test-pdf.tsx",
     "icp:chat": "node --import tsx scripts/icp-cli/index.tsx"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.100.1",
     "@hookform/resolvers": "^5.4.0",
+    "@react-pdf/renderer": "^4.5.1",
     "@tavily/core": "^0.7.5",
     "@vercel/analytics": "^2.0.1",
     "@vercel/og": "^0.11.1",

@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import { MicIcon, SendIcon, StopRecIcon } from "@/components/icp-tool/ui/icons";
-import { useSpeechRecognition } from "./useSpeechRecognition";
+import { useVoiceInput } from "./useVoiceInput";
+import { toast } from "@/components/icp-tool/ui/ToastProvider";
 
 interface Props {
   value: string;
@@ -29,14 +30,19 @@ export function ChatInput({
     ta.style.height = Math.min(ta.scrollHeight, 150) + "px";
   }, [value]);
 
-  const { supported, listening, start, stop } = useSpeechRecognition({
+  const { supported, listening, recording, transcribing, start, stop } = useVoiceInput({
     onResult: (text) => {
       const sep = value && !value.endsWith(" ") ? " " : "";
       onChange((value + sep + text).slice(0, 4000));
+      // Focus le textarea pour que l'utilisateur puisse éditer / envoyer
+      taRef.current?.focus();
+    },
+    onError: (msg) => {
+      toast(msg, "error");
     },
   });
 
-  const canSend = value.trim().length > 0 && !disabled;
+  const canSend = value.trim().length > 0 && !disabled && !transcribing;
 
   const handleKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -44,6 +50,20 @@ export function ChatInput({
       if (canSend) onSubmit();
     }
   };
+
+  const onMicClick = () => {
+    if (transcribing) return;
+    if (recording) stop();
+    else void start();
+  };
+
+  const micTitle = !supported
+    ? "Dictée non supportée par ce navigateur"
+    : transcribing
+      ? "Transcription en cours…"
+      : recording
+        ? "Cliquer pour terminer la dictée"
+        : "Dicter votre réponse (gpt-4o-transcribe)";
 
   return (
     <div className={`chat-input__box ${listening ? "listening" : ""}`}>
@@ -53,25 +73,37 @@ export function ChatInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={handleKey}
-        placeholder={placeholder}
-        disabled={disabled}
+        placeholder={transcribing ? "Transcription en cours…" : placeholder}
+        disabled={disabled || transcribing}
         aria-label="Votre réponse"
       />
       <button
         type="button"
-        className={`chat-mic ${listening ? "rec" : ""}`}
-        onClick={() => (listening ? stop() : start())}
-        disabled={!supported || disabled}
-        title={
-          supported
-            ? listening
-              ? "Arrêter la dictée"
-              : "Dicter votre réponse"
-            : "Dictée non supportée par votre navigateur"
-        }
-        aria-label={listening ? "Arrêter la dictée" : "Dicter"}
+        className={`chat-mic ${recording ? "rec" : ""} ${transcribing ? "pending" : ""}`}
+        onClick={onMicClick}
+        disabled={!supported || disabled || transcribing}
+        title={micTitle}
+        aria-label={recording ? "Arrêter la dictée" : "Dicter"}
+        aria-busy={transcribing}
       >
-        {listening ? <StopRecIcon /> : <MicIcon />}
+        {transcribing ? (
+          <span
+            aria-hidden="true"
+            style={{
+              display: "inline-block",
+              width: 14,
+              height: 14,
+              border: "2px solid currentColor",
+              borderTopColor: "transparent",
+              borderRadius: "50%",
+              animation: "spin 0.7s linear infinite",
+            }}
+          />
+        ) : recording ? (
+          <StopRecIcon />
+        ) : (
+          <MicIcon />
+        )}
       </button>
       <button
         type="button"

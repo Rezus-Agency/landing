@@ -1,7 +1,7 @@
 "use client";
 
 import { useToolStore } from "@/lib/icp-tool/store";
-import { COMING_SOON } from "@/lib/icp-tool/mock-data";
+import { COMING_SOON } from "@/lib/icp-tool/features";
 import { ComingSoonCard } from "./ComingSoonCard";
 import { CheckIcon } from "./icons";
 

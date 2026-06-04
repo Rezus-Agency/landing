@@ -4,11 +4,7 @@ import { useEffect, useRef } from "react";
 import { useToolStore } from "@/lib/icp-tool/store";
 import { CopyButton } from "./CopyButton";
 import { toast } from "@/components/icp-tool/ui/ToastProvider";
-import {
-  ExternalIcon,
-  LockIcon,
-  ShareIcon,
-} from "@/components/icp-tool/ui/icons";
+import { ExternalIcon, LockIcon } from "@/components/icp-tool/ui/icons";
 
 interface Props {
   icpId: string;
@@ -59,9 +55,6 @@ export function ShareDialog({ icpId, open, onClose }: Props) {
       }}
     >
       <div className="modal" role="dialog" aria-modal="true" aria-labelledby="share-title">
-        <div className="modal__icon">
-          <ShareIcon />
-        </div>
         <h3 id="share-title">Partager cette analyse</h3>
         <p>
           Toute personne avec ce lien pourra consulter l&apos;analyse en lecture seule, sans

@@ -3,7 +3,7 @@
 import { use } from "react";
 import Link from "next/link";
 import { useToolStore } from "@/lib/icp-tool/store";
-import { COMING_SOON } from "@/lib/icp-tool/mock-data";
+import { COMING_SOON } from "@/lib/icp-tool/features";
 import { toast } from "@/components/icp-tool/ui/ToastProvider";
 import {
   ArrowRightIcon,

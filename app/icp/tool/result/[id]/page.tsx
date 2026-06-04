@@ -4,43 +4,44 @@ import { use, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToolStore } from "@/lib/icp-tool/store";
-import { getDoc } from "@/lib/icp-tool/mock-data";
 import { toast } from "@/components/icp-tool/ui/ToastProvider";
 import {
   ArrowRightIcon,
   BackIcon,
-  BoltIcon,
   ChartIcon,
   PdfIcon,
+  PlugIcon,
   ShareIcon,
   SparkIcon,
+  TargetIcon,
   UserIcon,
 } from "@/components/icp-tool/ui/icons";
 import {
+  ConfLegend,
+  DocKeyFacts,
+  SectionAngles,
+  SectionAntifit,
   SectionAvantages,
   SectionChallenges,
   SectionIdentite,
   SectionMarche,
-  SectionOutputs,
-  SectionPsychologie,
+  SectionPsyBrief,
+  SectionPsyProfil,
+  SectionReframe,
   SectionRezusCTA,
+  SectionScorecard,
+  SectionSources,
   SectionSynthese,
+  SectionTargeting,
+  SectionTriggers,
 } from "@/components/icp-tool/doc/DocSections";
 import { ShareDialog } from "@/components/icp-tool/doc/ShareDialog";
+import { ClayExportDialog } from "@/components/icp-tool/doc/ClayExportDialog";
+import type { ICP } from "@/lib/icp-tool/types";
 
 const MONTHS = [
-  "jan",
-  "fév",
-  "mar",
-  "avr",
-  "mai",
-  "juin",
-  "juil",
-  "août",
-  "sep",
-  "oct",
-  "nov",
-  "déc",
+  "jan", "fév", "mar", "avr", "mai", "juin",
+  "juil", "août", "sep", "oct", "nov", "déc",
 ];
 
 function fmtDate(iso: string): string {
@@ -49,25 +50,55 @@ function fmtDate(iso: string): string {
   return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
 }
 
-/** 3 groupes de sections, naviguables via TOC + pager (port du source). */
-const GROUPS = [
+/** 3 pages, alignées sur le workflow outbound : Stratégie, Message, Ciblage. */
+const GROUPS: {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  render: (icp: ICP) => React.ReactNode;
+}[] = [
   {
-    id: "profil",
-    label: "Profil & décideur",
-    icon: <UserIcon />,
-    secs: ["synthese", "identite", "psychologie"] as const,
-  },
-  {
-    id: "marche",
-    label: "Marché & positionnement",
+    id: "strategie",
+    label: "Stratégie",
     icon: <ChartIcon />,
-    secs: ["marche", "challenges", "avantages"] as const,
+    render: (icp) => (
+      <>
+        <DocKeyFacts doc={icp} />
+        <SectionSynthese doc={icp} />
+        <ConfLegend />
+        <SectionReframe doc={icp} />
+        <SectionPsyProfil doc={icp} />
+        <SectionMarche doc={icp} />
+        <SectionChallenges doc={icp} />
+        <SectionAvantages doc={icp} />
+      </>
+    ),
   },
   {
-    id: "action",
-    label: "Plan d'action",
-    icon: <BoltIcon />,
-    secs: ["outputs"] as const,
+    id: "message",
+    label: "Message",
+    icon: <UserIcon />,
+    render: (icp) => (
+      <>
+        <SectionIdentite doc={icp} />
+        <SectionPsyBrief doc={icp} />
+        <SectionAngles doc={icp} />
+      </>
+    ),
+  },
+  {
+    id: "ciblage",
+    label: "Ciblage",
+    icon: <TargetIcon />,
+    render: (icp) => (
+      <>
+        <SectionTargeting doc={icp} />
+        <SectionTriggers doc={icp} />
+        <SectionAntifit doc={icp} />
+        <SectionScorecard doc={icp} />
+        <SectionSources doc={icp} />
+      </>
+    ),
   },
 ];
 
@@ -80,23 +111,24 @@ export default function ResultPage({ params }: { params: Promise<{ id: string }>
   const [hydrated, setHydrated] = useState(false);
   const [pageIdx, setPageIdx] = useState(0);
   const [shareOpen, setShareOpen] = useState(false);
+  const [clayOpen, setClayOpen] = useState(false);
+  const [generatingPdf, setGeneratingPdf] = useState(false);
   const scrollerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setHydrated(true);
   }, []);
 
-  // Scroll to top when switching page
+  // Scroll au top quand on change de page
   useEffect(() => {
-    scrollerRef.current?.scrollTo(0, 0);
+    scrollerRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   }, [pageIdx]);
 
   if (!hydrated) return null;
 
   const icp = icpById(id);
-  const doc = getDoc(icp);
 
-  if (!icp && id !== "icp_hrtech_founders") {
+  if (!icp) {
     return (
       <div className="main" style={{ overflowY: "auto", height: "100vh" }}>
         <div className="main__inner">
@@ -115,27 +147,47 @@ export default function ResultPage({ params }: { params: Promise<{ id: string }>
     );
   }
 
-  const SECTION_BY_KEY: Record<string, React.ReactNode> = {
-    synthese: <SectionSynthese doc={doc} />,
-    identite: <SectionIdentite doc={doc} />,
-    psychologie: <SectionPsychologie doc={doc} />,
-    marche: <SectionMarche doc={doc} />,
-    challenges: <SectionChallenges doc={doc} />,
-    avantages: <SectionAvantages doc={doc} />,
-    outputs: <SectionOutputs doc={doc} />,
+  const onIterate = () => {
+    clearSession();
+    router.push(`/icp/tool/session/${icp.id}`);
+  };
+
+  const onPdf = async () => {
+    if (!icp || generatingPdf) return;
+    setGeneratingPdf(true);
+    try {
+      const [{ pdf }, { IcpPdf }] = await Promise.all([
+        import("@react-pdf/renderer"),
+        import("@/components/icp-tool/doc/IcpPdf"),
+      ]);
+      const blob = await pdf(<IcpPdf icp={icp} />).toBlob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      const slug =
+        (icp.segment || "icp")
+          .normalize("NFD")
+          .replace(/[̀-ͯ]/g, "")
+          .replace(/[^a-zA-Z0-9-_]+/g, "-")
+          .replace(/^-+|-+$/g, "")
+          .slice(0, 60) || "icp";
+      a.download = `Rezus-ICP-${slug}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      toast("PDF téléchargé.", "success");
+    } catch (err) {
+      toast(
+        `Erreur PDF : ${(err as Error).message || "génération échouée"}`,
+        "error",
+      );
+    } finally {
+      setGeneratingPdf(false);
+    }
   };
 
   const goTo = (i: number) => setPageIdx(Math.max(0, Math.min(GROUPS.length - 1, i)));
-
-  const onIterate = () => {
-    clearSession();
-    router.push(`/icp/tool/session/${id}`);
-  };
-
-  const onPdf = () => {
-    toast("Génération du PDF (simulée)…", "info");
-    setTimeout(() => toast("PDF prêt. Export de démo, vrai export à venir."), 1300);
-  };
 
   return (
     <div
@@ -171,9 +223,6 @@ export default function ResultPage({ params }: { params: Promise<{ id: string }>
               >
                 <BackIcon />
               </Link>
-              <span className="autosave">
-                <span className="d" /> Sauvegardé
-              </span>
             </div>
             <div className="doc-actions">
               <button
@@ -190,35 +239,51 @@ export default function ResultPage({ params }: { params: Promise<{ id: string }>
               >
                 <ShareIcon /> Partager
               </button>
-              <button type="button" className="btn btn--primary btn--sm" onClick={onPdf}>
-                <PdfIcon /> Exporter PDF
+              <button
+                type="button"
+                className="btn btn--secondary btn--sm"
+                onClick={() => setClayOpen(true)}
+              >
+                <PlugIcon /> Table Clay
+              </button>
+              <button
+                type="button"
+                className="btn btn--primary btn--sm"
+                onClick={onPdf}
+                disabled={generatingPdf}
+                aria-busy={generatingPdf}
+              >
+                <PdfIcon />
+                {generatingPdf ? "Génération…" : "Exporter PDF"}
               </button>
             </div>
           </div>
 
-          <div className="doc-hero">
-            <div className="doc-hero__meta">
-              {doc.status === "final" ? (
-                <span className="badge badge--final">Finalisé</span>
-              ) : (
-                <span className="badge badge--draft">Brouillon</span>
-              )}
-              <span className="mono">v{doc.version}</span>
-              <span className="mono">· généré le {fmtDate(doc.createdAt)}</span>
+          {/* Le hero (segment + meta) n'apparaît que sur la 1re page */}
+          {pageIdx === 0 && (
+            <div className="doc-hero">
+              <div className="doc-hero__meta">
+                {icp.status === "final" ? (
+                  <span className="badge badge--final">Finalisé</span>
+                ) : (
+                  <span className="badge badge--draft">Brouillon</span>
+                )}
+                <span className="mono">v{icp.version}</span>
+                <span className="mono">· généré le {fmtDate(icp.createdAt)}</span>
+              </div>
+              <h1>
+                Votre ICP, <span className="seg">{icp.segment}</span>
+              </h1>
             </div>
-            <h1>
-              Votre ICP, <span className="seg">{doc.segment}</span>
-            </h1>
-          </div>
+          )}
 
           {GROUPS.map((g, i) => (
             <div key={g.id} className={`doc-page ${i === pageIdx ? "show" : ""}`}>
-              {g.secs.map((sec) => (
-                <div key={sec}>{SECTION_BY_KEY[sec]}</div>
-              ))}
-              <SectionRezusCTA />
+              {g.render(icp)}
             </div>
           ))}
+
+          <SectionRezusCTA />
 
           <div className="doc-pager">
             <button
@@ -253,6 +318,7 @@ export default function ResultPage({ params }: { params: Promise<{ id: string }>
         open={shareOpen}
         onClose={() => setShareOpen(false)}
       />
+      <ClayExportDialog icp={icp} open={clayOpen} onClose={() => setClayOpen(false)} />
     </div>
   );
 }

@@ -16,7 +16,7 @@ import type {
   ToolState,
   User,
 } from "./types";
-import { DEMO_USER, GUEST_USER, SEED_ICPS } from "./mock-data";
+import { DEMO_USER, GUEST_USER } from "./users";
 
 type Actions = {
   // auth
@@ -61,7 +61,7 @@ const initialRegistered: RegisteredUser[] = [
 
 const initialState: ToolState = {
   auth: null,
-  icps: JSON.parse(JSON.stringify(SEED_ICPS)),
+  icps: [],
   registered: initialRegistered,
   session: null,
   spec: null,
@@ -137,7 +137,7 @@ export const useToolStore = create<ToolState & Actions>()(
       },
 
       deleteAccount: () => {
-        set({ ...initialState, icps: JSON.parse(JSON.stringify(SEED_ICPS)) });
+        set({ ...initialState });
       },
 
       icpById: (id) => get().icps.find((i) => i.id === id),
@@ -224,7 +224,23 @@ export const useToolStore = create<ToolState & Actions>()(
     }),
     {
       name: "rezus_icp2_v1",
-      version: 2,
+      // Bump à 3 : suppression des SEED_ICPS et du template HRTECH_DOC.
+      // Les ICPs v2 n'ont pas de champ `panel` (les bullets vivaient dans
+      // le template HRTECH partagé via getDoc), donc on les drop. Le reste
+      // du state (auth, registered, shares, notify) reste cohérent.
+      version: 3,
+      migrate: (persisted, fromVersion) => {
+        const state = (persisted || {}) as Partial<ToolState>;
+        if (fromVersion < 3) {
+          return {
+            ...state,
+            icps: [],
+            session: null,
+            spec: null,
+          } as ToolState;
+        }
+        return state as ToolState;
+      },
     },
   ),
 );

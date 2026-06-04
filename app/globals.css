@@ -2803,3 +2803,51 @@ main:focus {
     animation: none !important;
   }
 }
+
+/* ============================================================
+   Custom scrollbar — warm dark, amber on hover
+   Targets default browser scrollbars on root + scrollables.
+   Firefox uses scrollbar-color (only 2 colors : thumb + track).
+   WebKit (Chrome/Safari/Edge) uses the pseudo-elements.
+   ============================================================ */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklch, var(--accent) 22%, var(--surface-2)) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background: transparent;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb {
+  background: color-mix(in oklch, var(--accent) 18%, var(--surface-2));
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: background 160ms ease;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklch, var(--accent) 45%, var(--surface-2));
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:active {
+  background: var(--accent);
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+/* Inputs / textareas : scroll plus discret (4px) */
+textarea::-webkit-scrollbar,
+input::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+textarea::-webkit-scrollbar-thumb,
+input::-webkit-scrollbar-thumb {
+  border-width: 1px;
+}

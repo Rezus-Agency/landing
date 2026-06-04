@@ -3,25 +3,32 @@
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { useToolStore } from "@/lib/icp-tool/store";
-import { getDoc } from "@/lib/icp-tool/mock-data";
 import {
   ArrowRightIcon,
   BoltIcon,
   BrainIcon,
   ChartIcon,
   Doc2Icon,
+  ExternalIcon,
   LockIcon,
+  MagnetIcon,
+  SplitIcon,
   TargetIcon,
   UserIcon,
   Warn2Icon,
 } from "@/components/icp-tool/ui/icons";
 import {
+  ConfLegend,
+  DocKeyFacts,
+  SectionAngles,
   SectionAvantages,
   SectionChallenges,
   SectionIdentite,
   SectionMarche,
-  SectionOutputs,
-  SectionPsychologie,
+  SectionPsyBrief,
+  SectionPsyProfil,
+  SectionReframe,
+  SectionSources,
   SectionSynthese,
 } from "@/components/icp-tool/doc/DocSections";
 
@@ -48,12 +55,15 @@ function fmtDate(iso: string): string {
 
 const NAV: { id: string; label: string; icon: React.ReactNode }[] = [
   { id: "synthese", label: "Synthèse", icon: <Doc2Icon /> },
-  { id: "identite", label: "Identité", icon: <UserIcon /> },
-  { id: "psychologie", label: "Psychologie", icon: <BrainIcon /> },
+  { id: "reframe", label: "Reframe", icon: <SplitIcon /> },
+  { id: "psychologie", label: "Profil", icon: <BrainIcon /> },
   { id: "marche", label: "Marché", icon: <ChartIcon /> },
   { id: "challenges", label: "Risques", icon: <Warn2Icon /> },
   { id: "avantages", label: "Avantages", icon: <TargetIcon /> },
-  { id: "outputs", label: "Outputs", icon: <BoltIcon /> },
+  { id: "identite", label: "Identité", icon: <UserIcon /> },
+  { id: "brief", label: "Brief", icon: <MagnetIcon /> },
+  { id: "angles", label: "Angles", icon: <BoltIcon /> },
+  { id: "sources", label: "Sources", icon: <ExternalIcon /> },
 ];
 
 export default function PublicSharePage({
@@ -136,8 +146,6 @@ export default function PublicSharePage({
     );
   }
 
-  const doc = getDoc(icp);
-
   return (
     <div className="pub">
       <div className="pub-top">
@@ -177,21 +185,26 @@ export default function PublicSharePage({
           <div className="doc-hero">
             <div className="doc-hero__meta">
               <span className="badge badge--final">Analyse ICP</span>
-              <span className="mono">v{doc.version}</span>
-              <span className="mono">· {fmtDate(doc.createdAt)}</span>
+              <span className="mono">v{icp.version}</span>
+              <span className="mono">· {fmtDate(icp.createdAt)}</span>
             </div>
             <h1>
-              ICP, <span className="seg">{doc.segment}</span>
+              ICP, <span className="seg">{icp.segment}</span>
             </h1>
           </div>
 
-          <SectionSynthese doc={doc} publicView />
-          <SectionIdentite doc={doc} publicView />
-          <SectionPsychologie doc={doc} publicView />
-          <SectionMarche doc={doc} publicView />
-          <SectionChallenges doc={doc} publicView />
-          <SectionAvantages doc={doc} publicView />
-          <SectionOutputs doc={doc} publicView />
+          <DocKeyFacts doc={icp} />
+          <SectionSynthese doc={icp} publicView />
+          <ConfLegend />
+          <SectionReframe doc={icp} publicView />
+          <SectionPsyProfil doc={icp} publicView />
+          <SectionMarche doc={icp} publicView />
+          <SectionChallenges doc={icp} publicView />
+          <SectionAvantages doc={icp} publicView />
+          <SectionIdentite doc={icp} publicView />
+          <SectionPsyBrief doc={icp} publicView />
+          <SectionAngles doc={icp} publicView />
+          <SectionSources doc={icp} publicView />
         </div>
       </div>
 

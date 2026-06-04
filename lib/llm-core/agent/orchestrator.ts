@@ -61,7 +61,10 @@ export async function* runTurn(
   userMessage: string,
   opts: RunTurnOptions = {},
 ): AsyncGenerator<AgentEvent, void, unknown> {
-  const maxTokens = opts.maxTokens || 1200;
+  // Bumped à 4096 pour que finalize_icp puisse produire les 11 champs structurés
+  // (~2000-3000 tokens de JSON). Les autres tours utilisent à peine 800 tokens donc
+  // ce n'est qu'un plafond, pas un coût garanti.
+  const maxTokens = opts.maxTokens || 4096;
   const useRouter = opts.router !== false && !opts.model;
 
   // Routing décision
@@ -100,15 +103,16 @@ export async function* runTurn(
   yield { type: "turn_start", model, intent };
 
   // Tool use loop : on continue tant que Claude appelle des tools.
-  // Garde-fou : max 5 iterations pour éviter une boucle infinie.
-  for (let iteration = 0; iteration < 5; iteration++) {
+  // Garde-fou : max 10 iterations pour éviter une boucle infinie tout en laissant
+  // le bot enchaîner plusieurs recherches + 4-6 panel updates dans le même tour.
+  for (let iteration = 0; iteration < 10; iteration++) {
     const client = getClient();
 
     // Répare les éventuels tool_use orphelins avant chaque call API.
     // L'état state.messages reste tel quel ; on envoie une version réparée.
     const safeMessages = repairMessages(state.messages);
 
-    const stream = await client.messages.stream({
+    const stream = client.messages.stream({
       model,
       max_tokens: maxTokens,
       system: opts.cache
@@ -306,11 +310,21 @@ export async function* runTurn(
             content: `Panel section "${section}" updated with ${bullets.length} bullet(s). Confidence: ${confidence}.`,
           });
         } else if (tu.name === "finalize_icp") {
-          const input = (tu.input || {}) as { segment_summary?: string };
+          const input = (tu.input || {}) as Record<string, unknown>;
           state.finalized = true;
+          const segment_summary =
+            typeof input.segment_summary === "string" && input.segment_summary.trim()
+              ? input.segment_summary.trim()
+              : "Segment cible finalisé.";
+          const synthese =
+            typeof input.synthese === "string" && input.synthese.trim()
+              ? input.synthese.trim()
+              : "";
           yield {
             type: "finalize_signal",
-            segment_summary: input.segment_summary || "Segment cible finalisé.",
+            segment_summary,
+            synthese,
+            doc: input,
           };
           toolResults.push({
             type: "tool_result",
