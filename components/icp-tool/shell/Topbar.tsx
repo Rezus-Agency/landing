@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { MenuIcon, PlusIcon } from "@/components/icp-tool/ui/icons";
+import { MenuIcon } from "@/components/icp-tool/ui/icons";
 
 interface TopbarProps {
   onMenuClick: () => void;
@@ -16,9 +16,9 @@ export function Topbar({ onMenuClick }: TopbarProps) {
       <Link className="topbar__brand" href="/icp/tool/dashboard">
         <span className="logo__mark">Rezus</span>
       </Link>
-      <Link className="iconbtn" href="/icp/tool/new" aria-label="Nouvelle session">
-        <PlusIcon />
-      </Link>
+      {/* Espaceur pour garder la marque centrée (la "Nouvelle session" reste
+          accessible via le menu). */}
+      <span className="iconbtn" aria-hidden="true" style={{ visibility: "hidden" }} />
     </div>
   );
 }
