@@ -1859,7 +1859,7 @@ body.app {
   height: 100vh;
 }
 .icp-panel__head {
-  padding: 18px 20px 14px;
+  padding: 22px 20px 14px;
   border-bottom: 1px solid var(--border);
 }
 .icp-panel__head .eyebrow {
@@ -1879,6 +1879,8 @@ body.app {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  /* Décale la ligne titre + progression sous le bouton de fermeture (X) */
+  margin-top: 10px;
 }
 .icp-panel__progress {
   font-family: var(--font-mono);
