@@ -42,7 +42,9 @@ export async function deleteIcp(id: string): Promise<void> {
 // Sessions de chat en cours (table icp_sessions)
 // ---------------------------------------------------------------------------
 
-/** Crée ou met à jour la session de chat (upsert sur `id`). */
+/** Crée ou met à jour la session de chat (upsert sur `id`).
+ * Invariant : une seule session OUVERTE (final=false) par user. On supprime donc
+ * les autres sessions ouvertes après l'upsert (évite l'accumulation d'orphelins). */
 export async function saveSession(session: SessionDraft): Promise<void> {
   const supabase = createClient();
   const {
@@ -56,6 +58,12 @@ export async function saveSession(session: SessionDraft): Promise<void> {
     data: session,
   });
   if (error) throw error;
+  // Purge les autres sessions ouvertes (RLS scope déjà au user courant).
+  await supabase
+    .from("icp_sessions")
+    .delete()
+    .eq("final", false)
+    .neq("id", session.id);
 }
 
 /** Charge la dernière session non finalisée du user (celle à reprendre). */
@@ -72,10 +80,18 @@ export async function fetchOpenSession(): Promise<SessionDraft | null> {
   return data ? ((data as { data: SessionDraft }).data ?? null) : null;
 }
 
-/** Supprime une session (abandon ou consommée par la génération). */
+/** Supprime une session précise (par id). */
 export async function deleteSession(id: string): Promise<void> {
   const supabase = createClient();
   const { error } = await supabase.from("icp_sessions").delete().eq("id", id);
+  if (error) throw error;
+}
+
+/** Supprime TOUTES les sessions ouvertes du user (abandon : on nettoie tout,
+ * y compris d'éventuels orphelins, pour que rien ne réapparaisse au reload). */
+export async function deleteAllOpenSessions(): Promise<void> {
+  const supabase = createClient();
+  const { error } = await supabase.from("icp_sessions").delete().eq("final", false);
   if (error) throw error;
 }
 

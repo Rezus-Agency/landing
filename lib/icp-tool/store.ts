@@ -24,6 +24,7 @@ import {
   saveSession,
   fetchOpenSession,
   deleteSession,
+  deleteAllOpenSessions,
 } from "./db";
 import type {
   ICP,
@@ -282,7 +283,11 @@ export const useToolStore = create<ToolState & Actions>()(
           cancelSessionPersist();
           const id = get().session?.id;
           set({ session: null });
+          // Abandon / consommation : on supprime la session courante (quel que
+          // soit son statut) ET toutes les sessions ouvertes (orphelins), pour
+          // que rien ne réapparaisse et ne s'accumule.
           if (id) deleteSession(id).catch(() => {});
+          deleteAllOpenSessions().catch(() => {});
         },
 
         hydrateSession: async () => {
