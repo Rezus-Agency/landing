@@ -3398,24 +3398,46 @@ html.pub-body {
 @media (max-width: 860px) {
   .doc-wrap {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 16px;
   }
+  /* Sommaire = barre d'onglets horizontale compacte, scrollable, sticky en haut */
   .doc-nav {
-    position: static;
+    position: sticky;
+    top: 0;
+    z-index: 6;
     flex-direction: row;
-    flex-wrap: wrap;
-    gap: 6px;
-    padding-bottom: 10px;
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 10px 0;
+    margin: 0 -4px;
+    overflow-x: auto;
+    scrollbar-width: none;
     border-bottom: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .doc-nav::-webkit-scrollbar {
+    display: none;
   }
   .doc-nav__lbl {
     display: none;
   }
-  .doc-nav a {
-    border-left: none;
+  .doc-nav a,
+  .doc-nav button {
+    width: auto;
+    flex: 0 0 auto;
+    white-space: nowrap;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 7px 13px 7px 9px;
   }
-  .doc-nav a.active {
-    border-left: none;
+  .doc-nav a.active,
+  .doc-nav button.active {
+    border-color: var(--accent);
+  }
+  /* Numéro 01/02/03 masqué sur mobile pour gagner de la place */
+  .doc-nav a .n,
+  .doc-nav button .n {
+    display: none;
   }
 }
 
