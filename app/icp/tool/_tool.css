@@ -2513,6 +2513,53 @@ body.app {
   gap: 8px;
   flex-wrap: wrap;
 }
+/* Menu d'actions compact : masqué sur desktop (les boutons inline suffisent) */
+.doc-actions__more-wrap {
+  display: none;
+  position: relative;
+}
+.doc-actions__menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 210px;
+  background: #1a1410;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 60;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+.doc-actions__menu button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  padding: 11px 12px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text-1, #f0e8de);
+  cursor: pointer;
+}
+.doc-actions__menu button:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+.doc-actions__menu button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.doc-actions__menu svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
 .doc-hero {
   padding: 18px 0 36px;
   border-bottom: 1px solid var(--border);
@@ -3438,6 +3485,61 @@ html.pub-body {
   .doc-nav a .n,
   .doc-nav button .n {
     display: none;
+  }
+
+  /* --- Page résultat (tabbed) : barre d'onglets FIXE EN BAS (app-like) --- */
+  .doc-tabbed .doc-nav {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    margin: 0;
+    gap: 4px;
+    overflow: visible;
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--border);
+    border-bottom: none;
+    background: color-mix(in oklch, var(--bg) 92%, transparent);
+    backdrop-filter: blur(12px);
+  }
+  .doc-tabbed .doc-nav button {
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: 4px;
+    width: auto;
+    border: none;
+    border-radius: 12px;
+    padding: 7px 4px;
+    font-size: 11px;
+    justify-content: center;
+    text-align: center;
+  }
+  .doc-tabbed .doc-nav button.active {
+    border: none;
+    background: transparent;
+    color: var(--accent);
+  }
+  .doc-tabbed .doc-nav .doc-nav__t {
+    flex: none;
+    text-align: center;
+  }
+  /* Place sous le contenu pour ne pas passer derrière la barre fixe */
+  .doc-tabbed .doc-body {
+    padding-bottom: 92px;
+  }
+  /* Pager prev/next redondant avec la barre du bas */
+  .doc-tabbed .doc-pager {
+    display: none;
+  }
+
+  /* Actions : boutons inline masqués, menu ⋯ compact à la place */
+  .doc-actions {
+    display: none;
+  }
+  .doc-actions__more-wrap {
+    display: inline-flex;
   }
 }
 

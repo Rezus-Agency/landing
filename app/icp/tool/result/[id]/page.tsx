@@ -9,6 +9,7 @@ import {
   ArrowRightIcon,
   BackIcon,
   ChartIcon,
+  DotsIcon,
   PdfIcon,
   PlugIcon,
   ShareIcon,
@@ -116,11 +117,25 @@ export default function ResultPage({ params }: { params: Promise<{ id: string }>
   const [shareOpen, setShareOpen] = useState(false);
   const [clayOpen, setClayOpen] = useState(false);
   const [generatingPdf, setGeneratingPdf] = useState(false);
+  const [actionsOpen, setActionsOpen] = useState(false);
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const moreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setHydrated(true);
   }, []);
+
+  // Ferme le menu d'actions (mobile) au clic extérieur.
+  useEffect(() => {
+    if (!actionsOpen) return;
+    const onDown = (e: MouseEvent) => {
+      if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
+        setActionsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, [actionsOpen]);
 
   // Scroll au top quand on change de page
   useEffect(() => {
@@ -273,6 +288,64 @@ export default function ResultPage({ params }: { params: Promise<{ id: string }>
                 <PdfIcon />
                 {generatingPdf ? "Génération…" : "Exporter PDF"}
               </button>
+            </div>
+
+            {/* Menu d'actions compact (mobile) */}
+            <div className="doc-actions__more-wrap" ref={moreRef}>
+              <button
+                type="button"
+                className="iconbtn doc-actions__more"
+                aria-label="Actions"
+                aria-expanded={actionsOpen}
+                onClick={() => setActionsOpen((v) => !v)}
+              >
+                <DotsIcon />
+              </button>
+              {actionsOpen && (
+                <div className="doc-actions__menu" role="menu">
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={() => {
+                      setActionsOpen(false);
+                      onIterate();
+                    }}
+                  >
+                    <SparkIcon /> Continuer à itérer
+                  </button>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={() => {
+                      setActionsOpen(false);
+                      setShareOpen(true);
+                    }}
+                  >
+                    <ShareIcon /> Partager
+                  </button>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={() => {
+                      setActionsOpen(false);
+                      setClayOpen(true);
+                    }}
+                  >
+                    <PlugIcon /> Table Clay
+                  </button>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    disabled={generatingPdf}
+                    onClick={() => {
+                      setActionsOpen(false);
+                      onPdf();
+                    }}
+                  >
+                    <PdfIcon /> {generatingPdf ? "Génération…" : "Exporter PDF"}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
