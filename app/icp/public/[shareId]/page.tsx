@@ -10,6 +10,12 @@ import { createClient } from "@/lib/supabase/server";
 import { rowToIcp, type IcpRow } from "@/lib/icp-tool/icp-map";
 import { PublicShareView } from "./PublicShareView";
 
+// Toujours rendu à la demande, jamais mis en cache : un partage désactivé doit
+// devenir indisponible immédiatement (pas de version périmée servie).
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const fetchCache = "force-no-store";
+
 export default async function PublicSharePage({
   params,
 }: {

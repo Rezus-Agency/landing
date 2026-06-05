@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useToolStore } from "@/lib/icp-tool/store";
 import { CopyButton } from "./CopyButton";
 import { toast } from "@/components/icp-tool/ui/ToastProvider";
-import { ExternalIcon, LockIcon } from "@/components/icp-tool/ui/icons";
+import { LockIcon } from "@/components/icp-tool/ui/icons";
 
 interface Props {
   icpId: string;
@@ -80,16 +80,6 @@ export function ShareDialog({ icpId, open, onClose }: Props) {
         </div>
 
         <div className="share-opts">
-          {info && (
-            <a
-              className="share-opt"
-              href={`/icp/public/${info.shareId}`}
-              target="_blank"
-              rel="noopener"
-            >
-              <ExternalIcon /> Ouvrir la page publique
-            </a>
-          )}
           <button type="button" className="share-opt danger" onClick={onDisable}>
             <LockIcon /> Désactiver le partage
           </button>
