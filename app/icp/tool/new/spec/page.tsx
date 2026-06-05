@@ -1,66 +1,110 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToolStore } from "@/lib/icp-tool/store";
 import { toast } from "@/components/icp-tool/ui/ToastProvider";
-import {
-  ArrowRightIcon,
-  BackIcon,
-  SparkIcon,
-} from "@/components/icp-tool/ui/icons";
+import { icpFromDoc } from "@/lib/icp-tool/icp-from-doc";
+import { ArrowRightIcon, BackIcon, SparkIcon } from "@/components/icp-tool/ui/icons";
 
 type SpecData = {
-  identite?: { industry?: string; size?: string; geo?: string; stage?: string };
-  decideur?: { role?: string; seniority?: string; team?: string };
+  offre?: { what?: string; differentiation?: string };
+  cible?: { industry?: string; sizeMin?: string; sizeMax?: string; geo?: string; stage?: string };
+  decideur?: { role?: string; seniority?: string };
   pain?: { main?: string; triggers?: string[] };
   antifit?: { avoid?: string; signals?: string[] };
 };
 
+type Issue = { field: string; message: string };
+
 const STEPS = [
-  { key: "identite", label: "Cible" },
+  { key: "offre", label: "Offre" },
+  { key: "cible", label: "Cible" },
   { key: "decideur", label: "Décideur" },
   { key: "pain", label: "Pain" },
   { key: "antifit", label: "Anti-fit" },
   { key: "review", label: "Validation" },
 ] as const;
 
-const STEP_TITLES = ["Votre cible", "Le décideur", "Pain & déclencheurs", "Anti-fit", "Validation"];
+const STEP_TITLES = [
+  "Ton offre",
+  "Ta cible",
+  "Le décideur",
+  "Pain & déclencheurs",
+  "Anti-fit",
+  "Validation",
+];
 
-const INDUSTRIES = [
+/** Champ requis par étape (clé "group.field"). Le reste est optionnel. */
+const REQUIRED: Record<number, string[]> = {
+  0: ["offre.what"],
+  1: ["cible.industry"],
+  2: ["decideur.role"],
+  3: ["pain.main"],
+  4: [],
+};
+
+const INDUSTRY_SUGGESTIONS = [
   "SaaS B2B",
+  "Industrie / Manufacturing",
+  "BTP / Construction",
+  "Services professionnels",
+  "Cabinet conseil / comptable",
+  "Santé / BioTech",
+  "Logistique / Transport",
+  "Commerce / Retail",
+  "Agence / Studio créatif",
+  "Immobilier",
   "Fintech",
   "HR Tech",
   "Cybersécurité",
   "DevTools / Infra",
-  "Industrie / Manufacturing",
-  "Logistique",
-  "Santé / BioTech",
-  "Services pro",
-  "Autre",
 ];
-const GEOS = ["France", "France + régions", "Europe", "Monde"];
-const STAGES = ["Seed", "Série A", "Série B+", "Rentable / bootstrap"];
-const ROLES = [
-  "CEO / Fondateur",
+const GEO_SUGGESTIONS = [
+  "France",
+  "France + DOM-TOM",
+  "Île-de-France",
+  "Grandes métropoles françaises",
+  "France + Benelux",
+  "Europe francophone (FR/BE/CH/LU)",
+  "Europe",
+  "Amérique du Nord",
+  "International / Monde",
+];
+const STAGE_SUGGESTIONS = [
+  "Amorçage / pré-seed",
+  "Seed",
+  "Série A",
+  "Série B+",
+  "Rentable / bootstrap",
+  "PME établie",
+  "ETI / grand groupe",
+];
+const ROLE_SUGGESTIONS = [
+  "Fondateur / CEO",
+  "DAF / RAF (Finance)",
   "DRH / Responsable RH",
-  "CTO / VP Eng",
+  "CTO / VP Engineering",
   "VP Sales / CRO",
-  "DAF / Finance",
-  "Head of Growth",
-  "COO / Ops",
+  "COO / Directeur des opérations",
+  "Directeur de studio / d'agence",
+  "Directeur d'usine / de site",
+  "Office / Operations Manager",
+  "Responsable achats",
 ];
-const SENIORITIES = ["Fondateur", "C-level / VP", "Directeur / Head", "Manager"];
-const TEAM_SIZES = ["1 – 5", "5 – 25", "25 – 100", "100+"];
+const SENIORITIES = ["Fondateur / dirigeant", "C-level / VP", "Directeur / Head", "Manager", "Opérationnel"];
 const TRIGGERS = [
   "Levée de fonds",
   "Recrutement clé",
   "Nouvelle réglementation",
   "Expansion / nouveau site",
-  "Changement de stack",
-  "Croissance > 20%",
+  "Changement de stack / d'outil",
+  "Forte croissance",
   "Audit / contrôle",
+  "Nouveau dirigeant",
+  "Fusion / acquisition",
+  "Fin de contrat fournisseur",
 ];
 const SIGNALS = [
   "Trop petit",
@@ -69,6 +113,8 @@ const SIGNALS = [
   "Cible non définie",
   "Recherche de volume pur",
   "Hors zone géo",
+  "Secteur non pertinent",
+  "Mono-produit / mono-projet",
 ];
 
 function setDeep(
@@ -88,6 +134,24 @@ function toggleMulti(current: string[] | undefined, value: string): string[] {
   return list;
 }
 
+function getField(data: SpecData, key: string): unknown {
+  const [g, f] = key.split(".");
+  return (data as Record<string, Record<string, unknown>>)[g]?.[f];
+}
+
+function stepOfField(key: string): number {
+  const g = key.split(".")[0];
+  return ["offre", "cible", "decideur", "pain", "antifit"].indexOf(g);
+}
+
+const GEN_STEPS = [
+  "Lecture de ta saisie",
+  "Analyse du marché ciblé",
+  "Psychologie du décideur",
+  "Filtres Sales Nav & Clay",
+  "Angles & finalisation",
+];
+
 export default function WizardPage() {
   const router = useRouter();
   const spec = useToolStore((s) => s.spec);
@@ -98,6 +162,10 @@ export default function WizardPage() {
   const [hydrated, setHydrated] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [genStepIndex, setGenStepIndex] = useState(0);
+  const [genError, setGenError] = useState<string | null>(null);
+  const [errors, setErrors] = useState<Record<string, boolean>>({});
+  const [issues, setIssues] = useState<Issue[]>([]);
+  const genTimer = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     setHydrated(true);
@@ -105,9 +173,24 @@ export default function WizardPage() {
 
   useEffect(() => {
     if (!hydrated) return;
-    if (!spec) setSpec({ step: 0, data: {} });
+    if (!spec) {
+      setSpec({
+        step: 0,
+        data: {
+          cible: { geo: GEO_SUGGESTIONS[0], stage: STAGE_SUGGESTIONS[5] },
+          decideur: { seniority: SENIORITIES[1] },
+        },
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hydrated]);
+
+  useEffect(
+    () => () => {
+      if (genTimer.current) clearInterval(genTimer.current);
+    },
+    [],
+  );
 
   if (!hydrated || !spec) return null;
 
@@ -116,63 +199,103 @@ export default function WizardPage() {
   const isReview = step === STEPS.length - 1;
   const pct = (step / (STEPS.length - 1)) * 100;
 
-  const update = (next: SpecData) => setSpec({ step, data: next });
+  const update = (next: SpecData) => {
+    setSpec({ step, data: next });
+    if (Object.keys(errors).length) setErrors({});
+    if (issues.length) setIssues([]);
+  };
 
-  const goPrev = () => setSpec({ ...spec, step: Math.max(0, step - 1) });
+  const goTo = (target: number) => {
+    setErrors({});
+    setSpec({ ...spec, step: target });
+  };
+  const goPrev = () => goTo(Math.max(0, step - 1));
+
+  /** Valide les champs requis de l'étape courante avant d'avancer. */
+  const validateCurrent = (): boolean => {
+    const missing: Record<string, boolean> = {};
+    for (const key of REQUIRED[step] || []) {
+      const v = getField(data, key);
+      if (!v || (typeof v === "string" && !v.trim())) missing[key] = true;
+    }
+    setErrors(missing);
+    if (Object.keys(missing).length > 0) {
+      toast("Complète le champ requis avant de continuer.", "error");
+      return false;
+    }
+    return true;
+  };
+
   const goNext = () => {
-    if (step < STEPS.length - 1) {
-      setSpec({ ...spec, step: step + 1 });
-    } else {
-      runGenerate();
+    if (!validateCurrent()) return;
+    if (step < STEPS.length - 1) setSpec({ ...spec, step: step + 1 });
+    else void runGenerate();
+  };
+
+  const runGenerate = async () => {
+    setGenError(null);
+    setIssues([]);
+    setGenerating(true);
+    setGenStepIndex(0);
+    genTimer.current = setInterval(() => {
+      setGenStepIndex((i) => Math.min(i + 1, GEN_STEPS.length - 1));
+    }, 4500);
+
+    const stopTimer = () => {
+      if (genTimer.current) clearInterval(genTimer.current);
+    };
+
+    try {
+      const res = await fetch("/api/icp/spec-generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data }),
+      });
+
+      if (res.status === 422) {
+        const e = (await res.json().catch(() => ({}))) as { issues?: Issue[] };
+        stopTimer();
+        setGenerating(false);
+        if (e.issues && e.issues.length) {
+          setIssues(e.issues);
+          const firstStep = stepOfField(e.issues[0].field);
+          if (firstStep >= 0) setSpec({ ...spec, step: firstStep });
+          toast("Précise quelques réponses pour une analyse de qualité.", "info");
+        } else {
+          setGenError("Saisie insuffisante pour générer.");
+        }
+        return;
+      }
+      if (!res.ok) {
+        const e = (await res.json().catch(() => ({}))) as { error?: string };
+        throw new Error(e.error || `Erreur ${res.status}`);
+      }
+
+      const out = (await res.json()) as {
+        doc: Record<string, unknown>;
+        segmentSummary?: string;
+        synthese?: string;
+        sources?: { title: string; site: string; url: string }[];
+      };
+      const fallback = `${data.decideur?.role || "Décideurs"} · ${data.cible?.industry || "B2B"}`;
+      const icp = icpFromDoc({
+        doc: out.doc,
+        segmentSummary: out.segmentSummary,
+        synthese: out.synthese,
+        sources: out.sources,
+        fallbackSegment: fallback,
+      });
+      upsertIcp(icp);
+      clearSpec();
+      toast("Analyse générée.", "success");
+      router.push(`/icp/tool/result/${icp.id}`);
+    } catch (err) {
+      stopTimer();
+      setGenerating(false);
+      setGenError((err as Error).message || "Génération échouée.");
+      toast("Génération échouée. Réessaie.", "error");
     }
   };
-
-  const runGenerate = () => {
-    setGenerating(true);
-    const steps = [
-      "Structuration des critères",
-      "Analyse du marché ciblé",
-      "Psychologie du décideur",
-      "Filtres Sales Nav & Clay",
-      "Hook angles & finalisation",
-    ];
-    let i = 0;
-    const tick = () => {
-      setGenStepIndex(i);
-      i++;
-      if (i < steps.length) setTimeout(tick, 520);
-      else setTimeout(finishGen, 600);
-    };
-    tick();
-  };
-
-  const finishGen = () => {
-    const id = "icp_" + Date.now().toString(36);
-    const ind = data.identite?.industry || "B2B";
-    const role = data.decideur?.role || "décideurs";
-    const synthese = data.pain?.main
-      ? `Cible : ${role} dans ${ind}${data.identite?.size ? ` (≤ ${data.identite.size} employés)` : ""}. ${data.pain.main}`
-      : `Profil ${ind} ciblant des ${role}.`;
-    upsertIcp({
-      id,
-      segment: `${role} · ${ind}`,
-      status: "final",
-      version: 1,
-      createdAt: new Date().toISOString().slice(0, 10),
-      synthese,
-    });
-    clearSpec();
-    toast("Analyse générée");
-    router.push(`/icp/tool/result/${id}`);
-  };
-
-  const GEN_STEPS = [
-    "Structuration des critères",
-    "Analyse du marché ciblé",
-    "Psychologie du décideur",
-    "Filtres Sales Nav & Clay",
-    "Hook angles & finalisation",
-  ];
 
   return (
     <div className="main__inner">
@@ -221,6 +344,10 @@ export default function WizardPage() {
                   style={{ width: `${((genStepIndex + 1) / GEN_STEPS.length) * 100}%` }}
                 />
               </div>
+              <p className="wiz-card__hint" style={{ marginTop: 14, opacity: 0.7 }}>
+                L&apos;IA croise ta saisie avec une recherche marché en temps réel, puis rédige
+                l&apos;analyse complète. Compte 1 à 2 minutes.
+              </p>
             </div>
           ) : (
             <>
@@ -228,22 +355,38 @@ export default function WizardPage() {
                 ÉTAPE {step + 1} / {STEPS.length}
               </span>
               <h2>{STEP_TITLES[step]}</h2>
+
+              {issues.length > 0 && (
+                <div className="wiz-issues" role="alert">
+                  <p className="wiz-issues__title">
+                    À préciser pour une analyse de qualité :
+                  </p>
+                  <ul>
+                    {issues.map((iss, i) => (
+                      <li key={i}>
+                        <span>{iss.message}</span>
+                        <button type="button" onClick={() => goTo(stepOfField(iss.field))}>
+                          corriger
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               <div className="wiz-fields">
-                {step === 0 && (
-                  <StepCible data={data} onChange={update} />
-                )}
-                {step === 1 && (
-                  <StepDecideur data={data} onChange={update} />
-                )}
-                {step === 2 && <StepPain data={data} onChange={update} />}
-                {step === 3 && <StepAntifit data={data} onChange={update} />}
-                {step === 4 && (
-                  <StepReview
-                    data={data}
-                    onGoTo={(targetStep) => setSpec({ ...spec, step: targetStep })}
-                  />
-                )}
+                {step === 0 && <StepOffre data={data} onChange={update} errors={errors} />}
+                {step === 1 && <StepCible data={data} onChange={update} errors={errors} />}
+                {step === 2 && <StepDecideur data={data} onChange={update} errors={errors} />}
+                {step === 3 && <StepPain data={data} onChange={update} errors={errors} />}
+                {step === 4 && <StepAntifit data={data} onChange={update} />}
+                {step === 5 && <StepReview data={data} onGoTo={goTo} />}
               </div>
+              {genError && (
+                <p className="icp-field__err" style={{ marginTop: 14 }}>
+                  {genError}
+                </p>
+              )}
             </>
           )}
         </div>
@@ -276,161 +419,309 @@ export default function WizardPage() {
   );
 }
 
-/* ===== Steps ===== */
+/* ===== UI helpers ===== */
 
-function StepCible({ data, onChange }: { data: SpecData; onChange: (d: SpecData) => void }) {
-  const v = data.identite || {};
-  const size = v.size || "200";
+function ReqMark() {
+  return <span style={{ color: "var(--accent, #d99543)" }}> *</span>;
+}
+function OptMark() {
+  return <span className="opt"> (optionnel)</span>;
+}
+
+/** Chips multi-sélection avec ajout libre ("Autre…"). */
+function MultiChips({
+  options,
+  value,
+  onChange,
+  placeholder,
+}: {
+  options: string[];
+  value: string[] | undefined;
+  onChange: (next: string[]) => void;
+  placeholder?: string;
+}) {
+  const [draft, setDraft] = useState("");
+  const list = value || [];
+  const custom = list.filter((v) => !options.includes(v));
+  const addCustom = () => {
+    const t = draft.trim();
+    if (t && !list.includes(t)) onChange([...list, t]);
+    setDraft("");
+  };
   return (
     <>
+      <div className="chips">
+        {options.map((o) => (
+          <button
+            key={o}
+            type="button"
+            className={`chip ${list.includes(o) ? "sel" : ""}`}
+            onClick={() => onChange(toggleMulti(list, o))}
+          >
+            {o}
+          </button>
+        ))}
+        {custom.map((c) => (
+          <button
+            key={c}
+            type="button"
+            className="chip sel"
+            onClick={() => onChange(toggleMulti(list, c))}
+            title="Retirer"
+          >
+            {c} ✕
+          </button>
+        ))}
+      </div>
+      <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+        <input
+          type="text"
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              addCustom();
+            }
+          }}
+          placeholder={placeholder || "Autre…"}
+        />
+        <button type="button" className="btn btn--secondary btn--sm" onClick={addCustom}>
+          Ajouter
+        </button>
+      </div>
+    </>
+  );
+}
+
+/* ===== Steps ===== */
+
+function StepOffre({
+  data,
+  onChange,
+  errors,
+}: {
+  data: SpecData;
+  onChange: (d: SpecData) => void;
+  errors: Record<string, boolean>;
+}) {
+  const v = data.offre || {};
+  return (
+    <>
+      <div className={`icp-field ${errors["offre.what"] ? "invalid" : ""}`}>
+        <label htmlFor="wz-what">
+          Que vends-tu ?<ReqMark />
+        </label>
+        <textarea
+          id="wz-what"
+          value={v.what || ""}
+          onChange={(e) => onChange(setDeep(data, "offre", "what", e.target.value))}
+          placeholder="Ex. Un logiciel de notes de frais offline pour le BTP, qui ventile les dépenses par chantier."
+        />
+        {errors["offre.what"] && <p className="icp-field__err">Indispensable pour générer.</p>}
+        <span className="wiz-card__hint">
+          Plus tu es précis et concret, meilleure sera l&apos;analyse. Pas envie d&apos;écrire ?{" "}
+          <Link href="/icp/tool/session/new">Passe par le chat</Link>, plus naturel.
+        </span>
+      </div>
       <div className="icp-field">
-        <label htmlFor="wz-ind">Industrie cible</label>
-        <select
+        <label htmlFor="wz-diff">
+          Ta différence vs les alternatives<OptMark />
+        </label>
+        <textarea
+          id="wz-diff"
+          value={v.differentiation || ""}
+          onChange={(e) => onChange(setDeep(data, "offre", "differentiation", e.target.value))}
+          placeholder="Pourquoi on te choisit toi plutôt qu'un concurrent ou le statu quo (Excel, fait-maison...) ?"
+        />
+      </div>
+    </>
+  );
+}
+
+function StepCible({
+  data,
+  onChange,
+  errors,
+}: {
+  data: SpecData;
+  onChange: (d: SpecData) => void;
+  errors: Record<string, boolean>;
+}) {
+  const v = data.cible || {};
+  return (
+    <>
+      <div className={`icp-field ${errors["cible.industry"] ? "invalid" : ""}`}>
+        <label htmlFor="wz-ind">
+          Secteur / vertical visé<ReqMark />
+        </label>
+        <input
           id="wz-ind"
-          value={v.industry || INDUSTRIES[0]}
-          onChange={(e) => onChange(setDeep(data, "identite", "industry", e.target.value))}
+          list="wz-ind-list"
+          value={v.industry || ""}
+          onChange={(e) => onChange(setDeep(data, "cible", "industry", e.target.value))}
+          placeholder="Tape ton secteur (texte libre, suggestions proposées)"
+          autoComplete="off"
+        />
+        <datalist id="wz-ind-list">
+          {INDUSTRY_SUGGESTIONS.map((i) => (
+            <option key={i} value={i} />
+          ))}
+        </datalist>
+        {errors["cible.industry"] && <p className="icp-field__err">Indique au moins un secteur.</p>}
+      </div>
+      <div className="icp-field">
+        <label>
+          Taille d&apos;entreprise visée (employés)<OptMark />
+        </label>
+        <div className="wiz-row">
+          <input
+            type="number"
+            min={1}
+            value={v.sizeMin || ""}
+            onChange={(e) => onChange(setDeep(data, "cible", "sizeMin", e.target.value))}
+            placeholder="min (ex. 50)"
+            aria-label="Taille minimum"
+          />
+          <input
+            type="number"
+            min={1}
+            value={v.sizeMax || ""}
+            onChange={(e) => onChange(setDeep(data, "cible", "sizeMax", e.target.value))}
+            placeholder="max (ex. 200)"
+            aria-label="Taille maximum"
+          />
+        </div>
+      </div>
+      <div className="wiz-row">
+        <div className="icp-field">
+          <label htmlFor="wz-geo">
+            Géographie<OptMark />
+          </label>
+          <input
+            id="wz-geo"
+            list="wz-geo-list"
+            value={v.geo || ""}
+            onChange={(e) => onChange(setDeep(data, "cible", "geo", e.target.value))}
+            placeholder="Ex. France + Benelux, Île-de-France, Monde…"
+            autoComplete="off"
+          />
+          <datalist id="wz-geo-list">
+            {GEO_SUGGESTIONS.map((g) => (
+              <option key={g} value={g} />
+            ))}
+          </datalist>
+        </div>
+        <div className="icp-field">
+          <label htmlFor="wz-stage">
+            Stade / maturité<OptMark />
+          </label>
+          <input
+            id="wz-stage"
+            list="wz-stage-list"
+            value={v.stage || ""}
+            onChange={(e) => onChange(setDeep(data, "cible", "stage", e.target.value))}
+            placeholder="Ex. PME établie, Série A…"
+            autoComplete="off"
+          />
+          <datalist id="wz-stage-list">
+            {STAGE_SUGGESTIONS.map((s) => (
+              <option key={s} value={s} />
+            ))}
+          </datalist>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function StepDecideur({
+  data,
+  onChange,
+  errors,
+}: {
+  data: SpecData;
+  onChange: (d: SpecData) => void;
+  errors: Record<string, boolean>;
+}) {
+  const v = data.decideur || {};
+  return (
+    <>
+      <div className={`icp-field ${errors["decideur.role"] ? "invalid" : ""}`}>
+        <label htmlFor="wz-role">
+          Rôle du décideur<ReqMark />
+        </label>
+        <input
+          id="wz-role"
+          list="wz-role-list"
+          value={v.role || ""}
+          onChange={(e) => onChange(setDeep(data, "decideur", "role", e.target.value))}
+          placeholder="Qui signe ? (texte libre, suggestions proposées)"
+          autoComplete="off"
+        />
+        <datalist id="wz-role-list">
+          {ROLE_SUGGESTIONS.map((r) => (
+            <option key={r} value={r} />
+          ))}
+        </datalist>
+        {errors["decideur.role"] && <p className="icp-field__err">Indique qui décide / signe.</p>}
+        <span className="wiz-card__hint">Le décideur économique principal, celui qui valide le budget.</span>
+      </div>
+      <div className="icp-field">
+        <label htmlFor="wz-sen">
+          Séniorité<OptMark />
+        </label>
+        <select
+          id="wz-sen"
+          value={v.seniority || SENIORITIES[1]}
+          onChange={(e) => onChange(setDeep(data, "decideur", "seniority", e.target.value))}
         >
-          {INDUSTRIES.map((i) => (
-            <option key={i} value={i}>
-              {i}
+          {SENIORITIES.map((s) => (
+            <option key={s} value={s}>
+              {s}
             </option>
           ))}
         </select>
       </div>
-      <div className="icp-field">
-        <label htmlFor="wz-size">Taille d&apos;entreprise visée (employés)</label>
-        <div className="range-wrap">
-          <input
-            id="wz-size"
-            type="range"
-            min={10}
-            max={1000}
-            step={10}
-            value={size}
-            onChange={(e) => onChange(setDeep(data, "identite", "size", e.target.value))}
-          />
-          <span className="range-val">jusqu&apos;à {size} employés</span>
-        </div>
-      </div>
-      <div className="wiz-row">
-        <div className="icp-field">
-          <label htmlFor="wz-geo">Géographie</label>
-          <select
-            id="wz-geo"
-            value={v.geo || GEOS[0]}
-            onChange={(e) => onChange(setDeep(data, "identite", "geo", e.target.value))}
-          >
-            {GEOS.map((g) => (
-              <option key={g} value={g}>
-                {g}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="icp-field">
-          <label htmlFor="wz-stage">Stade</label>
-          <select
-            id="wz-stage"
-            value={v.stage || STAGES[0]}
-            onChange={(e) => onChange(setDeep(data, "identite", "stage", e.target.value))}
-          >
-            {STAGES.map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
     </>
   );
 }
 
-function StepDecideur({ data, onChange }: { data: SpecData; onChange: (d: SpecData) => void }) {
-  const v = data.decideur || {};
-  return (
-    <>
-      <div className="icp-field">
-        <label>Rôle du décideur</label>
-        <div className="chips">
-          {ROLES.map((r) => (
-            <button
-              key={r}
-              type="button"
-              className={`chip ${v.role === r ? "sel" : ""}`}
-              onClick={() => onChange(setDeep(data, "decideur", "role", r))}
-            >
-              {r}
-            </button>
-          ))}
-        </div>
-        <span className="wiz-card__hint">Le décideur économique principal.</span>
-      </div>
-      <div className="wiz-row">
-        <div className="icp-field">
-          <label htmlFor="wz-sen">Séniorité</label>
-          <select
-            id="wz-sen"
-            value={v.seniority || SENIORITIES[1]}
-            onChange={(e) => onChange(setDeep(data, "decideur", "seniority", e.target.value))}
-          >
-            {SENIORITIES.map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="icp-field">
-          <label htmlFor="wz-team">Taille d&apos;équipe gérée</label>
-          <select
-            id="wz-team"
-            value={v.team || TEAM_SIZES[1]}
-            onChange={(e) => onChange(setDeep(data, "decideur", "team", e.target.value))}
-          >
-            {TEAM_SIZES.map((t) => (
-              <option key={t} value={t}>
-                {t}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-    </>
-  );
-}
-
-function StepPain({ data, onChange }: { data: SpecData; onChange: (d: SpecData) => void }) {
+function StepPain({
+  data,
+  onChange,
+  errors,
+}: {
+  data: SpecData;
+  onChange: (d: SpecData) => void;
+  errors: Record<string, boolean>;
+}) {
   const v = data.pain || {};
   return (
     <>
-      <div className="icp-field">
-        <label htmlFor="wz-pain">Pain principal résolu</label>
+      <div className={`icp-field ${errors["pain.main"] ? "invalid" : ""}`}>
+        <label htmlFor="wz-pain">
+          Pain principal résolu<ReqMark />
+        </label>
         <textarea
           id="wz-pain"
           value={v.main || ""}
           onChange={(e) => onChange(setDeep(data, "pain", "main", e.target.value))}
-          placeholder="Quelle douleur précise votre produit fait-il disparaître ?"
+          placeholder="Quelle douleur précise et coûteuse ton produit fait-il disparaître ?"
         />
+        {errors["pain.main"] && <p className="icp-field__err">Décris la douleur résolue.</p>}
       </div>
       <div className="icp-field">
-        <label>Événements déclencheurs</label>
-        <div className="chips">
-          {TRIGGERS.map((t) => {
-            const sel = (v.triggers || []).includes(t);
-            return (
-              <button
-                key={t}
-                type="button"
-                className={`chip ${sel ? "sel" : ""}`}
-                onClick={() => onChange(setDeep(data, "pain", "triggers", toggleMulti(v.triggers, t)))}
-              >
-                {t}
-              </button>
-            );
-          })}
-        </div>
-        <span className="wiz-card__hint">Plusieurs choix possibles.</span>
+        <label>
+          Événements déclencheurs<OptMark />
+        </label>
+        <MultiChips
+          options={TRIGGERS}
+          value={v.triggers}
+          onChange={(next) => onChange(setDeep(data, "pain", "triggers", next))}
+          placeholder="Autre déclencheur…"
+        />
+        <span className="wiz-card__hint">Quand le besoin devient urgent. Plusieurs choix, ou ajoute le tien.</span>
       </div>
     </>
   );
@@ -441,58 +732,53 @@ function StepAntifit({ data, onChange }: { data: SpecData; onChange: (d: SpecDat
   return (
     <>
       <div className="icp-field">
-        <label htmlFor="wz-avoid">Clients à éviter</label>
+        <label htmlFor="wz-avoid">
+          Clients à éviter<OptMark />
+        </label>
         <textarea
           id="wz-avoid"
           value={v.avoid || ""}
           onChange={(e) => onChange(setDeep(data, "antifit", "avoid", e.target.value))}
-          placeholder="Quels profils vous font perdre votre temps ?"
+          placeholder="Quels profils te font perdre ton temps ou ne renouvellent jamais ?"
         />
       </div>
       <div className="icp-field">
-        <label>Signaux disqualifiants</label>
-        <div className="chips">
-          {SIGNALS.map((s) => {
-            const sel = (v.signals || []).includes(s);
-            return (
-              <button
-                key={s}
-                type="button"
-                className={`chip ${sel ? "sel" : ""}`}
-                onClick={() => onChange(setDeep(data, "antifit", "signals", toggleMulti(v.signals, s)))}
-              >
-                {s}
-              </button>
-            );
-          })}
-        </div>
+        <label>
+          Signaux disqualifiants<OptMark />
+        </label>
+        <MultiChips
+          options={SIGNALS}
+          value={v.signals}
+          onChange={(next) => onChange(setDeep(data, "antifit", "signals", next))}
+          placeholder="Autre signal…"
+        />
       </div>
     </>
   );
 }
 
-function StepReview({
-  data,
-  onGoTo,
-}: {
-  data: SpecData;
-  onGoTo: (step: number) => void;
-}) {
+function StepReview({ data, onGoTo }: { data: SpecData; onGoTo: (step: number) => void }) {
+  const c = data.cible || {};
+  const size =
+    c.sizeMin || c.sizeMax ? `${c.sizeMin || "?"} à ${c.sizeMax || "?"} employés` : "—";
   const rows: { k: string; v: string; goto: number }[] = [
-    { k: "Industrie", v: data.identite?.industry || "—", goto: 0 },
-    { k: "Taille", v: data.identite?.size ? `≤ ${data.identite.size} employés` : "—", goto: 0 },
-    { k: "Géographie", v: data.identite?.geo || "—", goto: 0 },
-    { k: "Décideur", v: data.decideur?.role || "—", goto: 1 },
-    { k: "Pain", v: data.pain?.main || "—", goto: 2 },
-    { k: "Triggers", v: (data.pain?.triggers || []).join(", ") || "—", goto: 2 },
-    { k: "Anti-fit", v: data.antifit?.avoid || "—", goto: 3 },
-    { k: "Signaux exclus", v: (data.antifit?.signals || []).join(", ") || "—", goto: 3 },
+    { k: "Offre", v: data.offre?.what || "—", goto: 0 },
+    { k: "Différenciation", v: data.offre?.differentiation || "—", goto: 0 },
+    { k: "Secteur", v: c.industry || "—", goto: 1 },
+    { k: "Taille", v: size, goto: 1 },
+    { k: "Géographie", v: c.geo || "—", goto: 1 },
+    { k: "Décideur", v: data.decideur?.role || "—", goto: 2 },
+    { k: "Pain", v: data.pain?.main || "—", goto: 3 },
+    { k: "Triggers", v: (data.pain?.triggers || []).join(", ") || "—", goto: 3 },
+    { k: "Anti-fit", v: data.antifit?.avoid || "—", goto: 4 },
+    { k: "Signaux exclus", v: (data.antifit?.signals || []).join(", ") || "—", goto: 4 },
   ];
   return (
     <>
       <p className="wiz-card__hint" style={{ marginBottom: 18 }}>
-        Vérifiez votre profil. L&apos;IA enrichira ensuite avec l&apos;analyse de marché, la
-        psychologie du décideur et les outputs.
+        Vérifie ta saisie. L&apos;IA enrichira avec une recherche marché, la psychologie du
+        décideur, les angles et les filtres de ciblage. Plus tes réponses sont détaillées,
+        meilleur est le rendu.
       </p>
       <dl className="recap">
         {rows.map((r, i) => (

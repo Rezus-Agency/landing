@@ -643,12 +643,13 @@ export function SectionAvantages({ doc }: SectionProps) {
 
 /* ===== 07 Outputs actionnables ===== */
 
-function FilterRow({ label, vals }: { label: string; vals: string[] }) {
+function FilterRow({ label, vals }: { label: string; vals?: string[] }) {
+  const list = vals ?? [];
   return (
     <div className="filter-row">
       <span className="filter-row__label">{label}</span>
       <div className="filter-row__vals">
-        {vals.map((v, i) => (
+        {list.map((v, i) => (
           <span key={i} className="pill-v">
             {v}
           </span>
@@ -758,13 +759,20 @@ export function SectionTargeting({ doc, publicView }: SectionProps) {
   const clay = doc.clay;
   if (!sn && !clay) return null;
 
+  // Le doc LLM peut omettre un tableau : on défensive systématiquement pour ne
+  // jamais planter le rendu sur une fiche partielle.
+  const jobTitles = sn?.jobTitles ?? [];
+  const headcount = sn?.headcount ?? [];
+  const industry = sn?.industry ?? [];
+  const geography = sn?.geography ?? [];
+  const keywords = sn?.keywords ?? [];
   const navText = sn
     ? [
-        `Intitulés: ${sn.jobTitles.join(", ")}`,
-        `Effectif: ${sn.headcount.join(", ")}`,
-        `Secteur: ${sn.industry.join(", ")}`,
-        `Géographie: ${sn.geography.join(", ")}`,
-        `Mots-clés: ${sn.keywords.join(", ")}`,
+        `Intitulés: ${jobTitles.join(", ")}`,
+        `Effectif: ${headcount.join(", ")}`,
+        `Secteur: ${industry.join(", ")}`,
+        `Géographie: ${geography.join(", ")}`,
+        `Mots-clés: ${keywords.join(", ")}`,
       ].join("\n")
     : "";
   const clayJson = clay ? JSON.stringify(clay, null, 2) : "";
@@ -784,11 +792,11 @@ export function SectionTargeting({ doc, publicView }: SectionProps) {
           </div>
           <div className="codeblock">
             <div className="filter-rows" style={{ padding: 15 }}>
-              <FilterRow label="Intitulés" vals={sn.jobTitles} />
-              <FilterRow label="Effectif" vals={sn.headcount} />
-              <FilterRow label="Secteur" vals={sn.industry} />
-              <FilterRow label="Géographie" vals={sn.geography} />
-              <FilterRow label="Mots-clés" vals={sn.keywords} />
+              <FilterRow label="Intitulés" vals={jobTitles} />
+              <FilterRow label="Effectif" vals={headcount} />
+              <FilterRow label="Secteur" vals={industry} />
+              <FilterRow label="Géographie" vals={geography} />
+              <FilterRow label="Mots-clés" vals={keywords} />
             </div>
           </div>
         </div>

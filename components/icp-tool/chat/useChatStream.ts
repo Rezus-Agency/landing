@@ -8,7 +8,8 @@
 import { useCallback, useRef, useState } from "react";
 import { useToolStore } from "@/lib/icp-tool/store";
 import { toast } from "@/components/icp-tool/ui/ToastProvider";
-import type { ChatEvent, ICPSection, SessionDraft } from "@/lib/icp-tool/types";
+import { panelFromIcp } from "@/lib/icp-tool/icp-summary";
+import type { ChatEvent, ICP, ICPSection, SessionDraft } from "@/lib/icp-tool/types";
 
 type LlmPanelPatch = {
   section: "synthese" | "identite" | "psychologie" | "marche" | "challenges" | "avantages";
@@ -254,10 +255,26 @@ export function useChatStream() {
               synthese?: string;
               doc?: Record<string, unknown>;
             };
+            const doc = (d.doc || live.finalDoc || {}) as Partial<ICP>;
+            // Réconcilie le panneau avec le document final : les sections
+            // produites par finalize_icp (psychologie, marché...) sont marquées
+            // "done" même si le LLM n'avait pas émis les update_panel_*
+            // correspondants en cours de route. Le panneau reflète alors
+            // fidèlement le doc juste avant la génération.
+            const docAsIcp = {
+              synthese: d.synthese || live.finalSynthese || "",
+              identite: doc.identite,
+              psychologie: doc.psychologie,
+              marche: doc.marche,
+              challenges: doc.challenges,
+              avantages: doc.avantages,
+            } as unknown as ICP;
+            const reconciledPanel = { ...live.panel, ...panelFromIcp(docAsIcp) };
             live = {
               ...live,
               final: true,
               pendingQuick: ["Générer l'analyse"],
+              panel: reconciledPanel,
               finalSegmentSummary: d.segment_summary || live.finalSegmentSummary,
               finalSynthese: d.synthese || live.finalSynthese,
               finalDoc: d.doc || live.finalDoc,

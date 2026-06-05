@@ -1,7 +1,7 @@
 "use client";
 
 import type { ICPSection } from "@/lib/icp-tool/types";
-import { CheckIcon, SparkIcon } from "@/components/icp-tool/ui/icons";
+import { CheckIcon, SparkIcon, XIcon } from "@/components/icp-tool/ui/icons";
 
 export const PANEL_SECTIONS: { key: string; name: string }[] = [
   { key: "synthese", name: "Synthèse" },
@@ -16,17 +16,32 @@ interface Props {
   panel: Record<string, ICPSection>;
   isFinal: boolean;
   onGenerate: () => void;
+  /** Panneau ouvert (visible). Pilote l'affichage desktop + le slide-in mobile. */
+  open?: boolean;
+  /** Replie le panneau. Si fourni, affiche un bouton de fermeture dans l'en-tête. */
+  onClose?: () => void;
 }
 
-export function IcpPanel({ panel, isFinal, onGenerate }: Props) {
+export function IcpPanel({ panel, isFinal, onGenerate, open, onClose }: Props) {
   const progress = PANEL_SECTIONS.reduce(
     (acc, s) => acc + (panel[s.key]?.status === "done" ? 1 : 0),
     0,
   );
 
   return (
-    <aside className="icp-panel">
+    <aside className={`icp-panel${open ? " open" : ""}`}>
       <div className="icp-panel__head">
+        {onClose && (
+          <button
+            type="button"
+            className="iconbtn icp-panel__close"
+            onClick={onClose}
+            aria-label="Masquer le panneau"
+            title="Masquer le panneau"
+          >
+            <XIcon />
+          </button>
+        )}
         <span className="eyebrow">ICP en construction</span>
         <h3>
           <span>Le profil se dessine</span>

@@ -7,7 +7,13 @@ export type User = {
   name: string;
   email: string;
   company?: string;
+  role?: string;
+  website?: string;
   initials: string;
+  /** Photo de profil (ex. Google avatar_url). Absent pour les comptes email/password. */
+  avatarUrl?: string;
+  /** Providers d'auth liés (ex. ["email"], ["google"]). Sert à l'UI du profil. */
+  providers?: string[];
 };
 
 export type RegisteredUser = {
@@ -277,6 +283,10 @@ export type ICP = {
   antifit?: AntiFit[];
   /** Scorecard de qualification (remplace `qualification` binaire). */
   scorecard?: Scorecard;
+  /** Identifiant de partage public (colonne `share_id` en DB). Absent si jamais partagé. */
+  shareId?: string;
+  /** Partage public actif (colonne `shared` en DB). */
+  shared?: boolean;
 };
 
 /** Le reframe avant -> après : la trace du résultat non-évident de la session. */
@@ -294,6 +304,22 @@ export type ShareEntry = {
   enabled: boolean;
 };
 
+/** Profil persisté en DB (table public.profiles) : miroir queryable des données
+ * profil + onboarding pour le business. */
+export type Profile = {
+  id: string;
+  email: string | null;
+  name: string | null;
+  company: string | null;
+  role: string | null;
+  website: string | null;
+  avatar_url: string | null;
+  company_size: string | null;
+  heard_from: string | null;
+  notify: string[];
+  onboarded: boolean;
+};
+
 export type ComingSoonFeature = {
   id: string;
   icon: string;
@@ -304,9 +330,11 @@ export type ComingSoonFeature = {
 export type ToolState = {
   auth: User | null;
   icps: ICP[];
-  registered: RegisteredUser[];
+  /** false tant que les ICP ne sont pas chargés depuis la DB (état de chargement UI). */
+  icpsLoaded: boolean;
   session: SessionDraft | null;
+  /** false tant que la session ouverte n'est pas chargée depuis la DB. */
+  sessionLoaded: boolean;
   spec: SpecDraft | null;
-  shares: Record<string, ShareEntry>;
   notify: string[];
 };

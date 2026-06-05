@@ -50,6 +50,8 @@ export type RunTurnOptions = {
   cache?: boolean;
   /** Si true (défaut), router Haiku appelé pour décider du modèle. */
   router?: boolean;
+  /** System prompt alternatif (ex. génération one-shot du wizard). Défaut: SYSTEM_PROMPT_FR. */
+  systemPrompt?: string;
 };
 
 /**
@@ -61,10 +63,11 @@ export async function* runTurn(
   userMessage: string,
   opts: RunTurnOptions = {},
 ): AsyncGenerator<AgentEvent, void, unknown> {
-  // Bumped à 4096 pour que finalize_icp puisse produire les 11 champs structurés
-  // (~2000-3000 tokens de JSON). Les autres tours utilisent à peine 800 tokens donc
-  // ce n'est qu'un plafond, pas un coût garanti.
-  const maxTokens = opts.maxTokens || 4096;
+  // 8192 : finalize_icp produit 11 champs structurés denses (angles, triggers,
+  // antifit, scorecard... en fin de schéma) ; à 4096 le doc était tronqué et ces
+  // dernières sections sortaient vides. C'est un PLAFOND (facturation au token
+  // réellement généré) : les tours normaux (~800 tokens) ne coûtent pas plus.
+  const maxTokens = opts.maxTokens || 8192;
   const useRouter = opts.router !== false && !opts.model;
 
   // Routing décision
@@ -119,11 +122,11 @@ export async function* runTurn(
         ? [
             {
               type: "text",
-              text: SYSTEM_PROMPT_FR,
+              text: opts.systemPrompt ?? SYSTEM_PROMPT_FR,
               cache_control: { type: "ephemeral" },
             } as Anthropic.TextBlockParam,
           ]
-        : SYSTEM_PROMPT_FR,
+        : (opts.systemPrompt ?? SYSTEM_PROMPT_FR),
       tools: ALL_TOOLS,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       messages: safeMessages as any,

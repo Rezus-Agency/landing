@@ -120,13 +120,19 @@ export default function ChatSessionPage({
   const router = useRouter();
   const user = useToolStore((s) => s.auth);
   const session = useToolStore((s) => s.session);
+  const sessionLoaded = useToolStore((s) => s.sessionLoaded);
+  const icpsLoaded = useToolStore((s) => s.icpsLoaded);
   const setSession = useToolStore((s) => s.setSession);
+  const clearSession = useToolStore((s) => s.clearSession);
   const upsertIcp = useToolStore((s) => s.upsertIcp);
   const icpById = useToolStore((s) => s.icpById);
 
   const [hydrated, setHydrated] = useState(false);
   const [draft, setDraft] = useState("");
-  const [panelOpen, setPanelOpen] = useState(false);
+  // Ouvert par défaut sur grand écran, replié sur mobile (slide-in à la demande).
+  const [panelOpen, setPanelOpen] = useState(
+    () => typeof window !== "undefined" && window.innerWidth > 1080,
+  );
   const [generating, setGenerating] = useState(false);
   const [genStepIndex, setGenStepIndex] = useState(0);
   const streamRef = useRef<HTMLDivElement>(null);
@@ -140,6 +146,10 @@ export default function ChatSessionPage({
   // Init / resume session
   useEffect(() => {
     if (!hydrated) return;
+    // Pour une reprise ("resume") ou une itération (id = un ICP), on attend que
+    // la session ouverte ET les ICP soient chargés depuis la DB, sinon on
+    // recréerait une session neuve par erreur. "new" n'attend pas.
+    if (id !== "new" && (!sessionLoaded || !icpsLoaded)) return;
     const iter = id !== "new" && id !== "resume" ? id : null;
     const base = iter ? icpById(iter) : null;
 
@@ -162,7 +172,7 @@ export default function ChatSessionPage({
       if (needsFresh) setSession(freshSession(iter));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hydrated, id]);
+  }, [hydrated, id, sessionLoaded, icpsLoaded]);
 
   // Autoscroll : déclenché à l'hydratation (reprise) + à chaque nouveau message.
   // Double rAF pour attendre que le layout des bulles soit calculé avant de scroller.
@@ -279,7 +289,8 @@ export default function ChatSessionPage({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       scorecard: (doc as any).scorecard,
     });
-    setSession(null);
+    // La session est consommée : on la supprime (store + DB).
+    clearSession();
     toast("Analyse générée.", "success");
     router.push(`/icp/tool/result/${id}`);
   };
@@ -297,7 +308,7 @@ export default function ChatSessionPage({
   const title = iterateIcp ? `Itération · ${iterateIcp.segment}` : "Nouvelle session de discovery";
 
   return (
-    <div className="chat-shell">
+    <div className={`chat-shell${panelOpen ? "" : " chat-shell--panel-closed"}`}>
       <div className="chat-main">
         <div className="chat-top">
           <div className="chat-top__l">
@@ -323,9 +334,11 @@ export default function ChatSessionPage({
             </button>
             <button
               type="button"
-              className="iconbtn"
+              className={`iconbtn${panelOpen ? " is-active" : ""}`}
               onClick={() => setPanelOpen((v) => !v)}
-              aria-label="ICP en construction"
+              aria-label={panelOpen ? "Masquer l'ICP en construction" : "Afficher l'ICP en construction"}
+              aria-pressed={panelOpen}
+              title="ICP en construction"
             >
               <PanelIcon />
             </button>
@@ -384,9 +397,21 @@ export default function ChatSessionPage({
           </p>
         </div>
       </div>
-      <div className={panelOpen ? "" : "icp-panel--closed-mobile"}>
-        <IcpPanel panel={session.panel} isFinal={session.final} onGenerate={onGenerate} />
-      </div>
+      <IcpPanel
+        panel={session.panel}
+        isFinal={session.final}
+        onGenerate={onGenerate}
+        open={panelOpen}
+        onClose={() => setPanelOpen(false)}
+      />
+      {/* Scrim mobile : ferme le panneau en cliquant à côté */}
+      {panelOpen && (
+        <div
+          className="icp-panel__scrim"
+          onClick={() => setPanelOpen(false)}
+          aria-hidden="true"
+        />
+      )}
 
       {generating && (
         <div

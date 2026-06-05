@@ -2,15 +2,25 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
 import { BrandAside } from "@/components/icp-tool/auth/BrandAside";
 import { ArrowRightIcon, BackIcon, CheckIcon } from "@/components/icp-tool/ui/icons";
 
 export default function ResetPage() {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    const supabase = createClient();
+    // On laisse toujours afficher l'écran "vérifiez votre boîte" même en cas
+    // d'erreur, pour ne pas révéler si l'email existe (anti-énumération).
+    await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/auth/confirm?next=/update-password`,
+    });
+    setLoading(false);
     setSent(true);
   };
 
@@ -70,8 +80,8 @@ export default function ResetPage() {
                     required
                   />
                 </div>
-                <button className="btn btn--primary" type="submit">
-                  Envoyer le lien
+                <button className="btn btn--primary" type="submit" disabled={loading}>
+                  {loading ? "Envoi..." : "Envoyer le lien"}
                   <ArrowRightIcon />
                 </button>
               </form>

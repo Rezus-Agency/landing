@@ -3,13 +3,15 @@
 /**
  * Client-side wrapper for /icp/tool/* pages.
  * - Adds body.app class for fullscreen layout (no scroll on body).
- * - Auth gate: si pas connecté, redirect vers /login.
+ * - Affiche un état neutre tant que la session Supabase n'est pas hydratée
+ *   (la protection réelle est faite côté serveur par middleware.ts ; AuthSync
+ *   alimente `store.auth`).
  * - Mounts ToastHost + ConfirmHost.
  * - Manages mobile sidebar state.
  */
 
 import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useToolStore } from "@/lib/icp-tool/store";
 import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
@@ -21,7 +23,9 @@ import { ConfirmHost } from "@/components/icp-tool/ui/ConfirmModal";
 function isFullApp(pathname: string | null): boolean {
   if (!pathname) return false;
   return (
-    pathname.startsWith("/icp/tool/session/") || pathname.startsWith("/icp/tool/result/")
+    pathname.startsWith("/icp/tool/session/") ||
+    pathname.startsWith("/icp/tool/result/") ||
+    pathname.startsWith("/icp/tool/onboarding")
   );
 }
 
@@ -29,7 +33,6 @@ export function ToolShell({ children }: { children: React.ReactNode }) {
   const isAuthed = useToolStore((s) => !!s.auth);
   const [hydrated, setHydrated] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const router = useRouter();
   const pathname = usePathname();
   const fullApp = isFullApp(pathname);
 
@@ -46,11 +49,9 @@ export function ToolShell({ children }: { children: React.ReactNode }) {
     setHydrated(true);
   }, []);
 
-  useEffect(() => {
-    if (hydrated && !isAuthed) router.replace("/login");
-  }, [hydrated, isAuthed, router]);
-
-  // Avant l'hydratation, on rend rien (évite un flash de contenu auth-gated).
+  // Tant que la session Supabase n'est pas hydratée par AuthSync, on rend un
+  // état neutre. Pas de redirect ici : le middleware serveur a déjà garanti
+  // qu'un utilisateur non connecté n'atteint jamais cette page.
   if (!hydrated || !isAuthed) {
     return (
       <>

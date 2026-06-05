@@ -16,12 +16,15 @@
     "icp:e2e": "tsx scripts/icp-cli/test-e2e.ts",
     "icp:finalize": "tsx scripts/icp-cli/test-finalize.ts",
     "icp:pdf": "tsx scripts/icp-cli/test-pdf.tsx",
-    "icp:chat": "node --import tsx scripts/icp-cli/index.tsx"
+    "icp:chat": "node --import tsx scripts/icp-cli/index.tsx",
+    "icp:seed": "node --env-file=.env.local --import tsx scripts/icp-cli/seed-test-user.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.100.1",
     "@hookform/resolvers": "^5.4.0",
     "@react-pdf/renderer": "^4.5.1",
+    "@supabase/ssr": "^0.10.3",
+    "@supabase/supabase-js": "^2.107.0",
     "@tavily/core": "^0.7.5",
     "@vercel/analytics": "^2.0.1",
     "@vercel/og": "^0.11.1",

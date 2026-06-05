@@ -105,7 +105,10 @@ const GROUPS: {
 export default function ResultPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
-  const icpById = useToolStore((s) => s.icpById);
+  // On sélectionne l'ICP directement (référence du tableau) pour re-render
+  // quand l'hydratation DB le fait apparaître.
+  const icp = useToolStore((s) => s.icps.find((i) => i.id === id));
+  const icpsLoaded = useToolStore((s) => s.icpsLoaded);
   const clearSession = useToolStore((s) => s.clearSession);
 
   const [hydrated, setHydrated] = useState(false);
@@ -126,7 +129,21 @@ export default function ResultPage({ params }: { params: Promise<{ id: string }>
 
   if (!hydrated) return null;
 
-  const icp = icpById(id);
+  // Chargement DB en cours : on attend plutôt que d'afficher "introuvable".
+  if (!icp && !icpsLoaded) {
+    return (
+      <div className="main" style={{ overflowY: "auto", height: "100vh" }}>
+        <div className="main__inner">
+          <div className="empty" style={{ marginTop: 60 }} aria-busy="true">
+            <span className="empty__icon">
+              <ChartIcon />
+            </span>
+            <h3>Chargement de l&apos;analyse…</h3>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!icp) {
     return (

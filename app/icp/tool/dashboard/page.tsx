@@ -42,6 +42,7 @@ function countUserTurns(
 export default function DashboardPage() {
   const user = useToolStore((s) => s.auth);
   const icps = useToolStore((s) => s.icps);
+  const icpsLoaded = useToolStore((s) => s.icpsLoaded);
   const session = useToolStore((s) => s.session);
   const clearSession = useToolStore((s) => s.clearSession);
   const [mounted] = useState(true);
@@ -157,7 +158,32 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {icps.length > 0 ? (
+      {!icpsLoaded ? (
+        <div className="icp-grid" aria-busy="true">
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              className="icp-card"
+              aria-hidden="true"
+              style={{ opacity: 0.5, pointerEvents: "none", minHeight: 168 }}
+            >
+              <div className="icp-card__top">
+                <span className="badge badge--draft" style={{ opacity: 0.4 }}>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                </span>
+              </div>
+              <div
+                className="icp-card__name"
+                style={{ background: "rgba(255,255,255,0.06)", borderRadius: 6, height: 18, width: "70%" }}
+              />
+              <div
+                className="icp-card__sum"
+                style={{ background: "rgba(255,255,255,0.04)", borderRadius: 6, height: 36, marginTop: 10 }}
+              />
+            </div>
+          ))}
+        </div>
+      ) : icps.length > 0 ? (
         <div className="icp-grid">
           {icps.map((icp) => (
             <IcpCard key={icp.id} icp={icp} />

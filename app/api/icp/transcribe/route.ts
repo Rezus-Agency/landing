@@ -9,6 +9,8 @@
  * WER ~4% sur français vs 5,3% pour Whisper Large v3, pas d'hallucinations,
  * gère bien le code-switching FR/EN et le jargon technique B2B. $0.006/min.
  */
+import { createClient } from "@/lib/supabase/server";
+
 export const runtime = "nodejs";
 export const maxDuration = 60;
 export const dynamic = "force-dynamic";
@@ -21,6 +23,18 @@ const VOCAB_PROMPT =
   "Rezus Agency, anti-positioning.";
 
 export async function POST(req: Request) {
+  // Garde d'auth (en plus du middleware).
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
     return new Response(

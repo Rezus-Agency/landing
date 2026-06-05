@@ -356,8 +356,54 @@ body.app {
   color: oklch(0.74 0.15 25);
   margin-top: 4px;
 }
-.icp-field.invalid input {
+.icp-field.invalid input,
+.icp-field.invalid textarea {
   border-color: oklch(0.62 0.15 25);
+}
+
+/* Bandeau "à préciser" (garde-fou de génération du wizard) */
+.wiz-issues {
+  border: 1px solid color-mix(in oklch, var(--accent) 40%, transparent);
+  background: color-mix(in oklch, var(--accent) 8%, transparent);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 16px 0 4px;
+}
+.wiz-issues__title {
+  font-size: 13px;
+  font-weight: 650;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.wiz-issues ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.wiz-issues li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--text-2);
+}
+.wiz-issues li button {
+  flex-shrink: 0;
+  background: none;
+  border: 1px solid var(--border-strong);
+  border-radius: 7px;
+  padding: 4px 10px;
+  font: inherit;
+  font-size: 12px;
+  color: var(--text);
+  cursor: pointer;
+}
+.wiz-issues li button:hover {
+  border-color: var(--accent);
 }
 .icp-field input:disabled {
   opacity: 0.6;
@@ -604,6 +650,14 @@ body.app {
   font-family: var(--font-mono);
   font-size: 12px;
   font-weight: 600;
+  overflow: hidden;
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  display: block;
 }
 .user-chip__meta {
   min-width: 0;
@@ -1936,9 +1990,28 @@ body.app {
   text-align: center;
 }
 
-/* Panel toggle on mobile */
-.icp-panel--closed {
+/* Bouton de repli du panneau (en-tête) */
+.icp-panel__head {
+  position: relative;
+}
+.icp-panel__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+/* Scrim masqué par défaut (desktop : panneau ancré dans la grille) */
+.icp-panel__scrim {
   display: none;
+}
+
+/* Desktop : repli complet du panneau, la colonne se libère pour le chat */
+@media (min-width: 1081px) {
+  .chat-shell--panel-closed {
+    grid-template-columns: 1fr;
+  }
+  .chat-shell--panel-closed .icp-panel {
+    display: none;
+  }
 }
 
 @media (max-width: 1080px) {
@@ -1958,6 +2031,14 @@ body.app {
   .icp-panel.open {
     transform: translateX(0);
     box-shadow: -16px 0 40px -10px rgba(0, 0, 0, 0.6);
+  }
+  /* Scrim cliquable quand le panneau est ouvert en overlay (mobile) */
+  .icp-panel__scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 40;
   }
 }
 
@@ -2066,6 +2147,119 @@ body.app {
   min-height: 96px;
   resize: vertical;
   line-height: 1.5;
+}
+/* Flèche custom des <select> : on retire la flèche native (mal alignée selon
+   les navigateurs) et on dessine un chevron cohérent, calé à droite. */
+.wiz-fields select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238a8178' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
+}
+
+/* Onboarding : sélecteurs en chips (remplacent les <select> natifs) */
+.onb-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.onb-chip {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-2);
+  font: inherit;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.onb-chip:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+.onb-chip[aria-pressed="true"] {
+  background: color-mix(in oklch, var(--accent) 16%, transparent);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ---- Page Profil ---- */
+.avatar--lg {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  font-size: 20px;
+}
+.profile-id {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  margin-bottom: 22px;
+}
+.profile-id__name {
+  font-size: 18px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+.profile-id__mail {
+  color: var(--text-3);
+  font-size: 14px;
+  margin-top: 1px;
+}
+.profile-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 9px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  color: var(--text-2);
+}
+.profile-card {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  padding: 22px 22px 24px;
+  margin-bottom: 16px;
+}
+.profile-card > h3 {
+  font-size: 15px;
+  font-weight: 650;
+  margin-bottom: 4px;
+}
+.profile-card__sub {
+  color: var(--text-3);
+  font-size: 13px;
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.profile-grid .span-2 {
+  grid-column: 1 / -1;
+}
+@media (max-width: 560px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
 }
 .wiz-row {
   display: grid;

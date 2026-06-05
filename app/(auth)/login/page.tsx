@@ -1,38 +1,56 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useToolStore } from "@/lib/icp-tool/store";
+import { createClient } from "@/lib/supabase/client";
 import { BrandAside } from "@/components/icp-tool/auth/BrandAside";
-import { toast } from "@/components/icp-tool/ui/ToastProvider";
-import { ArrowRightIcon, BackIcon, SparkIcon } from "@/components/icp-tool/ui/icons";
+import { GoogleButton } from "@/components/icp-tool/auth/GoogleButton";
+import { ArrowRightIcon, BackIcon } from "@/components/icp-tool/ui/icons";
 import { track } from "@/lib/analytics";
 
+function safeNext(raw: string | null): string {
+  if (raw && raw.startsWith("/")) return raw;
+  return "/icp/tool/dashboard";
+}
+
 export default function LoginPage() {
-  const login = useToolStore((s) => s.login);
-  const loginAsGuest = useToolStore((s) => s.loginAsGuest);
+  return (
+    <Suspense fallback={null}>
+      <LoginForm />
+    </Suspense>
+  );
+}
+
+function LoginForm() {
   const router = useRouter();
+  const search = useSearchParams();
+  const next = safeNext(search.get("next"));
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = login(email, password);
-    if (!res.ok) {
-      setError(res.error || "Échec de la connexion.");
+    setLoading(true);
+    setError(null);
+    const supabase = createClient();
+    const { error: err } = await supabase.auth.signInWithPassword({ email, password });
+    if (err) {
+      setLoading(false);
+      setError(
+        err.message === "Invalid login credentials"
+          ? "Email ou mot de passe incorrect."
+          : err.message === "Email not confirmed"
+            ? "Confirmez votre email via le lien reçu avant de vous connecter."
+            : err.message,
+      );
       return;
     }
     track("ICP tool login");
-    router.push("/icp/tool/dashboard");
-  };
-
-  const onGuest = () => {
-    loginAsGuest();
-    track("ICP tool guest login");
-    toast("Connecté en invité. Vos données restent locales.", "info");
-    router.push("/icp/tool/dashboard");
+    router.push(next);
+    router.refresh();
   };
 
   return (
@@ -44,9 +62,7 @@ export default function LoginPage() {
             <BackIcon /> Retour à la présentation
           </Link>
           <h1>Reconnecter votre session.</h1>
-          <p className="auth-card__sub">
-            Continuez où vous en étiez. Tout est sauvegardé localement.
-          </p>
+          <p className="auth-card__sub">Continuez où vous en étiez.</p>
 
           <form className="auth-form" onSubmit={onSubmit} noValidate>
             <div className="icp-field">
@@ -81,8 +97,8 @@ export default function LoginPage() {
               />
               {error && <p className="icp-field__err">{error}</p>}
             </div>
-            <button className="btn btn--primary" type="submit">
-              Se connecter
+            <button className="btn btn--primary" type="submit" disabled={loading}>
+              {loading ? "Connexion..." : "Se connecter"}
               <ArrowRightIcon />
             </button>
             <div style={{ textAlign: "center", marginTop: 4 }}>
@@ -97,11 +113,7 @@ export default function LoginPage() {
 
           <div className="auth__divider">ou</div>
 
-          <button type="button" className="auth__guest" onClick={onGuest}>
-            <SparkIcon />
-            Continuer en invité
-          </button>
-          <p className="auth__guestNote">Mode dév · sera retiré quand Supabase est branché</p>
+          <GoogleButton next={next} />
 
           <p className="auth__foot">
             Pas encore de compte ? <Link href="/signup">Créer un compte</Link>

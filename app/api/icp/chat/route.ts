@@ -14,6 +14,7 @@
  */
 import { runTurn } from "@/lib/llm-core/agent/orchestrator";
 import type { SessionState } from "@/lib/llm-core/types";
+import { createClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
@@ -35,6 +36,16 @@ function sseFormat(event: string, data: unknown): string {
 }
 
 export async function POST(req: Request) {
+  // Garde d'auth (en plus du middleware) : pas de session => 401, avant tout
+  // appel LLM (qui coûte de l'argent).
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
   let body: RequestBody;
   try {
     body = (await req.json()) as RequestBody;

@@ -15,7 +15,9 @@ interface Props {
 export function ShareDialog({ icpId, open, onClose }: Props) {
   const enableShare = useToolStore((s) => s.enableShare);
   const disableShare = useToolStore((s) => s.disableShare);
-  const shareInfo = useToolStore((s) => s.shareInfo(icpId));
+  // On suit l'ICP lui-même (référence stable du tableau) : le partage est
+  // porté par ses champs shareId / shared, mis à jour en write-through DB.
+  const icp = useToolStore((s) => s.icpById(icpId));
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Ensure share is enabled when dialog opens.
@@ -35,7 +37,7 @@ export function ShareDialog({ icpId, open, onClose }: Props) {
 
   if (!open) return null;
 
-  const info = shareInfo;
+  const info = icp && icp.shareId ? { shareId: icp.shareId, enabled: !!icp.shared } : null;
   const url =
     typeof window !== "undefined" && info
       ? `${window.location.origin}/icp/public/${info.shareId}`

@@ -77,7 +77,14 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           aria-haspopup="menu"
           aria-expanded={menuOpen}
         >
-          <span className="avatar">{user?.initials || "?"}</span>
+          <span className="avatar">
+            {user?.avatarUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={user.avatarUrl} alt="" referrerPolicy="no-referrer" />
+            ) : (
+              user?.initials || "?"
+            )}
+          </span>
           <span className="user-chip__meta">
             <span className="user-chip__name">{user?.name || ""}</span>
             <span className="user-chip__mail">{user?.email || ""}</span>
@@ -104,10 +111,11 @@ export function Sidebar({ open, onClose }: SidebarProps) {
                 confirm: "Se déconnecter",
               });
               if (ok) {
-                logout();
+                await logout();
                 toast("À bientôt.");
                 onClose();
                 router.push("/login");
+                router.refresh();
               }
             }}
           >
