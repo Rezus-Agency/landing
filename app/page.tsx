@@ -74,6 +74,10 @@ export default function HomePage() {
                 Réserver un appel
                 <ArrowRightIcon />
               </Link>
+              <Link href="/icp" className="btn btn--secondary">
+                Créer mon ICP gratuit
+                <ArrowUpRightIcon />
+              </Link>
               <Link href="#methode" className="btn btn--ghost" style={{ color: "var(--text-3)" }}>
                 Voir la méthode
               </Link>
