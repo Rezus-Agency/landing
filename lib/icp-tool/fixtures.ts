@@ -1,7 +1,8 @@
 /**
  * Fixtures de DEV pour itérer sur le rendu de la page de résultat sans passer
- * par une vraie session LLM (10-15 tours + coût). Utilisé uniquement par la page
- * dev `app/icp/tool/dev/page.tsx`, jamais en prod.
+ * par une vraie session LLM (10-15 tours + coût). Utilisées uniquement par les
+ * scripts CLI (`scripts/icp-cli/test-pdf.tsx`, `seed-test-user.ts`), jamais
+ * importées dans une page de prod.
  *
  * `golden` = ICP riche et complet (récupéré de l'ancien HRTECH_DOC), toutes les
  * sections remplies. Les autres fixtures sont des cas limites dérivés pour tester

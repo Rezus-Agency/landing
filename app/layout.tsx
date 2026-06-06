@@ -101,9 +101,12 @@ export const metadata: Metadata = {
     },
   },
   category: "business",
-  verification: {
-    google: GSC_VERIFICATION,
-  },
+  // N'émet la balise de vérification que si un vrai token est configuré
+  // (évite d'émettre un placeholder en prod).
+  verification:
+    GSC_VERIFICATION && !GSC_VERIFICATION.startsWith("TOFILL")
+      ? { google: GSC_VERIFICATION }
+      : undefined,
 };
 
 export default function RootLayout({
