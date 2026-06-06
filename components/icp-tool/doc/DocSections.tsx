@@ -1010,7 +1010,7 @@ export function SectionRezusCTA() {
           convertit en conversations commerciales réelles, sans spam, sans cramer votre
           domaine.
         </p>
-        <a className="btn btn--primary" href="/" target="_blank" rel="noopener">
+        <a className="btn btn--primary" href="/contact" target="_blank" rel="noopener">
           Voir comment Rezus convertit cet ICP en revenus <ArrowRightIcon />
         </a>
       </div>
