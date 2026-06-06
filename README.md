@@ -17,7 +17,8 @@ pnpm dev                     # http://localhost:3000
 ### Variables d'environnement
 Voir `.env.example`. Tu as besoin de :
 - Clés LLM / recherche : `ANTHROPIC_API_KEY`, `LINKUP_API_KEY`, `TAVILY_API_KEY`, `OPENAI_API_KEY`
-- Supabase : `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
+- Supabase : `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`
+  (nouveau nommage des clés ; `anon` / `service_role` sont les anciens noms legacy)
 
 ## Authentification
 
@@ -26,6 +27,26 @@ Routes protégées : `/icp/tool/*` et `/api/icp/*` (via `proxy.ts`, côté serve
 
 👉 **Setup pas-à-pas (projet Supabase, Google OAuth, templates email, MCP) :
 [`docs/SETUP_AUTH.md`](docs/SETUP_AUTH.md)**
+
+## Adresses email
+
+Convention par usage (domaine `rezus-agency.com`) :
+
+| Adresse | Usage | Statut |
+|---|---|---|
+| `contact@rezus-agency.com` | Contact général / commercial / légal : formulaire de contact, mentions légales, politique de confidentialité, footer, schema SEO | utilisée dans le code |
+| `support@rezus-agency.com` | Support in-app (profil, changement d'email, aide compte) | utilisée dans le code |
+| `noreply@rezus-agency.com` | **Expéditeur** des emails automatiques : confirmation d'inscription & reset password (Sender SMTP Supabase), futurs emails "feature dispo" (notify) | à créer |
+
+Recommandées (conformité + délivrabilité), pas encore branchées :
+- `privacy@rezus-agency.com` (ou `dpo@`) : demandes RGPD (accès / suppression de données). La
+  politique de confidentialité pointe pour l'instant vers `contact@` ; à basculer si l'adresse est créée.
+- `postmaster@` et `abuse@` (simples alias) : standards email recommandés quand on envoie via SMTP
+  custom, bons pour la réputation/délivrabilité du domaine.
+
+> Les features qui dépendent de l'envoi d'email (contact, confirmation signup, reset, notify) sont
+> bloquées tant que le SMTP custom n'est pas configuré. Détails : [`docs/EMAIL_BLOCKED_FEATURES.md`](docs/EMAIL_BLOCKED_FEATURES.md)
+> et setup SMTP : [`docs/TODO_EMAIL_AUTH.md`](docs/TODO_EMAIL_AUTH.md).
 
 ## Structure
 
