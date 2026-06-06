@@ -219,8 +219,9 @@ export default function ConfidentialitePage() {
                     <strong>Supabase Inc.</strong> : authentification et base de données
                     (stockage des comptes, profils et ICP créés dans l&apos;outil), ainsi que
                     l&apos;envoi des emails d&apos;authentification (confirmation d&apos;inscription,
-                    réinitialisation de mot de passe). Hébergement des données :{" "}
-                    <span className="tofill">région à confirmer (UE recommandée)</span>.
+                    réinitialisation de mot de passe). Hébergement des données dans
+                    l&apos;Union européenne (Francfort, Allemagne · eu-central-1), aucun
+                    transfert hors UE.
                   </li>
                   <li>
                     <strong>Envoi d&apos;emails transactionnels et réponses au formulaire</strong> :

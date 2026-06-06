@@ -51,8 +51,6 @@ export default function MentionsLegalesPage() {
                   <dd>Rezus Agency OÜ</dd>
                   <dt>Forme juridique</dt>
                   <dd>Osaühing (OÜ), société à responsabilité limitée de droit estonien</dd>
-                  <dt>Capital social</dt>
-                  <dd>1 EUR</dd>
                   <dt>Code d&apos;immatriculation (Äriregister)</dt>
                   <dd>17420404</dd>
                   <dt>Registre du commerce</dt>
