@@ -1247,8 +1247,14 @@ h3 {
   max-width: 52ch;
   text-wrap: pretty;
 }
+.tl-link {
+  text-decoration: none;
+}
+.tl-link:hover {
+  opacity: 0.82;
+}
 .tl-hint {
-  display: inline-block;
+  display: block;
   margin-top: var(--s-3);
   font-family: var(--font-mono);
   font-size: 12.5px;

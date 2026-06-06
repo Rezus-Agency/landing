@@ -74,41 +74,9 @@ export default function HomePage() {
                 Réserver un appel
                 <ArrowRightIcon />
               </Link>
-              <Link href="/icp" className="btn btn--secondary">
-                Créer mon ICP gratuit
-                <ArrowUpRightIcon />
-              </Link>
               <Link href="#methode" className="btn btn--ghost" style={{ color: "var(--text-3)" }}>
                 Voir la méthode
               </Link>
-            </div>
-
-            <div className="hero-stats" data-anim style={{ "--d": "0.7s" } as React.CSSProperties}>
-              <span className="hero-stat">
-                <span className="hero-stat__n">200</span>
-                <span>comptes max / campagne</span>
-              </span>
-              <span className="hero-stat__sep" aria-hidden="true">
-                ·
-              </span>
-              <span className="hero-stat">
-                <span className="hero-stat__n">0</span>
-                <span>templates copiés-collés</span>
-              </span>
-              <span className="hero-stat__sep" aria-hidden="true">
-                ·
-              </span>
-              <span className="hero-stat">
-                <span className="hero-stat__n">3+</span>
-                <span>domaines secondaires</span>
-              </span>
-              <span className="hero-stat__sep" aria-hidden="true">
-                ·
-              </span>
-              <span className="hero-stat">
-                <span className="hero-stat__n">2</span>
-                <span>relances maximum</span>
-              </span>
             </div>
           </div>
         </section>
@@ -238,6 +206,22 @@ export default function HomePage() {
                     On définit l&apos;ICP réel et on cible les comptes sur des signaux
                     d&apos;intention vérifiables : financement, recrutement tech, projets en cours.
                   </p>
+                  <Link
+                    href="/icp"
+                    className="tl-link"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "5px",
+                      marginTop: "var(--s-4)",
+                      color: "var(--accent)",
+                      fontSize: "14.5px",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Pas encore le vôtre ? Définissez-le gratuitement avec notre outil{" "}
+                    <span aria-hidden="true">↗</span>
+                  </Link>
                   <span className="tl-hint">Signaux d&apos;intention &gt; listes achetées</span>
                 </div>
               </Reveal>
