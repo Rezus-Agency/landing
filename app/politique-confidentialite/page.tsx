@@ -52,23 +52,19 @@ export default function ConfidentialitePage() {
                 <p>Le responsable du traitement des données personnelles est :</p>
                 <dl>
                   <dt>Responsable</dt>
-                  <dd>Rezus Agency, Osaühing (OÜ) de droit estonien</dd>
+                  <dd>Rezus Agency OÜ, société à responsabilité limitée de droit estonien</dd>
                   <dt>Siège social</dt>
-                  <dd>
-                    <span className="tofill">adresse complète en Estonie</span>
-                  </dd>
+                  <dd>Sepapaja tn 6, Lasnamäe linnaosa, 15551 Tallinn, Estonie</dd>
                   <dt>Code d&apos;immatriculation</dt>
-                  <dd>
-                    Äriregister <span className="tofill">XXXXXXXX</span>
-                  </dd>
+                  <dd>Äriregister 17420404</dd>
+                  <dt>N° TVA intracommunautaire</dt>
+                  <dd>EE102977581</dd>
                   <dt>Email</dt>
                   <dd>
                     <a href="mailto:contact@rezus-agency.com">contact@rezus-agency.com</a>
                   </dd>
                   <dt>Téléphone</dt>
-                  <dd>
-                    <span className="tofill">+372 XXXX XXXX</span>
-                  </dd>
+                  <dd>+1 438 493 2133</dd>
                 </dl>
                 <p>
                   Rezus Agency n&apos;a pas désigné de Délégué à la protection des données (DPO).
@@ -220,9 +216,16 @@ export default function ConfidentialitePage() {
                     d&apos;audience sans cookie ni identifiant persistant. Aucun transfert hors UE.
                   </li>
                   <li>
-                    <strong>Outil d&apos;envoi d&apos;emails</strong> :{" "}
-                    <span className="tofill">prestataire à compléter</span> (utilisé pour les
-                    réponses au formulaire et la prospection commerciale).
+                    <strong>Supabase Inc.</strong> : authentification et base de données
+                    (stockage des comptes, profils et ICP créés dans l&apos;outil), ainsi que
+                    l&apos;envoi des emails d&apos;authentification (confirmation d&apos;inscription,
+                    réinitialisation de mot de passe). Hébergement des données :{" "}
+                    <span className="tofill">région à confirmer (UE recommandée)</span>.
+                  </li>
+                  <li>
+                    <strong>Envoi d&apos;emails transactionnels et réponses au formulaire</strong> :
+                    aucun prestataire dédié n&apos;est encore activé. Cette section sera complétée
+                    lors de la mise en place du service d&apos;envoi d&apos;emails.
                   </li>
                 </ul>
               </Reveal>

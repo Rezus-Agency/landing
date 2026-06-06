@@ -48,32 +48,21 @@ export default function MentionsLegalesPage() {
                 </p>
                 <dl>
                   <dt>Raison sociale</dt>
-                  <dd>Rezus Agency</dd>
+                  <dd>Rezus Agency OÜ</dd>
                   <dt>Forme juridique</dt>
                   <dd>Osaühing (OÜ), société à responsabilité limitée de droit estonien</dd>
                   <dt>Capital social</dt>
-                  <dd>
-                    <span className="tofill">X XXX EUR</span>
-                  </dd>
+                  <dd>1 EUR</dd>
                   <dt>Code d&apos;immatriculation (Äriregister)</dt>
-                  <dd>
-                    <span className="tofill">XXXXXXXX</span>
-                  </dd>
+                  <dd>17420404</dd>
                   <dt>Registre du commerce</dt>
                   <dd>Registre du commerce d&apos;Estonie (Äriregister), Tallinn</dd>
                   <dt>N° TVA intracommunautaire</dt>
-                  <dd>
-                    <span className="tofill">EE XXXXXXXXX</span>{" "}
-                    <em>(si assujetti à la TVA estonienne)</em>
-                  </dd>
+                  <dd>EE102977581</dd>
                   <dt>Siège social</dt>
-                  <dd>
-                    <span className="tofill">Adresse complète en Estonie</span>
-                  </dd>
+                  <dd>Sepapaja tn 6, Lasnamäe linnaosa, 15551 Tallinn, Estonie</dd>
                   <dt>Téléphone</dt>
-                  <dd>
-                    <span className="tofill">+372 XXXX XXXX</span>
-                  </dd>
+                  <dd>+1 438 493 2133</dd>
                   <dt>Email</dt>
                   <dd>
                     <a href="mailto:contact@rezus-agency.com">contact@rezus-agency.com</a>
@@ -84,9 +73,8 @@ export default function MentionsLegalesPage() {
               <Reveal className="legal-block" id="publication">
                 <h2>2. Direction de la publication</h2>
                 <p>
-                  Le directeur de la publication est{" "}
-                  <span className="tofill">Prénom Nom du dirigeant</span>, en qualité de
-                  représentant légal de Rezus Agency.
+                  Le directeur de la publication est <strong>René Marceau</strong>, en qualité de
+                  représentant légal (juhatuse liige) de Rezus Agency OÜ.
                 </p>
               </Reveal>
 
