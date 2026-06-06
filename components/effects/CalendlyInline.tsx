@@ -1,32 +1,30 @@
 "use client";
 
-import Script from "next/script";
+import { InlineWidget } from "react-calendly";
 
-const CALENDLY_URL =
-  "https://calendly.com/contact-renemarceau/rdv?hide_event_type_details=1&hide_gdpr_banner=1";
+const CALENDLY_URL = "https://calendly.com/contact-renemarceau/rdv";
 
 interface CalendlyInlineProps {
-  /** Classe additionnelle posée à côté de .calendly-inline-widget (requise par widget.js). */
   className?: string;
   /** Hauteur du widget en pixels. Calendly recommande 700. */
   height?: number;
 }
 
 /**
- * Widget Calendly inline pour la page /contact.
- * Script chargé en lazyOnload pour ne pas bloquer le first paint.
- * Sur /contact, le script a le temps de charger avant que l'utilisateur
- * scrolle jusqu'à la section.
+ * Widget Calendly inline (page /contact).
+ *
+ * On délègue à `react-calendly` (InlineWidget) : la librairie gère le chargement
+ * du script, l'initialisation et surtout la ré-initialisation à chaque montage
+ * du composant. C'est ce qui corrige le cas "calendrier vide en navigation SPA"
+ * (l'auto-init natif de Calendly ne se redéclenchait pas sans rechargement).
  */
 export function CalendlyInline({ className, height = 700 }: CalendlyInlineProps) {
   return (
-    <>
-      <div
-        className={`calendly-inline-widget ${className ?? ""}`.trim()}
-        data-url={CALENDLY_URL}
-        style={{ minWidth: "320px", height: `${height}px` }}
-      />
-      <Script src="https://assets.calendly.com/assets/external/widget.js" strategy="lazyOnload" />
-    </>
+    <InlineWidget
+      url={CALENDLY_URL}
+      className={className}
+      styles={{ minWidth: "320px", height: `${height}px` }}
+      pageSettings={{ hideEventTypeDetails: true, hideGdprBanner: true }}
+    />
   );
 }
