@@ -8,7 +8,7 @@ import { toast } from "@/components/icp-tool/ui/ToastProvider";
 import { LockIcon, TrashIcon } from "@/components/icp-tool/ui/icons";
 
 // Adresse de support qui reçoit les demandes (changement d'email, etc.).
-const SUPPORT_EMAIL = "contact@renemarceau.com";
+const SUPPORT_EMAIL = "support@rezus-agency.com";
 
 export default function ProfilePage() {
   const user = useToolStore((s) => s.auth);

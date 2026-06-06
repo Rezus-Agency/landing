@@ -175,13 +175,13 @@ export default function ContactPage() {
               >
                 Vous préférez écrire ?{" "}
                 <a
-                  href="mailto:hello@rezus.agency"
+                  href="mailto:contact@rezus-agency.com"
                   style={{
                     color: "var(--text)",
                     borderBottom: "1px solid var(--border-strong)",
                   }}
                 >
-                  hello@rezus.agency
+                  contact@rezus-agency.com
                 </a>
               </p>
             </Reveal>

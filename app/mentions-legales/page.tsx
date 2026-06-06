@@ -76,7 +76,7 @@ export default function MentionsLegalesPage() {
                   </dd>
                   <dt>Email</dt>
                   <dd>
-                    <a href="mailto:hello@rezus.agency">hello@rezus.agency</a>
+                    <a href="mailto:contact@rezus-agency.com">contact@rezus-agency.com</a>
                   </dd>
                 </dl>
               </Reveal>

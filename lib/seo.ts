@@ -12,7 +12,7 @@ export const SITE = {
   locale: "fr_FR",
   language: "fr-FR",
   twitterHandle: "@RezusAgency",
-  email: "hello@rezus.agency",
+  email: "contact@rezus-agency.com",
   country: "France",
   founderName: "René Marceau",
 } as const;

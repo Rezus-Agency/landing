@@ -63,7 +63,7 @@ export default function ConfidentialitePage() {
                   </dd>
                   <dt>Email</dt>
                   <dd>
-                    <a href="mailto:hello@rezus.agency">hello@rezus.agency</a>
+                    <a href="mailto:contact@rezus-agency.com">contact@rezus-agency.com</a>
                   </dd>
                   <dt>Téléphone</dt>
                   <dd>
@@ -73,7 +73,7 @@ export default function ConfidentialitePage() {
                 <p>
                   Rezus Agency n&apos;a pas désigné de Délégué à la protection des données (DPO).
                   Pour toute question relative à vos données, vous pouvez écrire à{" "}
-                  <a href="mailto:hello@rezus.agency">hello@rezus.agency</a>.
+                  <a href="mailto:contact@rezus-agency.com">contact@rezus-agency.com</a>.
                 </p>
                 <p>
                   Le traitement des données est régi par le Règlement (UE) 2016/679 (RGPD),
@@ -263,7 +263,7 @@ export default function ConfidentialitePage() {
                   <strong>Droit d&apos;opposition immédiat</strong> : vous pouvez à tout moment
                   refuser de recevoir nos messages commerciaux en répondant{" "}
                   <strong>« STOP »</strong> à tout email reçu, ou en écrivant à{" "}
-                  <a href="mailto:hello@rezus.agency">hello@rezus.agency</a>. Votre demande est
+                  <a href="mailto:contact@rezus-agency.com">contact@rezus-agency.com</a>. Votre demande est
                   traitée sous 48 h ouvrées et n&apos;est suivie d&apos;aucune réinjection
                   ultérieure.
                 </p>
@@ -341,7 +341,7 @@ export default function ConfidentialitePage() {
                 </ul>
                 <p>
                   Pour exercer ces droits, écrivez à{" "}
-                  <a href="mailto:hello@rezus.agency">hello@rezus.agency</a> en précisant le droit
+                  <a href="mailto:contact@rezus-agency.com">contact@rezus-agency.com</a> en précisant le droit
                   que vous souhaitez exercer. Nous vous répondrons dans un délai maximum de{" "}
                   <strong>30 jours</strong>, conformément à l&apos;article 12.3 du RGPD.
                 </p>

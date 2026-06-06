@@ -15,7 +15,7 @@ Ce document les liste pour ne rien oublier et les finir le moment venu.
   Le message est perdu (seul un event analytics `Contact form submitted` part).
   Fichier : `components/effects/ContactForm.tsx`.
 - **À faire quand l'email est prêt** : créer une route `POST /api/contact` qui envoie
-  le message à `hello@rezus.agency` (via le SMTP / Resend). Brancher le `onSubmit`
+  le message à `contact@rezus-agency.com` (via le SMTP / Resend). Brancher le `onSubmit`
   du form dessus (remplacer le `setSubmitted(true)` direct par un appel API + gestion
   d'erreur). Accusé de réception optionnel à l'expéditeur.
 - Alternative de secours : `mailto:` (déjà présent en lien sur la page).

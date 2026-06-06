@@ -88,7 +88,7 @@ export function Footer() {
 
         <div className="footer__bottom">
           <span>© {new Date().getFullYear()} Rezus Agency · France</span>
-          <a href="mailto:hello@rezus.agency">hello@rezus.agency</a>
+          <a href="mailto:contact@rezus-agency.com">contact@rezus-agency.com</a>
         </div>
       </Container>
     </footer>
