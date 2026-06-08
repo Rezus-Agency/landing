@@ -74,7 +74,17 @@ export function Footer() {
 
         <div className="footer__bottom">
           <span>© {new Date().getFullYear()} Rezus Agency · France</span>
-          <div className="footer__bottom-links">
+          <div
+            className="footer__bottom-links"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "var(--s-4)",
+              fontFamily: "var(--font-mono)",
+              fontSize: "12px",
+            }}
+          >
             <Link href="/mentions-legales">Mentions légales</Link>
             <Link href="/politique-confidentialite">Confidentialité</Link>
             <a href="mailto:contact@rezus-agency.com">contact@rezus-agency.com</a>
