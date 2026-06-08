@@ -26,21 +26,7 @@ const COLUMNS = [
   },
   {
     label: "Agence",
-    links: [
-      { href: "/contact", label: "Contact" },
-      {
-        href: "https://www.linkedin.com/company/rezus-agency",
-        label: "LinkedIn",
-        external: true,
-      },
-    ],
-  },
-  {
-    label: "Légal",
-    links: [
-      { href: "/mentions-legales", label: "Mentions légales" },
-      { href: "/politique-confidentialite", label: "Confidentialité" },
-    ],
+    links: [{ href: "/contact", label: "Contact" }],
   },
 ];
 
@@ -88,6 +74,11 @@ export function Footer() {
 
         <div className="footer__bottom">
           <span>© {new Date().getFullYear()} Rezus Agency · France</span>
+          <nav className="footer__legal" aria-label="Liens légaux">
+            <Link href="/mentions-legales">Mentions légales</Link>
+            <span aria-hidden="true">·</span>
+            <Link href="/politique-confidentialite">Confidentialité</Link>
+          </nav>
           <a href="mailto:contact@rezus-agency.com">contact@rezus-agency.com</a>
         </div>
       </Container>

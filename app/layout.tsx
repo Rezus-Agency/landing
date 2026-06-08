@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Hanken_Grotesk, JetBrains_Mono, Newsreader } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { ScrollToTop } from "@/components/effects/ScrollToTop";
 import { Plausible } from "@/components/seo/Plausible";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -128,6 +129,7 @@ export default function RootLayout({
         <JsonLd data={websiteSchema} />
       </head>
       <body className="bg-background text-foreground flex min-h-full flex-col">
+        <ScrollToTop />
         <a href="#main" className="skip-link">
           Aller au contenu principal
         </a>

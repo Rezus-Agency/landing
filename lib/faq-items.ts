@@ -6,7 +6,7 @@ export type FAQItem = {
 export const HOMEPAGE_FAQ: FAQItem[] = [
   {
     q: "En quoi c'est différent d'une agence outbound classique ?",
-    a: "On ne joue pas au volume. On cible quelques centaines de comptes pertinents, on écrit chaque message à la main, et on optimise sur les rendez-vous qualifiés plutôt que sur des taux d'ouverture. C'est l'inverse exact du modèle « spray & pray ».",
+    a: "On fait du GTM engineering, pas de l'envoi de masse. On construit un système précis : un ICP défini rigoureusement, un ciblage sur des signaux d'intention vérifiables (jamais de listes achetées), des messages personnalisés par segment (recherche assistée par IA, angle validé par un humain) et une infrastructure d'envoi propre. On optimise sur les rendez-vous qualifiés, pas sur les taux d'ouverture. L'inverse exact du « spray & pray ».",
   },
   {
     q: "Vous allez cramer mon domaine ?",
@@ -14,7 +14,7 @@ export const HOMEPAGE_FAQ: FAQItem[] = [
   },
   {
     q: "Combien de temps avant les premiers résultats ?",
-    a: "Les premières semaines servent au cadrage, au ciblage et au warmup de l'infrastructure. Les premières conversations qualifiées arrivent généralement entre la 4e et la 8e semaine. On préfère des objectifs réalistes à des promesses intenables.",
+    a: "En moyenne, les premiers résultats arrivent après environ un mois : le temps de cadrer la cible, préparer l'infrastructure (warmup) et lancer les premières séquences. On préfère des objectifs réalistes à des promesses intenables.",
   },
   {
     q: "Y a-t-il un engagement minimum ?",

@@ -173,7 +173,8 @@ export default function ICPLandingPage() {
             </Reveal>
             <Reveal as="div" delay={1}>
               <h1 style={{ marginTop: "var(--s-5)", maxWidth: "22ch" }}>
-                La plupart des ICP sont écrits pour rassurer le fondateur. Pas pour gagner.
+                La plupart des profils de client idéal sont écrits pour rassurer le fondateur. Pas
+                pour gagner.
               </h1>
             </Reveal>
             <Reveal as="div" delay={2}>
@@ -187,14 +188,15 @@ export default function ICPLandingPage() {
                   letterSpacing: "-0.01em",
                 }}
               >
-                ICP discovery. Pas ICP validation.
+                On le découvre. On ne le valide pas.
               </p>
             </Reveal>
             <Reveal as="div" delay={2}>
               <p className="lede" style={{ maxWidth: "58ch" }}>
-                Un outil qui challenge votre intuition au lieu de la valider. Il fait ses
-                recherches en direct, livre une analyse stratégique complète du marché que vous
-                prétendez cibler, et vous repart avec des outputs prêts à exécuter.
+                Votre <strong>ICP</strong> (Ideal Customer Profile), c&apos;est le profil de votre
+                client idéal : à qui vendre en priorité, et pourquoi. Cet outil le challenge au lieu
+                de le valider : recherche de marché en direct, analyse stratégique complète, et des
+                livrables prêts à exécuter.
               </p>
             </Reveal>
             <Reveal className="phero__cta" delay={3} style={{ gap: "var(--s-5)" }}>
