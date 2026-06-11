@@ -118,6 +118,7 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
+      data-scroll-behavior="smooth"
       data-theme="dark"
       data-headline="grotesque"
       data-hero="centered"
