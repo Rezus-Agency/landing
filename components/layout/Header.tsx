@@ -41,7 +41,9 @@ export function Header() {
     };
   }, [mobileOpen]);
 
+  // Ferme le menu mobile à chaque changement de route (réaction à la navigation).
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reset d'UI volontaire sur navigation
     setMobileOpen(false);
   }, [pathname]);
 

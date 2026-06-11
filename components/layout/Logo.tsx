@@ -4,10 +4,9 @@ import { cn } from "@/lib/utils";
 interface LogoProps {
   className?: string;
   href?: string;
-  size?: "sm" | "md" | "lg";
 }
 
-export function Logo({ className, href = "/", size = "md" }: LogoProps) {
+export function Logo({ className, href = "/" }: LogoProps) {
   return (
     <Link href={href} className={cn("logo group", className)}>
       <span className="logo__mark">Rezus</span>

@@ -22,7 +22,7 @@
 import { config as loadEnv } from "dotenv";
 import { Box, Text, render, useApp, useInput } from "ink";
 import TextInput from "ink-text-input";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { freshSession, runTurn, seedIntro } from "../../lib/llm-core/agent/orchestrator";
 import { saveSnapshot } from "../../lib/llm-core/agent/snapshot";
 import type {

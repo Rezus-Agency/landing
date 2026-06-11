@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useToolStore } from "@/lib/icp-tool/store";
 import { toast } from "@/components/icp-tool/ui/ToastProvider";
 import { icpFromDoc } from "@/lib/icp-tool/icp-from-doc";
+import { useHydrated } from "@/lib/use-hydrated";
 import { ArrowRightIcon, BackIcon, SparkIcon } from "@/components/icp-tool/ui/icons";
 
 type SpecData = {
@@ -159,17 +160,13 @@ export default function WizardPage() {
   const clearSpec = useToolStore((s) => s.clearSpec);
   const upsertIcp = useToolStore((s) => s.upsertIcp);
 
-  const [hydrated, setHydrated] = useState(false);
+  const hydrated = useHydrated();
   const [generating, setGenerating] = useState(false);
   const [genStepIndex, setGenStepIndex] = useState(0);
   const [genError, setGenError] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, boolean>>({});
   const [issues, setIssues] = useState<Issue[]>([]);
   const genTimer = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => {
-    setHydrated(true);
-  }, []);
 
   useEffect(() => {
     if (!hydrated) return;

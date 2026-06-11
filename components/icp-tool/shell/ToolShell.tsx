@@ -13,6 +13,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useToolStore } from "@/lib/icp-tool/store";
+import { useHydrated } from "@/lib/use-hydrated";
 import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
 import { Scrim } from "./Scrim";
@@ -31,7 +32,7 @@ function isFullApp(pathname: string | null): boolean {
 
 export function ToolShell({ children }: { children: React.ReactNode }) {
   const isAuthed = useToolStore((s) => !!s.auth);
-  const [hydrated, setHydrated] = useState(false);
+  const hydrated = useHydrated();
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
   const fullApp = isFullApp(pathname);
@@ -43,10 +44,6 @@ export function ToolShell({ children }: { children: React.ReactNode }) {
       document.documentElement.classList.remove("app");
       document.body.classList.remove("app");
     };
-  }, []);
-
-  useEffect(() => {
-    setHydrated(true);
   }, []);
 
   // Tant que la session Supabase n'est pas hydratée par AuthSync, on rend un

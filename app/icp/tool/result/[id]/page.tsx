@@ -4,6 +4,7 @@ import { use, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToolStore } from "@/lib/icp-tool/store";
+import { useHydrated } from "@/lib/use-hydrated";
 import { toast } from "@/components/icp-tool/ui/ToastProvider";
 import {
   ArrowRightIcon,
@@ -112,7 +113,7 @@ export default function ResultPage({ params }: { params: Promise<{ id: string }>
   const icpsLoaded = useToolStore((s) => s.icpsLoaded);
   const clearSession = useToolStore((s) => s.clearSession);
 
-  const [hydrated, setHydrated] = useState(false);
+  const hydrated = useHydrated();
   const [pageIdx, setPageIdx] = useState(0);
   const [shareOpen, setShareOpen] = useState(false);
   const [clayOpen, setClayOpen] = useState(false);
@@ -120,10 +121,6 @@ export default function ResultPage({ params }: { params: Promise<{ id: string }>
   const [actionsOpen, setActionsOpen] = useState(false);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const moreRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    setHydrated(true);
-  }, []);
 
   // Ferme le menu d'actions (mobile) au clic extérieur.
   useEffect(() => {

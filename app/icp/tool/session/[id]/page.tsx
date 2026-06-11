@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useToolStore } from "@/lib/icp-tool/store";
 import type { ChatEvent, ICP, SessionDraft } from "@/lib/icp-tool/types";
 import { icpToContextMarkdown, panelFromIcp } from "@/lib/icp-tool/icp-summary";
+import { useHydrated } from "@/lib/use-hydrated";
 import { toast } from "@/components/icp-tool/ui/ToastProvider";
 import {
   BackIcon,
@@ -127,7 +128,7 @@ export default function ChatSessionPage({
   const upsertIcp = useToolStore((s) => s.upsertIcp);
   const icpById = useToolStore((s) => s.icpById);
 
-  const [hydrated, setHydrated] = useState(false);
+  const hydrated = useHydrated();
   const [draft, setDraft] = useState("");
   // Ouvert par défaut sur grand écran, replié sur mobile (slide-in à la demande).
   const [panelOpen, setPanelOpen] = useState(
@@ -139,9 +140,6 @@ export default function ChatSessionPage({
 
   const { send, busy } = useChatStream();
 
-  useEffect(() => {
-    setHydrated(true);
-  }, []);
 
   // Init / resume session
   useEffect(() => {

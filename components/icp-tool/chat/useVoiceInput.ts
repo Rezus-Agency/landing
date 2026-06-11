@@ -63,6 +63,7 @@ export function useVoiceInput({ onResult, onError }: Options) {
       typeof navigator.mediaDevices.getUserMedia === "function";
     const hasRecorder =
       typeof window !== "undefined" && typeof window.MediaRecorder !== "undefined";
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- détection d'API navigateur, client-only
     setSupported(hasGUM && hasRecorder);
   }, []);
 
